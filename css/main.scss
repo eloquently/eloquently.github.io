@@ -40,9 +40,6 @@ h4,
 h5,
 h6 {
     @include sans-serif-font;
-    &.center {
-        text-align: center;
-    }
 }
 
 p {
@@ -367,5 +364,9 @@ body {
     padding: 20px 0;
 }
 
+
+.center {
+    text-align: center;
+}
 
 @import 'workshops';
