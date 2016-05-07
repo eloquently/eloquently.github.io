@@ -1,0 +1,29 @@
+.info-col {
+
+}
+.question-block {
+    margin-top: 24px;
+    border: 1px solid #EEE;
+    background-color: #FAFAFA;
+    div {
+        padding: 15px;
+    }
+    .question {
+        h4 {
+            font-size: 16px;
+            padding-bottom: 0;
+            margin-bottom: 0;
+            margin-top: 0;
+        }
+        border-bottom: 1px solid #EEE;
+    }
+    .answer {
+        p {
+            font-size: 14px;
+            @include sans-serif-font;
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+}

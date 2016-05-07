@@ -40,6 +40,9 @@ h4,
 h5,
 h6 {
     @include sans-serif-font;
+    &.center {
+        text-align: center;
+    }
 }
 
 p {
@@ -211,6 +214,15 @@ header {
     }
 }
 
+header.workshop-header {
+    @extend header;
+    min-height: 351px;
+    background-image: url('../img/editor.png');
+    @media (min-width: 768px) {
+        min-height: 351px;
+    }
+}
+
 // Sections
 
 .section-heading {
@@ -354,3 +366,6 @@ body {
     color: #fff;
     padding: 20px 0;
 }
+
+
+@import 'workshops';
