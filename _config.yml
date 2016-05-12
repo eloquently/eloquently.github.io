@@ -14,4 +14,6 @@ baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://eloquent.ly" # the base hostname & protocol for your site
 
 # Build settings
-markdown: kramdown
+markdown: redcarpet
+highlighter: pygments
+disable_indented_code_blocks: true

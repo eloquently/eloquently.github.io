@@ -2,6 +2,7 @@
 ---
 @import "variables";
 @import "mixins";
+@import "bootstrap.min";
 
 // Global Components
 html,
@@ -18,6 +19,11 @@ hr {
     border-color: $theme-primary;
     border-width: 3px;
     max-width: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    &.left {
+        margin-left: 0;
+    }
 }
 
 hr.light {
@@ -131,7 +137,7 @@ aside {
                 color: white;
             }
         }
-        &.affix {
+        &.affix, &.full-color {
             background-color: white;
             border-color: fade-out($theme-dark, 0.95);
             .navbar-header .navbar-brand {
@@ -370,3 +376,27 @@ body {
 }
 
 @import 'workshops';
+
+
+/* Sticky Footer by Ryan Fait http://ryanfait.com/ */
+* {
+	margin: 0;
+}
+.wrapper {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin: 0 auto -60px;
+}
+.footer, .push {
+	height: 60px;
+}
+
+.container.post {
+    .post-content {
+        @extend .col-lg-8;
+        @extend .col-md-10;
+        @extend .col-lg-offset-2;
+        @extend .col-md-offset-1;
+    }
+}
