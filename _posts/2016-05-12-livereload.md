@@ -14,9 +14,13 @@ We will setup LiveReload and Guard to automatically refresh your browser wheneve
 
 Add the following gems to the `:development` group in your `Gemfile`:
 
-```ruby
-gem 'guard-livereload'
-gem 'rack-livereload'
+<div class="file-path">Gemfile</div>
+```ruby{3-4}
+group :development do
+    # ...
+    gem 'guard-livereload', '~> 2.5'
+    gem 'rack-livereload', '~> 0.3.16'
+end
 ```
 
 Run this in your bash console:
@@ -26,25 +30,28 @@ bundle install
 guard init livereload
 ```
 
-Add this to `config/environments/development.rb`:
+Add one line to `config/environments/development.rb`:
 
-```ruby
+<div class="file-path">config/environments/development.rb</div>
+```ruby{2}
 Rails.application.configure do
-  config.middleware.insert_after ActionDispatch::Static, Rack::LiveReload, host: 'YOUR CLOUD9 URL HERE', port: 8081
-  # ...
+    config.middleware.insert_after ActionDispatch::Static, Rack::LiveReload, host: 'YOUR CLOUD9 URL HERE', port: 8081
+    # ...
 end
 ```
 
 If you're not on Cloud9, omit the `host:` and `port:` parameters. If you are on Cloud9, enter the URL you view your application at (without the https:// part).
 
-If you're on Cloud9, replace this line in your Guardfile:
+If you're on Cloud9, replace this line in your `Guardfile`:
 
+<div class="file-path">Guardfile</div>
 ```ruby
 guard 'livereload' do
 ```
 
 with this line:
 
+<div class="file-path">Guardfile</div>
 ```ruby
 guard 'livereload', port: 8081 do
 ```
