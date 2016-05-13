@@ -49,4 +49,4 @@ To make elements like drop-down menus work, we'll also need to add bootstrap's J
 //= require bootstrap-sprockets
 ```
 
-Make sure that you are requiring `jquery` as well. You should also have this line in your `application.js`. If it's not there, add it abvove the `require bootstrap-sprockets` line.
+Make sure that you are requiring `jquery` as well. You should also have this line in your `application.js`. If it's not there, add it above the `require bootstrap-sprockets` line.
