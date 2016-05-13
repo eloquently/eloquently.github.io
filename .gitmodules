@@ -1,4 +1,4 @@
 [submodule "pages"]
 	path = _site
-	url = https://github.com/eloquently/eloquently.github.io
+	url = https://github.com/eloquently/www
 	branch = gh-pages
