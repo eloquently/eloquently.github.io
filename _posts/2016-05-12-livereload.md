@@ -12,8 +12,6 @@ categories: guides
 
 We will setup LiveReload and Guard to automatically refresh your browser whenever you make a change to a file. This saves you the hassle of clicking refresh or pressing F5 each time you want to see the effect of a change you made.
 
-We set it up to use Guard.
-
 Add the following gems to the `:development` group in your `Gemfile`:
 
 ```ruby

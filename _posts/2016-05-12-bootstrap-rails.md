@@ -20,15 +20,9 @@ Rename `app/assets/stylesheets/application.css` to `app/assets/stylesheets/appli
 
 Remove these lines from the file:
 
-```css
-/*
- ...
-
+```
  *= require_tree .
  *= require_self
-
- ...
-*/
 ```
 
 Now add these lines:
