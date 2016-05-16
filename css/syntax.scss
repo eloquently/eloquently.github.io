@@ -83,7 +83,7 @@ code, pre {
 .highlight .vi { color: #cc6666 } /* Name.Variable.Instance */
 .highlight .il { color: #de935f } /* Literal.Number.Integer.Long */
 
-.file-path {
+.file-path, .fp {
     padding-left: 10px;
     @extend code;
 }
