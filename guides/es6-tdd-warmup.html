@@ -246,16 +246,16 @@ git commit -m &quot;increment function&quot;
 <p>In English, a terse description of this function would be &quot;increment <code>x</code> <code>y</code> times&quot;. A more detailed description would be:</p>
 
 <ul>
-<li>Create a variable <code>solution</code> and make it <code>x</code> to start</li>
+<li>Create a variable <code>solution</code>, and set it to <code>x</code></li>
 <li><code>y</code> times, do the following:
 
 <ul>
-<li>increment solution and store the value in solution</li>
+<li>increment <code>solution</code> and store the value in <code>solution</code></li>
 </ul></li>
-<li>return solution</li>
+<li>return <code>solution</code></li>
 </ul>
 
-<p>Try replacing <code>x</code> and <code>y</code> with actual numbers and see if the descriptions make sense to you.</p>
+<p>Try replacing <code>x</code> and <code>y</code> with actual numbers, and see if the descriptions make sense to you.</p>
 
 <p>Let&#39;s add another test for <code>add()</code>:</p>
 
@@ -386,7 +386,8 @@ git commit -m &quot;increment function&quot;
     <span class="c1">// ...</span>
 
     <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;multiply()&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="c1">// ...</span>
+        <span class="cm">/* Write tests for multiply here. */</span>
+        <span class="cm">/* You should have tests for when the parameters are negative and 0, similar to the ones we wrote for add() */</span>
     <span class="p">});</span>
 <span class="p">});</span>
 </code></pre></div>
