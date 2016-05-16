@@ -78,8 +78,13 @@
 <p>We&#39;re going to practice JavaScript. This guide will cover ES6 syntax, testing with Mocha and Chai, and basic iterative and recursive arithmetic functions developed using Test Driven Development (TDD).</p>
 
 <p>Clone this repository to get started:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">git clone https://@bitbucket.org/eloquently/unit_01_es6_warmup.git
+<div class="highlight"><pre><code class="language-text" data-lang="text">git clone https://bitbucket.org/eloquently/unit_01_es6_warmup.git
 </code></pre></div>
+<p>Next, install the packages needed to run this code using the following command:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">npm install
+</code></pre></div>
+<p>Node Package Manager (npm) is the JavaScript analog to Ruby&#39;s Gem and Bundler.</p>
+
 <p>In this directory structure, our code goes in the <code>src</code> directory and the tests go in the <code>test</code> directory.</p>
 
 <h2>Arithmetic</h2>
@@ -134,7 +139,7 @@
 <div class="fp">test/index_spec.js</div>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;chai&#39;</span><span class="p">;</span>
 
-<span class="hll"><span class="kr">import</span> <span class="p">{</span> <span class="nx">increment</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;../src/index.js&#39;</span>
+<span class="hll"><span class="kr">import</span> <span class="p">{</span> <span class="nx">increment</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;../src/index.js&#39;</span><span class="p">;</span>
 </span></code></pre></div>
 <p>Now we have access to the <code>increment</code> function from this test file. Every time you want to access a function or class from another file, you will need to export it from the file it is defined in and import it in the file you want to use it in.</p>
 
@@ -494,9 +499,9 @@ git commit -m &quot;increment function&quot;
 <div class="fp">test/index_spec.js</div>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
 <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;index.js&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-<span class="hll">    <span class="c1">// ...</span>
-</span><span class="hll">
-</span>    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;incrementEach()&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+
+    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;incrementEach()&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="c1">// ...</span>
 
         <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;multiple assignment example&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
