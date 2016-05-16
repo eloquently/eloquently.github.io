@@ -209,7 +209,7 @@
 <div class="highlight"><pre><code class="language-text" data-lang="text">git add -A
 git commit -m &quot;increment function&quot;
 </code></pre></div>
-<p>Now we want to write another function: <code>add</code>. This function will take two numbers and return their sum. For the sake of the exercise, it is not allowed to use the <code>+</code> operator -- only the <code>increment</code> function we&#39;ve already written and loops and if statements. First, let&#39;s write a test for the function:</p>
+<p>Now we want to write another function: <code>add</code>. This function will take two numbers and return their sum. For the sake of the exercise, it is not allowed to use the <code>+</code> operator -- only the <code>increment</code> function we&#39;ve already written and loops and if statements. First, let&#39;s write a test for the function. You&#39;ll also need to import the <code>add</code> function at the top of the test file.</p>
 
 <div class="fp">test/index_spec.js</div>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;chai&#39;</span><span class="p">;</span>
@@ -310,7 +310,7 @@ git commit -m &quot;increment function&quot;
 </span>    <span class="p">});</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>Uh oh! This test failed. It says the actual value we got was <code>4</code> but the expected value was <code>1</code>. Let&#39;s fix this. We&#39;ll fix it by creating a <code>decrement</code> functiont hat looks like the <code>increment</code> function:</p>
+<p>Uh oh! This test failed. It says the actual value we got was <code>4</code> but the expected value was <code>1</code>. Let&#39;s fix this. We&#39;ll fix it by creating a <code>decrement</code> function that looks like the <code>increment</code> function:</p>
 
 <p>Let&#39;s first write some tests so that we understand what <code>decrement()</code> does:</p>
 
