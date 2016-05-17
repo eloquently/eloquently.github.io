@@ -284,7 +284,7 @@
 </code></pre></div>
 <p>ES6 includes a string interpolation feature. Instead of writing <code>tempStr = tempStr = this.str[i];</code>, we could write: <code>tempStr = `${tempStr}${this.str[i]}`;</code>. Note that we are using backticks <code>`</code> rather than quote marks. <code>str = `var: ${var}`;</code> is equivalent to <code>str = &quot;var: #{var}&quot;</code> in Ruby.</p>
 
-<p><strong>Extra interview practice</strong>: It&#39;s possible to write <code>reverse()</code> so that it doesn&#39;t need to use <code>temp_str</code>. Try refactoring your method in such a way now. Hint: you&#39;ll need the <code>replaceNthChar</code> function!</p>
+<p><strong>Extra interview practice</strong>: It&#39;s possible to write <code>reverse()</code> so that it doesn&#39;t need to use <code>tempStr</code>. Try refactoring your method in such a way now. Hint: you&#39;ll need the <code>replaceNthChar</code> function!</p>
 
 <h3>Palindromes</h3>
 
@@ -342,7 +342,7 @@
             <span class="nx">expect</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">str</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="s1">&#39;racecar&#39;</span><span class="p">);</span>
             <span class="nx">sp</span><span class="p">.</span><span class="nx">str</span> <span class="o">=</span> <span class="s1">&#39;race car&#39;</span><span class="p">;</span>
             <span class="nx">sp</span><span class="p">.</span><span class="nx">isPalindrome</span><span class="p">();</span>
-            <span class="nx">expect</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">str</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="s1">&#39;racecar&#39;</span><span class="p">);</span>
+            <span class="nx">expect</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">str</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="s1">&#39;race car&#39;</span><span class="p">);</span>
         <span class="p">});</span>
     <span class="p">});</span>
 <span class="p">});</span>
