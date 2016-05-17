@@ -370,5 +370,10 @@ header.workshop-header {
         @extend .col-md-10;
         @extend .col-lg-offset-2;
         @extend .col-md-offset-1;
+
+        li {
+            @extend p;
+            margin-bottom:0;
+        }
     }
 }
