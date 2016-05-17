@@ -16,8 +16,14 @@
 # and, you'll have to watch "config/Guardfile" instead of "Guardfile"
 
 guard 'livereload' do
-  watch(%r{_site/.+\.html})
-  watch(%r{_site/css/.+})
-  watch(%r{_site/img/.+})
-  watch(%r{_site/js/.+})
+    watch(%r{_site/.+\.html})
+    watch(%r{_site/css/.+})
+    watch(%r{_site/img/.+})
+    watch(%r{_site/js/.+})
+
+
+    watch(%r{_serve/.+\.html})
+    watch(%r{_serve/css/.+})
+    watch(%r{_serve/img/.+})
+    watch(%r{_serve/js/.+})
 end

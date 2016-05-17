@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Eloquently - Learning and Recruiting</title>
+
+    <!-- Custom Fonts -->
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css" type="text/css">
+
+    <!-- Plugin CSS -->
+    <link rel="stylesheet" href="/css/animate.min.css" type="text/css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css" type="text/css">
+    <link rel="stylesheet" href="/css/syntax.css" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+
+<body>
+    <div class="wrapper">
+        <!-- Navigation -->
+        <nav id="mainNav" class="nav navbar navbar-default full-color">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand page-scroll" href="/index">ELOQUENTLY</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a class="page-scroll" href="/index">Home</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="/workshops">Workshops</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="/guides/index">Guides</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+
+        <div class="container post">
+            <div class="row">
+                <div class="post-content">
+                    <h2>Classes, Strings, and Mutable State with ES6</h2>
+
+<p><hr class="left" /></p>
+
+<p>In this guide we will continue practing using the new ES6 syntax and we will work on some common interview questions dealing with strings.</p>
+
+<p>This guide is also intended to get you to pay attention to how functions read and manipulate state. This will be an important topic when we start working with React and Redux.</p>
+
+<h3>A <code>StringPlus</code> Class</h3>
+
+<p>We are going to build a wrapper of the <code>String</code> class with additional functionality. To define a class in ES6, we use the following syntax. Create a file called <code>string_plus.js</code> in the <code>src</code> directory and start writing the following code:</p>
+
+<div class="fp">src/string_plus.js</div>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">class</span> <span class="nx">StringPlus</span> <span class="p">{</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<p>This creates an empty class called StringPlus. We can use it to create new objects by calling <code>new StringPlus()</code> in our code.</p>
+
+<p>We&#39;ll want to access this class from other programs (such as our test), so we need to export the class:</p>
+
+<div class="fp">src/string_plus.js</div>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="hll"><span class="kr">export</span> <span class="kr">class</span> <span class="nx">StringPlus</span> <span class="p">{</span>
+</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Next we&#39;ll set up a constructor, but let&#39;s first write a test for it&#39;s behavior. We want the constructor to take a string as a parameter. <code>StringPlus</code> objects will have a property called <code>str</code> that stores a string. The constructor will save the parameter it is passed into <code>str</code>.</p>
+
+<p>Objects of a class are just like any other JavaScript objects, so we can access its properties in the same way we access the properties of other objects. For example, if we have an instance of the <code>StringPlus</code> class called <code>sp</code>, we can access its <code>str</code> property with the command <code>sp.str</code>.</p>
+
+<p>Our constructor test will test that we successfully save the parameter in the <code>str</code> property. We&#39;ll also write a test to show what happens when no parameter is given.</p>
+
+<div class="fp">test/string_plus_spec.js</div>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;chai&#39;</span><span class="p">;</span>
+
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">StringPlus</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;../src/string_plus&#39;</span><span class="p">;</span>
+
+<span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;StringPlus&quot;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;constructor()&quot;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;sets str&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="kr">const</span> <span class="nx">sp</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">StringPlus</span><span class="p">(</span><span class="s1">&#39;parameter&#39;</span><span class="p">);</span>
+            <span class="nx">expect</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">str</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="s1">&#39;parameter&#39;</span><span class="p">);</span>
+        <span class="p">});</span>
+
+        <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;works with no parameter&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="kr">const</span> <span class="nx">sp</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">StringPlus</span><span class="p">();</span>
+            <span class="nx">expect</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">str</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="kc">undefined</span><span class="p">);</span>
+        <span class="p">});</span>
+    <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>Now let&#39;s write the construtor method. In ES6, this is just a function inside the class called <code>constructor</code>:</p>
+
+<div class="fp">src/string_plus.js</div>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">export</span> <span class="kr">class</span> <span class="nx">StringPlus</span> <span class="p">{</span>
+<span class="hll">    <span class="nx">constructor</span><span class="p">(</span><span class="nx">initialString</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="hll">        <span class="k">this</span><span class="p">.</span><span class="nx">str</span> <span class="o">=</span> <span class="nx">initialString</span><span class="p">;</span>
+</span><span class="hll">    <span class="p">}</span>
+</span><span class="p">}</span>
+</code></pre></div>
+<p>The <code>this</code> object inside of the class is just the underlying JavaScript object.</p>
+
+<h3>Replacing Characters</h3>
+
+<p>The first function we want to write will replace the character at a particular index with another character. This function, <code>replaceNthChar()</code>, will take two parameters: <code>n</code>, the position of the character in the string we want to replace (0 is the first character), and <code>newChar</code> the character we want to replace the n-th character with.</p>
+
+<p>Here are some tests that show some examples of how to use this method:</p>
+
+<div class="fp">test/string_plus_spec.js</div>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
+
+<span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;StringPlus&quot;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;constructor()&quot;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="c1">// ...</span>
+    <span class="p">});</span>
+
+    <span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;replaceNthChar()&quot;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kr">const</span> <span class="nx">sp</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">StringPlus</span><span class="p">(</span><span class="s1">&#39;test string&#39;</span><span class="p">);</span>
+
+        <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;replaces n-th char&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="nx">sp</span><span class="p">.</span><span class="nx">replaceNthChar</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">);</span>
+            <span class="nx">expect</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">str</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="s1">&#39;Test string&#39;</span><span class="p">);</span>
+            <span class="nx">sp</span><span class="p">.</span><span class="nx">replaceNthChar</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;!&#39;</span><span class="p">);</span>
+            <span class="nx">expect</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">str</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="s1">&#39;Test!string&#39;</span><span class="p">);</span>
+        <span class="p">});</span>
+
+        <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;does not return anything&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="nx">expect</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">replaceNthChar</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">)).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="kc">undefined</span><span class="p">);</span>
+        <span class="p">});</span>
+    <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>Let&#39;s describe an algorithm that solves this in English:</p>
+
+<ul>
+<li>Create a temporary string that will hold our answer (called <code>tempStr</code>)</li>
+<li>Start with the first character in <code>this.str</code> and perform the following actions:
+
+<ul>
+<li>If this character is not at the <code>n-th</code> position:
+
+<ul>
+<li>Add this character to <code>tempStr</code></li>
+</ul></li>
+<li>Otherwise
+
+<ul>
+<li>Add <code>newChar</code> to <code>tempStr</code></li>
+</ul></li>
+<li>Move to the next character; stop if there are no more characters</li>
+</ul></li>
+<li>Set <code>this.str</code> equal to <code>tempStr</code>.</li>
+</ul>
+
+<p>This method is mutating the state of our object, so it shouldn&#39;t return any value.</p>
+
+<p>Now let&#39;s write the method:</p>
+
+<div class="fp">src/string_plus.js</div>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">export</span> <span class="kr">class</span> <span class="nx">StringPlus</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+
+    <span class="nx">replaceNthChar</span><span class="p">(</span><span class="nx">n</span><span class="p">,</span> <span class="nx">newChar</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nx">tempStr</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
+        <span class="k">for</span><span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">str</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="nx">i</span> <span class="o">!=</span> <span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">tempStr</span> <span class="o">=</span> <span class="nx">tempStr</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">str</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="cm">/* Fill in this line */</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">str</span> <span class="o">=</span> <span class="nx">tempStr</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3>Reversing Strings</h3>
+
+<p>The next function we want to write for our <code>StringPlus</code> class is <code>reverse</code>. This function will reverse all the characters in <code>str</code>. Here are some examples written as tests:</p>
+
+<div class="fp">test/string_plus_spec.js</div>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
+
+<span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;StringPlus&quot;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+
+    <span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;reverse()&quot;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;reverses str&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="kr">const</span> <span class="nx">sp</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">StringPlus</span><span class="p">(</span><span class="s1">&#39;parameter&#39;</span><span class="p">);</span>
+            <span class="nx">sp</span><span class="p">.</span><span class="nx">reverse</span><span class="p">();</span>
+            <span class="nx">expect</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">str</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="s1">&#39;retemarap&#39;</span><span class="p">);</span>
+            <span class="nx">sp</span><span class="p">.</span><span class="nx">str</span> <span class="o">=</span> <span class="s1">&#39;race car&#39;</span><span class="p">;</span>
+            <span class="nx">sp</span><span class="p">.</span><span class="nx">reverse</span><span class="p">();</span>
+            <span class="nx">expect</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">str</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="s1">&#39;rac ecar&#39;</span><span class="p">);</span>
+            <span class="nx">sp</span><span class="p">.</span><span class="nx">reverse</span><span class="p">();</span>
+            <span class="nx">expect</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">str</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="s1">&#39;race car&#39;</span><span class="p">);</span>
+        <span class="p">});</span>
+
+        <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;does not return anything&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="kr">const</span> <span class="nx">sp</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">StringPlus</span><span class="p">(</span><span class="s1">&#39;parameter&#39;</span><span class="p">);</span>
+            <span class="nx">expect</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">reverse</span><span class="p">()).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="kc">undefined</span><span class="p">);</span>
+        <span class="p">});</span>
+    <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>We&#39;re going to write a basic algorithm that solves this problem. Here&#39;s how it will work in English</p>
+
+<ul>
+<li>Create an empty string called <code>tempStr</code></li>
+<li>Start at the end of <code>str</code></li>
+<li>Repeat the following until reaching the beginning of <code>str</code>:
+
+<ul>
+<li>Add the last character of <code>str</code> to the end of <code>tempStr</code></li>
+<li>Move back one character in <code>str</code></li>
+</ul></li>
+</ul>
+
+<p>We can implement this in the code using a <code>for</code> loop. Try writing the method yourself before scrolling down to see our solution. <strong>Note</strong>: there are multiple ways to solve this problem -- this is just one. If your function looks different but passes the test, it&#39;s probably right!</p>
+
+<div class="fp">src/string_plus.js</div>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">export</span> <span class="kr">class</span> <span class="nx">StringPlus</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+
+    <span class="nx">reverse</span><span class="p">()</span> <span class="p">{</span>
+        <span class="cm">/* Your code goes here */</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Here&#39;s our solution:</p>
+
+<div class="fp">src/string_plus.js</div>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">export</span> <span class="kr">class</span> <span class="nx">StringPlus</span> <span class="p">{</span>
+    <span class="nx">reverse</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nx">tempStr</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
+        <span class="k">for</span><span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">str</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">tempStr</span> <span class="o">=</span> <span class="nx">tempStr</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">str</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+        <span class="p">}</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">str</span> <span class="o">=</span> <span class="nx">tempStr</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>ES6 includes a string interpolation feature. Instead of writing <code>tempStr = tempStr = this.str[i];</code>, we could write: <code>tempStr = `${tempStr}${this.str[i]}`;</code>. Note that we are using backticks <code>`</code> rather than quote marks. <code>str = `var: ${var}`;</code> is equivalent to <code>str = &quot;var: #{var}&quot;</code> in Ruby.</p>
+
+<p><strong>Extra interview practice</strong>: It&#39;s possible to write <code>reverse()</code> so that it doesn&#39;t need to use <code>temp_str</code>. Try refactoring your method in such a way now. Hint: you&#39;ll need the <code>replaceNthChar</code> function!</p>
+
+<h3>Palindromes</h3>
+
+<p>A palindrome is a word that is spelled the same backwards and forwards. Let&#39;s write a method to determine if a string is a palindrome. Here are some test examples:</p>
+
+<div class="fp">test/string_plus_spec.js</div>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
+
+<span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;StringPlus&quot;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+
+    <span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;isPalindrome()&quot;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;returns true for a palindrome&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="kr">const</span> <span class="nx">sp</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">StringPlus</span><span class="p">(</span><span class="s1">&#39;racecar&#39;</span><span class="p">);</span>
+            <span class="nx">expect</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">isPalindrome</span><span class="p">()).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+            <span class="nx">sp</span><span class="p">.</span><span class="nx">str</span> <span class="o">=</span> <span class="s1">&#39;a&#39;</span><span class="p">;</span>
+            <span class="nx">expect</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">isPalindrome</span><span class="p">()).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+            <span class="nx">sp</span><span class="p">.</span><span class="nx">str</span> <span class="o">=</span> <span class="s1">&#39;aa&#39;</span><span class="p">;</span>
+            <span class="nx">expect</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">isPalindrome</span><span class="p">()).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+            <span class="nx">sp</span><span class="p">.</span><span class="nx">str</span> <span class="o">=</span> <span class="s1">&#39;aba&#39;</span><span class="p">;</span>
+            <span class="nx">expect</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">isPalindrome</span><span class="p">()).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+        <span class="p">});</span>
+
+        <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;returns false if not a palindrome&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="kr">const</span> <span class="nx">sp</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">StringPlus</span><span class="p">(</span><span class="s1">&#39;race car&#39;</span><span class="p">);</span>
+            <span class="nx">expect</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">isPalindrome</span><span class="p">()).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+            <span class="nx">sp</span><span class="p">.</span><span class="nx">str</span> <span class="o">=</span> <span class="s1">&#39;aA&#39;</span><span class="p">;</span>
+            <span class="nx">expect</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">isPalindrome</span><span class="p">()).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+            <span class="nx">sp</span><span class="p">.</span><span class="nx">str</span> <span class="o">=</span> <span class="s1">&#39;ab&#39;</span><span class="p">;</span>
+            <span class="nx">expect</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">isPalindrome</span><span class="p">()).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+            <span class="nx">sp</span><span class="p">.</span><span class="nx">str</span> <span class="o">=</span> <span class="s1">&#39;abb&#39;</span><span class="p">;</span>
+            <span class="nx">expect</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">isPalindrome</span><span class="p">()).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span>
+        <span class="p">});</span>
+    <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>This function is simply reading a property of the object, so it should not change state. Let&#39;s add a test for that:</p>
+
+<div class="fp">test/string_plus_spec.js</div>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;StringPlus&quot;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+
+    <span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;isPalindrome()&quot;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;returns true for a palindrome&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="c1">// ...</span>
+        <span class="p">});</span>
+
+        <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;returns false if not a palindrome&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="c1">// ...</span>
+        <span class="p">});</span>
+
+        <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;does not change state&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="kr">const</span> <span class="nx">sp</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">StringPlus</span><span class="p">(</span><span class="s1">&#39;racecar&#39;</span><span class="p">);</span>
+            <span class="nx">sp</span><span class="p">.</span><span class="nx">isPalindrome</span><span class="p">();</span>
+            <span class="nx">expect</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">str</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="s1">&#39;racecar&#39;</span><span class="p">);</span>
+            <span class="nx">sp</span><span class="p">.</span><span class="nx">str</span> <span class="o">=</span> <span class="s1">&#39;race car&#39;</span><span class="p">;</span>
+            <span class="nx">sp</span><span class="p">.</span><span class="nx">isPalindrome</span><span class="p">();</span>
+            <span class="nx">expect</span><span class="p">(</span><span class="nx">sp</span><span class="p">.</span><span class="nx">str</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="s1">&#39;racecar&#39;</span><span class="p">);</span>
+        <span class="p">});</span>
+    <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>Now try to implement this method using the <code>reverse</code> function we wrote earlier. It will be a little trickier than it seems at first glance because <code>reverse()</code> changes the object&#39;s state. There are multiple ways to handle this.</p>
+
+<div class="fp">src/string_plus.js</div>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">export</span> <span class="kr">class</span> <span class="nx">StringPlus</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+
+    <span class="nx">isPalindrome</span><span class="p">()</span> <span class="p">{</span>
+        <span class="cm">/* Your code here */</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Hint: What happens if you call reverse twice?</p>
+
+<h3>Immutability and Pure Functions</h3>
+
+<p>Your <code>isPalindrome()</code> method is likely quite awkward. This could be avoided if <code>reverse()</code> did not mutate state and instead returned a new value. In fact, this is what the default <code>reverse</code> function in Javascript does. Instead of changing the value of the string, calling <code>reverse()</code> on a string just returns a new value and does not mutate the original string. If you want to save the value, you have to create a new variable.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">a</span> <span class="o">=</span> <span class="s2">&quot;string&quot;</span><span class="p">;</span>
+<span class="nx">a</span><span class="p">.</span><span class="nx">reverse</span><span class="p">()</span> <span class="c1">// =&gt; &quot;gnirts&quot;</span>
+<span class="nx">a</span> <span class="c1">// =&gt; &quot;string&quot;</span>
+<span class="kr">const</span> <span class="nx">b</span> <span class="o">=</span> <span class="nx">a</span><span class="p">.</span><span class="nx">reverse</span><span class="p">()</span>
+<span class="nx">b</span> <span class="c1">// =&gt; &quot;gnirts&quot;</span>
+
+<span class="c1">// or</span>
+<span class="kd">let</span> <span class="nx">c</span> <span class="o">=</span> <span class="s2">&quot;string&quot;</span><span class="p">;</span>
+<span class="nx">c</span> <span class="o">=</span> <span class="nx">c</span><span class="p">.</span><span class="nx">reverse</span><span class="p">();</span>
+<span class="nx">c</span> <span class="c1">// =&gt; &quot;gnirts&quot;</span>
+</code></pre></div>
+<p>Note that in the <code>c</code> example, we defined <code>c</code> with <code>let</code> rather than <code>const</code>. It would not work with <code>const</code> because we are replacing the object <code>c</code> is pointing to with a new <code>object</code>.</p>
+
+<p>In fact, in JavaScript, strings are &quot;immutable&quot;. There is no way to change a string without making a copy of it -- all string functions will work like <code>reverse()</code>.</p>
+
+<p>One more piece of terminology. We could write a <code>reverseString</code> function that looked like this:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">reverseString</span> <span class="o">=</span> <span class="p">(</span><span class="nx">str</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">tempStr</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">str</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">tempStr</span> <span class="o">=</span> <span class="nx">tempStr</span> <span class="o">+</span> <span class="nx">str</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">tempStr</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">reverseString</span><span class="p">(</span><span class="s1">&#39;string&#39;</span><span class="p">));</span> <span class="c1">// =&gt; &#39;gnirts&#39;</span>
+</code></pre></div>
+<p>We would call this function a &quot;pure function&quot;. Pure functions meet two criteria:</p>
+
+<ol>
+<li>Pure functions do not have any side effects. They do not mutate any variables that already exist.</li>
+<li>A pure function always returns the same result when it is called with the sae parameter(s). The results do not depend on any part of the application state.</li>
+</ol>
+
+                    
+                        <hr />
+                        <p>Eloquently is a recruiting firm. We also host workshops that teach web development and career skills. If you are looking for a job or are interested in joining our web development workshops, please <a href="/index#contact">contact us</a>!</p>
+
+<p>We put together some <a href="/guides/index">guides</a> for participants in our workshops. Feel free to use them. If you see any errors, please submit an issue on our <a href="https://github.com/eloquently/eloquently.github.io">github repository</a>.</p>
+
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="push"></div>
+    </div>
+
+    <section id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                &copy; 2016 Eloquently LLC
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- jQuery -->
+<script src="/js/jquery.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Plugin JavaScript -->
+<script src="/js/jquery.easing.min.js"></script>
+<script src="/js/jquery.fittext.js"></script>
+<script src="/js/wow.min.js"></script>
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73351128-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>
