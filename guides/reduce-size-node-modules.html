@@ -71,22 +71,51 @@
         <div class="container post">
             <div class="row">
                 <div class="post-content">
-                    <p>Eloquently is a recruiting firm. We also host workshops that teach web development and career skills. If you are looking for a job or are interested in joining our web development workshops, please <a href="/index#contact">contact us</a>!</p>
+                    <h2>Reduce Size of <code>node_modules/</code></h2>
+
+<p><hr class="left" /></p>
+
+<p>Version 2.x of NPM (the default that comes with a blank Cloud9 instance) creates huge <code>node_modules</code> directories. Luckily, it&#39;s easy to update NPM and reduce the size of the <code>node_modules</code> directory.</p>
+
+<p>To check the size of your directories, <code>cd</code> to the directory your project is in, and run:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">du -sh *
+</code></pre></div>
+<p>You should see a list that looks like this:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">4.0K    README.md
+1.5M    build
+448M    node_modules
+4.0K    package.json
+32K     src
+20K     test
+4.0K    webpack.config.js
+</code></pre></div>
+<p>First, update NPM:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">npm install -g npm@latest
+</code></pre></div>
+<p>Next, remove the <code>node_modules</code> directory of your project</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">rm -rf node_modules
+</code></pre></div>
+<p>Then, rebuild <code>node_modules/</code>:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">npm install
+</code></pre></div>
+<p>You should see that the directory is much smaller and you have more available disk space!</p>
+
+<p>After compmleting these steps, <code>du -sh *</code> gives me:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">4.0K    README.md
+1.5M    build
+99M     node_modules
+4.0K    package.json
+32K     src
+20K     test
+4.0K    webpack.config.js
+</code></pre></div>
+<p>These steps saved me 300 MB! NPM 2 installs each package&#39;s dependencies separately, so if two packages depend on the same library, you end up with two copies of it. NPM 3 doesn&#39;t install redundant packages, which can result in big file space savings.</p>
+
+                    
+                        <hr />
+                        <p>Eloquently is a recruiting firm. We also host workshops that teach web development and career skills. If you are looking for a job or are interested in joining our web development workshops, please <a href="/index#contact">contact us</a>!</p>
 
 <p>We put together some <a href="/guides/index">guides</a> for participants in our workshops. Feel free to use them. If you see any errors, please submit an issue on our <a href="https://github.com/eloquently/eloquently.github.io">github repository</a>.</p>
-
-<p>Participants in our workshops typically use Cloud9&#39;s IDE, so many of the setup guides here are written mainly for Cloud9. We try to mention what you need to do to get something set up on a non-Cloud9 environment when possible, but these sections could likely use some work.</p>
-
-<p>Here is a list of guides we&#39;ve put together so far:</p>
-
-<ul>
-<li><p><a href="/guides/index">Guide to Guides</a></p></li>
-<li><p><a href="/guides/bootstrap_rails">Bootstrap and Rails</a></p></li>
-<li><p><a href="/guides/livereload">Guard, LiveReload, and Cloud9</a></p></li>
-<li><p><a href="/guides/es6-tdd-warmup">ES6 TDD Warm-up</a></p></li>
-<li><p><a href="/guides/es6-classes-strings-state">Classes, Strings, and Mutable State with ES6</a></p></li>
-<li><p><a href="/guides/reduce-size-node-modules">new Reduce Size of node_modules</a></p></li>
-</ul>
 
                     
                 </div>
