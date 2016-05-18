@@ -73,7 +73,7 @@
                 <div class="post-content">
                     <h2>React and Redux</h2>
 
-<p>This guide adds Redux to an application that has already been built. The starting point for this code is the <code>basic_components</code> branch of <a href="https://github.com/eloquently/redux-todo-guide">this repository</a>. This guide will walk through applying Redux to that to-do list application.</p>
+<p>This guide adds Redux to a simple React to-do list application that has already been built. The starting point for this code is the <code>basic_components</code> branch of <a href="https://github.com/eloquently/redux-todo-guide">this repository</a>. This guide will walk through applying Redux to that to-do list application.</p>
 
 <p>To get started, clone the repository, checkout the <code>basic_components</code> branch, and install the dependencies.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">git clone https://github.com/eloquently/redux-todo-guide.git
@@ -81,6 +81,8 @@ cd redux-todo-guide
 git checkout basic_components
 npm install
 </code></pre></div>
+<p>You can run the server for the application by running <code>npm run webpack-dev-server</code> in the terminal. Run the tests by running <code>npm run test:watch</code> in the terminal.</p>
+
 <h3>Immutable State</h3>
 
 <p>The first requirement of Redux is that the all the state be stored in a single, immutable data structure. For this project, we are going to use data structures provided by a package called ImmutableJS. ImmutableJS provides us with immutable versions of objects and arrays called Maps and Lists. The interface to access them is slightly different, but they have much of the same functionality. The big difference is that if you try to change an immutable Map or List, you will end up with a copy of the object and the original object will remain unchanged. Here is a brief example:</p>
