@@ -7,3 +7,6 @@ gem 'redcarpet'
 gem 'jekyll-press'
 
 gem 'loofah'
+
+gem 'guard'
+gem 'guard-livereload'
