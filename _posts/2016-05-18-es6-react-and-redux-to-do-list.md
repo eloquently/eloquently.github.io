@@ -112,7 +112,7 @@ const state = fromJS({
 // ...
 ```
 
-##### Debugging
+#### Debugging
 
 If we save the files and look at the browser, we will notice that nothing renders and we have an error: "Cannot read property 'map' of undefined" coming from line 9 of `item_list.js`. This is the line where we call `this.props.items.map` in the `ItemList` component, so the error is teling us that `this.props.items` is undefined.
 
@@ -140,7 +140,7 @@ describe('<App />', () => {
 To fix the error and make the test pass, we need to change the `App` component so that it correctly extracts the value from the state `Map`. To get a value out of a `Map`, we will use the `get()` function:
 
 <div class="fp">src/components/app.js</div>
-```js
+```jsx
 // ...
 
 export class App extends React.Component {
@@ -160,7 +160,7 @@ We will need to make a similar change to the `ItemList` component. In this compo
 Let's write a test to ensure that the `<Item />`'s get the right props:
 
 <div class="fp">test/components/item_list_spec.js</div>
-```js
+```jsx
 import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
@@ -193,7 +193,7 @@ After creating a new `spec` file, you will have to restart your `npm run test:wa
 Then fix the component so that the tests pass and everything looks okay in the browser:
 
 <div class="fp">item_list.js</div>
-```js
+```jsx
 // ...
 
 export class ItemList extends React.Component {
@@ -429,7 +429,7 @@ To learn more about how Redux works (including specifics on `Provider` and the l
 Here is what `index.js` should look like:
 
 <div class="fp">src/index.js</div>
-```js{4,5,8,33,37-39}
+```jsx{4,5,8,13,33,37-39}
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { fromJS } from 'immutable';
@@ -491,7 +491,7 @@ Then, we are going to use this function to create a "smart" version of the `Item
  This is what the component should look like with the call to `connect()` and the `mapStateToProps` function we wrote above:
 
 <div class="fp">src/components/item_list.js</div>
-```js{2}
+```jsx{2}
 import React from 'react';
 import { connect } from 'react-redux';
 
@@ -534,7 +534,7 @@ Note that instead of using the name we gave `ItemListContainer`, Enzyme will ren
 Now this test should fail, so let's make it pass by changing `app.js`:
 
 <div class="fp">src/components/app.js</div>
-```js{3,10}
+```jsx{3,10}
 // ...
 
 import { ItemListContainer } from './item_list';
@@ -560,7 +560,7 @@ The final step here is to set up a click handler on the `Item` component so that
 We do this by setting the `onClick` prop of the `div` tag inside the `Item` component. We will set it to a function that gets passed to the component as a prop.
 
 <div class="fp">app/components/item.js</div>
-```js{8}
+```jsx{8}
 import React from 'react';
 
 export class Item extends React.Component {
@@ -622,7 +622,7 @@ describe('<ItemList />', () => {
 Now we can make the change the actual component to get the tests to pass:
 
 <div class="fp">src/components/item_list.js</div>
-```js{4,11}
+```jsx{4,11}
 import React from 'react';
 import { connect } from 'react-redux';
 

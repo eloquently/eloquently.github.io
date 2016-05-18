@@ -1,37 +1,56 @@
-# Replace Jekyll's handling of the Redcarpet code_block (which already adds
-# support for highlighting, but needs support for the very non-standard
-# "code fences with line highlights" extension).
-# Since this is currently depending on Redcarpet to cooperate, we are going to
-# be naive, and only allow line highlighting when a language is specified. If
-# you don't want any syntax highlighting but want to highlight lines, then you
-# need to specify text as your language (or it will break), like:
-# ```text{4}
 module Jekyll
-  module Converters
-    class Markdown
-      class RedcarpetParser
-        module WithPygments
-          def block_code(code, lang)
-            require 'pygments'
-            lang_parts = lang && lang.split('{')
-            lang = lang_parts && !lang_parts[0].empty? && lang_parts[0] || 'text'
-            hl_lines = ''
-            if lang_parts && lang_parts.size >= 2
-              hl_lines = lang_parts[1].gsub(/[{}]/, '').split(',').map do |ln|
-                if matches = /(\d+)-(\d+)/.match(ln)
-                  ln = Range.new(matches[1], matches[2]).to_a.join(' ')
-                end
-                ln
-              end.join(' ')
-            end
-            output = add_code_tags(
-              Pygments.highlight(code, :lexer => lang,
-                                 :options => { :encoding => 'utf-8', :hl_lines => hl_lines }),
-              lang
-            )
+  class RedcarpetWithoutPygmentsParser < Converter
+    safe true
+    priority :high
+
+    def initialize(config)
+      require 'redcarpet'
+
+      @config = config
+      @redcarpet_extensions = {}
+      @config['redcarpet']['extensions'].each { |e| @redcarpet_extensions[e.to_sym] = true }
+
+      @renderer ||= Class.new(Redcarpet::Render::HTML) do
+        def block_code(code, lang)
+          lang_parts = lang && lang.split('{')
+          lang = lang_parts && !lang_parts[0].empty? && lang_parts[0] || 'text'
+          hl_lines = ''
+          if lang_parts && lang_parts.size >= 2
+            hl_lines = lang_parts[1].gsub(/[{}]/, '')
           end
+          if !lang or lang == 'bash' or lang == 'text'
+              line_numbers = ''
+          else
+              line_numbers = "line-numbers"
+          end
+          escaped_html = CGI::escapeHTML(code)
+          escaped_html.gsub!(/&lt;(\/ ?)?mark\s*&gt;/i,'<\1mark>')
+          open_pre = "<pre data-line=\"#{hl_lines}\" class=\"#{line_numbers}\">"
+          output = open_pre + '<code class="language-' + lang + '">' + escaped_html + '</code></pre>'
+          return output
         end
       end
+    rescue LoadError
+      STDERR.puts 'You are missing a library required for Markdown. Please run:'
+      STDERR.puts '  $ [sudo] gem install redcarpet'
+      raise FatalException.new("Missing dependency: redcarpet")
+    end
+
+
+    def matches(ext)
+      rgx = '(' + @config['markdown_ext'].gsub(',','|') +')'
+      ext =~ Regexp.new(rgx, Regexp::IGNORECASE)
+    end
+
+    def output_ext(ext)
+      ".html"
+    end
+
+    def convert(content)
+      @redcarpet_extensions[:fenced_code_blocks] = !@redcarpet_extensions[:no_fenced_code_blocks]
+      @renderer.send :include, Redcarpet::Render::SmartyPants if @redcarpet_extensions[:smart]
+      markdown = Redcarpet::Markdown.new(@renderer.new(@redcarpet_extensions), @redcarpet_extensions)
+      markdown.render(content)
     end
   end
 end
