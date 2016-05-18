@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Eloquently - Learning and Recruiting</title>
+
+    <!-- Custom Fonts -->
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css" type="text/css">
+
+    <!-- Plugin CSS -->
+    <link rel="stylesheet" href="/css/animate.min.css" type="text/css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css" type="text/css">
+    <link rel="stylesheet" href="/css/syntax.css" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+
+<body>
+    <div class="wrapper">
+        <!-- Navigation -->
+        <nav id="mainNav" class="nav navbar navbar-default full-color">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand page-scroll" href="/index">ELOQUENTLY</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a class="page-scroll" href="/index">Home</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="/workshops">Workshops</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="/guides/index">Guides</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+
+        <div class="container post">
+            <div class="row">
+                <div class="post-content">
+                    <h2>React and Redux</h2>
+
+<p>This guide assumes you already have an application that has some React components that pass props to each other.</p>
+
+<p>You can start with <a href="">this simple to-do</a> app if you don&#39;t have one built already. This guide will walk through applying Redux to that to-do list application, starting on the <code>basic_components</code> branch.</p>
+
+<h3>Immutable State</h3>
+
+<p>The first requirement of Redux is that the all the state be stored in a single, immutable data structure. For this project, we are going to use data structures provided by a package called ImmutableJS. ImmutableJS provides us with immutable versions of objects and arrays called Maps and Lists. The interface to access them is slightly different, but they have much of the same functionality. The big difference is that if you try to change an immutable Map or List, you will end up with a copy of the object and the original object will remain unchanged. Here is a brief example:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="cm">/* Normal JS Array */</span>
+<span class="kr">const</span> <span class="nx">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">];</span>
+<span class="kr">const</span> <span class="nx">b</span> <span class="o">=</span> <span class="nx">a</span><span class="p">.</span><span class="nx">pop</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">a</span><span class="p">);</span> <span class="c1">// =&gt; [1, 2]</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">b</span><span class="p">);</span> <span class="c1">// =&gt; 3</span>
+
+<span class="cm">/* Immutable List */</span>
+<span class="kr">const</span> <span class="nx">x</span> <span class="o">=</span> <span class="nx">List</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]);</span>
+<span class="kr">const</span> <span class="nx">y</span> <span class="o">=</span> <span class="nx">x</span><span class="p">.</span><span class="nx">last</span><span class="p">();</span>
+<span class="kr">const</span> <span class="nx">z</span> <span class="o">=</span> <span class="nx">List</span><span class="p">.</span><span class="nx">pop</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">x</span><span class="p">);</span> <span class="c1">// =&gt; List([1, 2, 3])</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">y</span><span class="p">);</span> <span class="c1">// =&gt; 3</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">z</span><span class="p">);</span> <span class="c1">// =&gt; List([1, 2])</span>
+</code></pre></div>
+<p>It takes us an extra step to &quot;pop&quot; the immutable <code>x</code>, but the benefits of having immutable data structures is that it&#39;s very easy to keep track of them. Using immutable data structures with Redux allows us to do useful things such as &quot;undo&quot; events that happened many steps ago.</p>
+
+<p>Let&#39;s set up the initial state of our application so that it uses immutable Maps and Lists rather than objects and arrays. First we&#39;ll need to install ImmutableJS:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">npm install --save immutable@^3.8
+</code></pre></div>
+<p>Immutable JS comes with a function called <code>fromJS()</code>, which takes a nested group of objects and arrays and returns an immutable set of nested Lists and Maps. We&#39;ll import it and use it on <code>state</code>:</p>
+
+<div class="fp">src/index.js</div>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
+<span class="hll"><span class="kr">import</span> <span class="p">{</span> <span class="nx">fromJS</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;immutable&#39;</span><span class="p">;</span>
+</span>
+<span class="c1">// ...</span>
+
+<span class="hll"><span class="kr">const</span> <span class="nx">state</span> <span class="o">=</span> <span class="nx">fromJS</span><span class="p">({</span>
+</span>    <span class="nx">items</span><span class="o">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nx">id</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="nx">content</span><span class="o">:</span> <span class="s2">&quot;Go to the store&quot;</span><span class="p">,</span>
+            <span class="nx">complete</span><span class="o">:</span> <span class="kc">true</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nx">id</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="nx">content</span><span class="o">:</span> <span class="s2">&quot;Buy an apple&quot;</span><span class="p">,</span>
+            <span class="nx">complete</span><span class="o">:</span> <span class="kc">false</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nx">id</span><span class="o">:</span> <span class="mi">3</span><span class="p">,</span>
+            <span class="nx">content</span><span class="o">:</span> <span class="s2">&quot;Buy a pear&quot;</span><span class="p">,</span>
+            <span class="nx">complete</span><span class="o">:</span> <span class="kc">false</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="hll"><span class="p">});</span>
+</span>
+<span class="c1">// ...</span>
+</code></pre></div>
+<p>We&#39;re also defining an initial state in our test for the <code>App</code> component, so let&#39;s change that one to an immutable object as well:</p>
+
+<div class="fp">test/components/app_spec.js</div>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
+<span class="hll"><span class="kr">import</span> <span class="p">{</span> <span class="nx">fromJS</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;immutable&#39;</span><span class="p">;</span>
+</span>
+<span class="c1">// ...</span>
+
+<span class="hll"><span class="kr">const</span> <span class="nx">state</span> <span class="o">=</span> <span class="nx">fromJS</span><span class="p">({</span>
+</span>    <span class="nx">items</span><span class="o">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nx">id</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="nx">content</span><span class="o">:</span> <span class="s2">&quot;Go to the store&quot;</span><span class="p">,</span>
+            <span class="nx">complete</span><span class="o">:</span> <span class="kc">true</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nx">id</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="nx">content</span><span class="o">:</span> <span class="s2">&quot;Buy an apple&quot;</span><span class="p">,</span>
+            <span class="nx">complete</span><span class="o">:</span> <span class="kc">false</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nx">id</span><span class="o">:</span> <span class="mi">3</span><span class="p">,</span>
+            <span class="nx">content</span><span class="o">:</span> <span class="s2">&quot;Buy a pear&quot;</span><span class="p">,</span>
+            <span class="nx">complete</span><span class="o">:</span> <span class="kc">false</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="hll"><span class="p">});</span>
+</span>
+<span class="c1">// ...</span>
+</code></pre></div>
+<h5>Debugging</h5>
+
+<p>If we save the files and look at the browser, we will notice that nothing renders and we have an error: &quot;Cannot read property &#39;map&#39; of undefined&quot; coming from line 9 of <code>item_list.js</code>. This is the line where we call <code>this.props.items.map</code> in the <code>ItemList</code> component, so the error is teling us that <code>this.props.items</code> is undefined.</p>
+
+<p>Let&#39;s look at where we render <code>ItemList</code> and see what components we pass to it. Inside the <code>App</code> component, we call: <code>&lt;ItemList items={ this.props.state.items } /&gt;</code>. This is where the error is: we end up passing <code>undefined</code> to <code>&lt;ItemList&gt;</code> because <code>.items</code> is not how we get something out of the state Map.</p>
+
+<p>Now that we&#39;ve identified this bug, let&#39;s add a test for the <code>App</code> component that checks if it is passing something to <code>&lt;ItemList /&gt;</code>:</p>
+
+<div class="fp">test/components/app_spec.js</div>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
+
+<span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;&lt;App /&gt;&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;render()&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="c1">// ...</span>
+
+        <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;renders ItemList with items prop&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="nx">expect</span><span class="p">(</span><span class="nx">wrapper</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;ItemList&#39;</span><span class="p">)).</span><span class="nx">to</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">length</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+            <span class="nx">expect</span><span class="p">(</span><span class="nx">wrapper</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;ItemList&#39;</span><span class="p">).</span><span class="nx">props</span><span class="p">()).</span><span class="nx">to</span><span class="p">.</span><span class="nx">include</span><span class="p">.</span><span class="nx">key</span><span class="p">(</span><span class="s1">&#39;items&#39;</span><span class="p">);</span>
+            <span class="nx">expect</span><span class="p">(</span><span class="nx">wrapper</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;ItemList&#39;</span><span class="p">).</span><span class="nx">props</span><span class="p">().</span><span class="nx">items</span><span class="p">).</span><span class="nx">not</span><span class="p">.</span><span class="nx">to</span><span class="p">.</span><span class="nx">be</span><span class="p">.</span><span class="nx">an</span><span class="p">(</span><span class="s1">&#39;undefined&#39;</span><span class="p">);</span>
+        <span class="p">});</span>
+    <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>To fix the error and make the test pass, we need to change the <code>App</code> component so that it correctly extracts the value from the state <code>Map</code>. To get a value out of a <code>Map</code>, we will use the <code>get()</code> function:</p>
+
+<div class="fp">src/components/app.js</div>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
+
+<span class="kr">export</span> <span class="kr">class</span> <span class="nx">App</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+    <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="s2">&quot;app&quot;</span><span class="o">&gt;</span>
+                <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">name</span> <span class="p">}</span><span class="o">&lt;</span><span class="err">/h1&gt;</span>
+                <span class="o">&lt;</span><span class="nx">ItemList</span> <span class="nx">items</span><span class="o">=</span><span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">state</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;items&#39;</span><span class="p">)</span> <span class="p">}</span> <span class="o">/&gt;</span>
+            <span class="o">&lt;</span><span class="err">/div&gt;</span>
+        <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>We will need to make a similar change to the <code>ItemList</code> component. In this component we are trying to set the props of the items with statements like <code>i.id</code>. Since <code>i</code> is no longer an object, this doesn&#39;t work. In this case, though there is no error, but the <code>&lt;Item /&gt;</code>&#39;s receive <code>undefined</code> for their props, and so nothing is rendered on the screen. This is why testing is important! It would be easy to fail to notice that our program was not working correctly here since it doesn&#39;t give an error message or break the program in any way.</p>
+
+<p>Let&#39;s write a test to ensure that the <code>&lt;Item /&gt;</code>&#39;s get the right props:</p>
+
+<div class="fp">test/components/item_list_spec.js</div>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">React</span> <span class="nx">from</span> <span class="s1">&#39;react&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;chai&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">shallow</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;enzyme&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">fromJS</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;immutable&#39;</span><span class="p">;</span>
+
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">ItemList</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;../../src/components/item_list&#39;</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">items</span> <span class="o">=</span> <span class="nx">fromJS</span><span class="p">([</span>
+    <span class="p">{</span> <span class="nx">id</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">content</span><span class="o">:</span> <span class="s2">&quot;test item 1&quot;</span><span class="p">,</span> <span class="nx">complete</span><span class="o">:</span> <span class="kc">true</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="nx">id</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">content</span><span class="o">:</span> <span class="s2">&quot;test item 2&quot;</span><span class="p">,</span> <span class="nx">complete</span><span class="o">:</span> <span class="kc">false</span> <span class="p">}</span>
+<span class="p">]);</span>
+
+<span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;&lt;ItemList /&gt;&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">wrapper</span> <span class="o">=</span> <span class="nx">shallow</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">ItemList</span> <span class="nx">items</span><span class="o">=</span><span class="p">{</span><span class="nx">items</span><span class="p">}</span> <span class="o">/&gt;</span><span class="p">);</span>
+    <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;renders Items with correct props&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">expect</span><span class="p">(</span><span class="nx">wrapper</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;Item&#39;</span><span class="p">)).</span><span class="nx">to</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">length</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+        <span class="kr">const</span> <span class="nx">firstItemProps</span> <span class="o">=</span> <span class="nx">wrapper</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;Item&#39;</span><span class="p">).</span><span class="nx">first</span><span class="p">().</span><span class="nx">props</span><span class="p">();</span>
+        <span class="nx">expect</span><span class="p">(</span><span class="nx">firstItemProps</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">include</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">,</span> <span class="s1">&#39;complete&#39;</span><span class="p">);</span>
+        <span class="nx">expect</span><span class="p">(</span><span class="nx">firstItemProps</span><span class="p">.</span><span class="nx">content</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="s1">&#39;test item 1&#39;</span><span class="p">);</span>
+        <span class="nx">expect</span><span class="p">(</span><span class="nx">firstItemProps</span><span class="p">.</span><span class="nx">complete</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+        <span class="kr">const</span> <span class="nx">secondItemProps</span> <span class="o">=</span> <span class="nx">wrapper</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;Item&#39;</span><span class="p">).</span><span class="nx">last</span><span class="p">().</span><span class="nx">props</span><span class="p">();</span>
+        <span class="cm">/* WRITE A TEST HERE TO CHECK secondItemProps.content */</span>
+        <span class="cm">/* WRITE A TEST HERE TO CHECK secondItemProps.complete */</span>
+    <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>Then fix the component so that the tests pass and everything looks okay in the browser:</p>
+
+<div class="fp">item_list.js</div>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
+
+<span class="kr">export</span> <span class="kr">class</span> <span class="nx">ItemList</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+    <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="s2">&quot;item-list&quot;</span><span class="o">&gt;</span>
+                <span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span> <span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="o">=&gt;</span>
+                    <span class="o">&lt;</span><span class="nx">Item</span> <span class="nx">key</span><span class="o">=</span><span class="p">{</span><span class="nx">i</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)}</span>
+                          <span class="nx">id</span><span class="o">=</span><span class="p">{</span><span class="cm">/* WHAT GOES HERE */</span><span class="p">}</span>
+                          <span class="nx">content</span><span class="o">=</span><span class="p">{</span><span class="cm">/* WHAT GOES HERE */</span><span class="p">}</span>
+                          <span class="nx">complete</span><span class="o">=</span><span class="p">{</span><span class="cm">/* WHAT GOES HERE */</span><span class="p">}</span> <span class="o">/&gt;</span>
+                <span class="p">)}</span>
+            <span class="o">&lt;</span><span class="err">/div&gt;</span>
+        <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Now that our state is immutable, we are ready to set up the <code>reducer</code> function.</p>
+
+<h3>Reducer and Actions</h3>
+
+<p>In Redux, we write a single &quot;reducer&quot; function. The reducer function will take two parameters: the <code>currentState</code> and an <code>action</code>. It should return the <code>nextState</code> that the application should have after applying <code>action</code>. In the case of our simple to-do app, an action we might want to perform is <code>TOGGLE_ITEM</code>. When the reducer receives this action, it will find the item we want to toggle in <code>currentState</code>, and return a <code>nextState</code> which is exactly the same as <code>currentState</code>, except we will change <code>complete</code> to <code>false</code> if it&#39;s currently <code>true</code> or change <code>complete</code> to <code>true</code> if it&#39;s currently <code>false</code>.</p>
+
+<p><code>reducer()</code> should be a pure function, which means two things:</p>
+
+<ul>
+<li>It should always return the same thing when it is called with the same parameters.</li>
+<li>It should not have any side effects -- specifically we don&#39;t want to mutate the <code>currentState</code> parameter.</li>
+</ul>
+
+<p>We are modeling our state with an immutable <code>Map</code>, so we don&#39;t have to worry very much about that second condition. The first condition means that <code>reducer()</code> should only look at the <code>currentState</code> parameter to decide how to calculate <code>nextState</code>.</p>
+
+<p>For most actions, you won&#39;t need to go out of your way to meet these conditions, but it&#39;s important to keep them in the back of your mind.</p>
+
+<p>Let&#39;s write <code>reducer()</code>!</p>
+
+<div class="fp">src/reducer.js</div>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">export</span> <span class="kd">function</span> <span class="nx">reducer</span><span class="p">(</span><span class="nx">currentState</span><span class="p">,</span> <span class="nx">action</span><span class="p">)</span> <span class="p">{</span>
+
+<span class="p">}</span>
+</code></pre></div>
+<p>We don&#39;t need to import or extend anything -- <code>reducer()</code> is just a regular function.</p>
+
+<p>Now let&#39;s start filling in the <code>reducer()</code>. The first thing we want it to do is return an empty <code>Map</code> if no <code>currentState</code> is given. Let&#39;s write a test for this:</p>
+
+<div class="fp">test/reducer_spec.js</div>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;chai&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">Map</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;immutable&#39;</span><span class="p">;</span>
+
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">reducer</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;../src/reducer.js&#39;</span><span class="p">;</span>
+
+<span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;reducer()&quot;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;returns empty Map if currentState is undefined&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">expect</span><span class="p">(</span><span class="nx">reducer</span><span class="p">(</span><span class="kc">undefined</span><span class="p">,</span> <span class="kc">undefined</span><span class="p">)).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="nx">Map</span><span class="p">());</span>
+    <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>To make this method pass, we will set a default parameter for <code>currentState</code> and just return <code>currentState</code> inside the function:</p>
+
+<div class="fp">src/reducer.js</div>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Map</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;immutable&#39;</span><span class="p">;</span>
+
+<span class="kr">export</span> <span class="kd">function</span> <span class="nx">reducer</span><span class="p">(</span><span class="nx">currentState</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Map</span><span class="p">(),</span> <span class="nx">action</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">currentState</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Now we are ready to write our <code>TOGGLE_ITEM</code> action. Actions are simply objects that have a <code>type</code> key and any other keys they need (not all actions need additional data). In order to toggle an item, we will also need to know which item to toggle, so we will have to include the item id in the action. Therefore, a <code>TOGGLE_ITEM</code> action will look something like this:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">{</span>
+    <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;TOGGLE_ITEM&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">3</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>If the reducer receives this function, it should switch the <code>complete</code> value for the item with <code>id</code> 3.</p>
+
+<p>Let&#39;s write a test for this. We&#39;ll also write a test to ensure that the <code>complete</code> value of another item in the list isn&#39;t changed.</p>
+
+<div class="fp">test/reducer_spec.js</div>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;chai&#39;</span><span class="p">;</span>
+<span class="hll"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Map</span><span class="p">,</span> <span class="nx">fromJS</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;immutable&#39;</span><span class="p">;</span>
+</span>
+<span class="c1">// ...</span>
+
+<span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;reducer()&quot;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+
+    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;TOGGLE_ITEM&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kr">const</span> <span class="nx">currentState</span> <span class="o">=</span> <span class="nx">fromJS</span><span class="p">({</span>
+            <span class="nx">items</span><span class="o">:</span> <span class="p">[</span>
+                <span class="p">{</span> <span class="nx">id</span><span class="o">:</span> <span class="mi">3</span><span class="p">,</span> <span class="nx">complete</span><span class="o">:</span> <span class="kc">false</span> <span class="p">},</span>
+                <span class="p">{</span> <span class="nx">id</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">complete</span><span class="o">:</span> <span class="kc">true</span> <span class="p">}</span>
+            <span class="p">]</span>
+        <span class="p">});</span>
+        <span class="kr">const</span> <span class="nx">action</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;TOGGLE_ITEM&quot;</span><span class="p">,</span> <span class="nx">id</span><span class="o">:</span> <span class="mi">3</span> <span class="p">};</span>
+
+        <span class="kr">const</span> <span class="nx">nextState</span> <span class="o">=</span> <span class="nx">reducer</span><span class="p">(</span><span class="nx">currentState</span><span class="p">,</span> <span class="nx">action</span><span class="p">);</span>
+
+        <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;changes complete for correct item&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="nx">expect</span><span class="p">(</span><span class="nx">nextState</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;items&#39;</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;complete&#39;</span><span class="p">)).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+        <span class="p">});</span>
+
+        <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;does not change complete for other items&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="nx">expect</span><span class="p">(</span><span class="nx">nextState</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;items&#39;</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;complete&#39;</span><span class="p">)).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+        <span class="p">});</span>
+
+    <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>The second test will pass right away because right now <code>reducer()</code> just returns the currentState without changing anything. It&#39;s just there to make sure we don&#39;t make a mistake when we change <code>reducer()</code>.</p>
+
+<p>One quick note: ImmutableJS provides us with a function called <code>getIn()</code> that makes it easier to write a statement that has several chained <code>get()</code>&#39;s. We could rewrite our tests so that they look like this instead:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">expect(nextState.getIn([&#39;items&#39;, 0, &#39;complete&#39;])).to.eq(true);
+</code></pre></div>
+<p>After rewriting your tests to use <code>getIn()</code>, it&#39;s time to make these tests pass by adding to our <code>reducer()</code>:</p>
+
+<div class="fp">src/reducer.js</div>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
+<span class="kr">export</span> <span class="kd">function</span> <span class="nx">reducer</span><span class="p">(</span><span class="nx">currentState</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Map</span><span class="p">(),</span> <span class="nx">action</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">action</span> <span class="o">!==</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">switch</span><span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">case</span> <span class="s1">&#39;TOGGLE_ITEM&#39;</span><span class="o">:</span>
+                <span class="k">return</span> <span class="nx">toggleItem</span><span class="p">(</span><span class="nx">currentState</span><span class="p">,</span> <span class="nx">action</span><span class="p">.</span><span class="nx">id</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">currentState</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>We&#39;re not done yet, but let&#39;s briefly talk about what we&#39;ve added. We write a <code>switch</code> statement on <code>action.type</code>. <code>switch</code> is just a condensed way to writing a sequence of <code>if</code>/<code>else if</code>s. If <code>TOGGLE_ITEM</code> is the action type, then we are going to call a function called <code>toggleItem</code>, and give it the currentState and the <code>id</code> from the action. Next we&#39;ll write the <code>toggleItem()</code> function. Putting the actual work of the <code>reducer</code> function into helper files keeps your code organized. You could create separate files for different type of actions to keep your code modular and make it easier for multiple people to work on the program at the same time.</p>
+
+<p>Now time for the <code>toggleItem()</code> function. This function is going to find the position in the <code>items</code> array of the <code>item</code> with the <code>id</code> we want to toggle. Then it&#39;s going to create a new <code>item</code> with <code>complete</code> toggled. Then it will create a new list of items that contains the toggled item instead of the untoggled one. Finally it will merge this new items list into <code>currentState</code> so that the rest of <code>currentState</code> will be left intact, and the old items list will be overwritten.</p>
+
+<p>This is what that looks like in JavaScript:</p>
+
+<div class="fp">src/reducer.js</div>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
+
+<span class="kr">const</span> <span class="nx">toggleItem</span> <span class="o">=</span> <span class="p">(</span><span class="nx">currentState</span><span class="p">,</span> <span class="nx">id</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">items</span> <span class="o">=</span> <span class="nx">currentState</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;items&#39;</span><span class="p">);</span>
+    <span class="kr">const</span> <span class="nx">itemIndex</span> <span class="o">=</span> <span class="nx">items</span><span class="p">.</span><span class="nx">findIndex</span><span class="p">(</span> <span class="p">(</span><span class="nx">el</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">el</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="nx">id</span><span class="p">);</span>
+
+    <span class="kr">const</span> <span class="nx">oldItem</span> <span class="o">=</span> <span class="nx">items</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">itemIndex</span><span class="p">);</span>
+    <span class="kr">const</span> <span class="nx">newItem</span> <span class="o">=</span> <span class="nx">oldItem</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;complete&#39;</span><span class="p">,</span> <span class="o">!</span><span class="nx">oldItem</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;complete&#39;</span><span class="p">));</span>
+    <span class="kr">const</span> <span class="nx">newItems</span> <span class="o">=</span> <span class="nx">items</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">itemIndex</span><span class="p">,</span> <span class="nx">newItem</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="nx">currentState</span><span class="p">.</span><span class="nx">merge</span><span class="p">({</span><span class="nx">items</span><span class="o">:</span> <span class="nx">newItems</span><span class="p">});</span>
+<span class="p">};</span>
+
+<span class="kr">export</span> <span class="kd">function</span> <span class="nx">reducer</span><span class="p">(</span><span class="nx">currentState</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Map</span><span class="p">(),</span> <span class="nx">action</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>The last thing to do for actions is to write a function that will return an action object. This is considered optional but is almost always a good idea. Instead of writing out <code>{ type: &#39;TOGGLE_ITEM&#39;, id: 3}</code> each time we want to use a TOGGLE_ITEM action, we can just write a function that will return the action object for any given <code>id</code> parameter.</p>
+
+<p>We&#39;ll put all these &quot;action creators&quot; in a file called <code>action_creators.js</code>:</p>
+
+<div class="fp">src/action_creators.js</div>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">export</span> <span class="kd">function</span> <span class="nx">toggleItem</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;TOGGLE_ITEM&#39;</span><span class="p">,</span>
+        <span class="nx">id</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Note that we are using ES6 short-hand for object declaration. When setting a key equal to a variable that has the same name as a key, ES6 permits you to just write the name of the variable/key instead of <code>key: variable</code>. We could have written the object <code>toggleItem()</code> as:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">{
+    type: &#39;TOGGLE_ITEM&#39;,
+    id: id
+}
+</code></pre></div>
+<p>Now in our <code>reducer_spec.js</code>, we can use this action creator instead of writing out the action:</p>
+
+<div class="fp">test/reducer_spec.js</div>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;chai&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">Map</span><span class="p">,</span> <span class="nx">fromJS</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;immutable&#39;</span><span class="p">;</span>
+
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">reducer</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;../src/reducer.js&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">toggleItem</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;../src/action_creators&#39;</span><span class="p">;</span>
+
+<span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;reducer()&quot;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;returns empty Map if currentState is undefined&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">expect</span><span class="p">(</span><span class="nx">reducer</span><span class="p">(</span><span class="kc">undefined</span><span class="p">,</span> <span class="kc">undefined</span><span class="p">)).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="nx">Map</span><span class="p">());</span>
+    <span class="p">});</span>
+
+    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;TOGGLE_ITEM&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="c1">// ...</span>
+        <span class="kr">const</span> <span class="nx">action</span> <span class="o">=</span> <span class="nx">toggleItem</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+
+        <span class="c1">// ...</span>
+    <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div>
+<h3>Stores</h3>
+
+<p>Now that we have a <code>reducer()</code>, it&#39;s time to set up a Redux <code>store</code>. A <code>store</code> is where Redux keeps track of the application state. Redux applications have a single store that will hold a single state object that should never mutate -- only be replaced by new objects by <code>reducer()</code>. A <code>store</code> is linked to a <code>reducer()</code> when the <code>store</code> is created.</p>
+
+<p>Let&#39;s install Redux and React-Redux.</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">npm install --save redux react-redux
+</code></pre></div>
+<p>Now we need to make some changes to <code>index.js</code>. First, we need to create a <code>store</code> object. We will do this with the <code>createStore</code> function provided by <code>redux</code>. <code>createStore()</code> takes three parameters: the <code>reducer</code> function, the initial state, and any &quot;middleware functions&quot;.</p>
+
+<p>Middleware functions do things with actions after they are dispatched, but before they reach the reducer. It is easy to write your own middleware, but we don&#39;t need to do that now. We are going to use middleware to let Redux in our application share data with the <a href="https://github.com/zalmoxisus/redux-devtools-extension">Redux DevTools in the brower</a>.</p>
+
+<p>The other big change we&#39;ll make to <code>index.js</code> is wrapping the <code>App</code> component with a <code>Provider</code> component when we render the <code>App</code> component to the DOM. <code>Provider</code> is a top-level component given to us by the React-Redux package. Simply put, it is how we share the <code>store</code> with the components in the application. Since we&#39;re going to get <code>store</code> from <code>Provider</code>, we can remove the state prop that we pass to <code>&lt;App /&gt;</code>.</p>
+
+<p>To learn more about how Redux works (including specifics on <code>Provider</code> and the link between <code>reducer()</code> and <code>store</code>), I recommend watching Dan Abramov&#39;s (the creator of Redux) <a href="https://egghead.io/series/getting-started-with-redux">video series on Redux</a> after finishing this guide.</p>
+
+<p>Here is what <code>index.js</code> should look like:</p>
+
+<div class="fp">src/index.js</div>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">React</span> <span class="nx">from</span> <span class="s1">&#39;react&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="nx">ReactDOM</span> <span class="nx">from</span> <span class="s1">&#39;react-dom&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">fromJS</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;immutable&#39;</span><span class="p">;</span>
+<span class="hll"><span class="kr">import</span> <span class="p">{</span><span class="nx">createStore</span><span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;redux&#39;</span><span class="p">;</span>
+</span><span class="hll"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Provider</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;react-redux&#39;</span><span class="p">;</span>
+</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">App</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;./components/app&#39;</span><span class="p">;</span>
+<span class="hll"><span class="kr">import</span> <span class="p">{</span> <span class="nx">reducer</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;./reducer&#39;</span><span class="p">;</span>
+</span>
+<span class="c1">// Add CSS files to bundle</span>
+<span class="nx">require</span><span class="p">(</span><span class="s1">&#39;../src/css/application.scss&#39;</span><span class="p">);</span>
+
+<span class="kr">const</span> <span class="nx">initialState</span> <span class="o">=</span> <span class="nx">fromJS</span><span class="p">({</span>
+    <span class="nx">items</span><span class="o">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nx">id</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="nx">content</span><span class="o">:</span> <span class="s2">&quot;Go to the store&quot;</span><span class="p">,</span>
+            <span class="nx">complete</span><span class="o">:</span> <span class="kc">true</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nx">id</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="nx">content</span><span class="o">:</span> <span class="s2">&quot;Buy an apple&quot;</span><span class="p">,</span>
+            <span class="nx">complete</span><span class="o">:</span> <span class="kc">false</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="nx">id</span><span class="o">:</span> <span class="mi">3</span><span class="p">,</span>
+            <span class="nx">content</span><span class="o">:</span> <span class="s2">&quot;Buy a pear&quot;</span><span class="p">,</span>
+            <span class="nx">complete</span><span class="o">:</span> <span class="kc">false</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">});</span>
+
+<span class="hll"><span class="kr">const</span> <span class="nx">store</span> <span class="o">=</span> <span class="nx">createStore</span><span class="p">(</span><span class="nx">reducer</span><span class="p">,</span> <span class="nx">initialState</span><span class="p">,</span> <span class="nb">window</span><span class="p">.</span><span class="nx">devToolsExtension</span> <span class="o">?</span> <span class="nb">window</span><span class="p">.</span><span class="nx">devToolsExtension</span><span class="p">()</span> <span class="o">:</span> <span class="kc">undefined</span><span class="p">);</span>
+</span>
+<span class="c1">// Render application to DOM</span>
+<span class="nx">ReactDOM</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span>
+<span class="hll">    <span class="o">&lt;</span><span class="nx">Provider</span> <span class="nx">store</span><span class="o">=</span><span class="p">{</span><span class="nx">store</span><span class="p">}</span><span class="o">&gt;</span>
+</span><span class="hll">        <span class="o">&lt;</span><span class="nx">App</span> <span class="nx">name</span><span class="o">=</span><span class="s2">&quot;React To-Do&quot;</span> <span class="o">/&gt;</span>
+</span><span class="hll">    <span class="o">&lt;</span><span class="err">/Provider&gt;,</span>
+</span>    <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;app&#39;</span><span class="p">)</span>
+<span class="p">);</span>
+</code></pre></div>
+<h3>Connecting Components to Store</h3>
+
+<p>To connect a component with the state being tracked by the Redux <code>store</code>, we will write a function called <code>mapStateToProps</code>. This function will take a single parameter: the state object, and return a mapping of the names of this component&#39;s props to variables in state.</p>
+
+<p>Let&#39;s do this now for the <code>ItemList</code> component. <code>&lt;ItemList /&gt;</code> only needs one prop: a <code>List</code> of items. This corresponds to the <code>items</code> key/value pair in our state object. Therefore <code>mapStateToProps()</code> for this component looks like:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">mapStateToProps</span> <span class="o">=</span> <span class="p">(</span><span class="nx">state</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="nx">items</span><span class="o">:</span> <span class="nx">state</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;items&#39;</span><span class="p">)</span>
+    <span class="p">};</span>
+<span class="p">};</span>
+</code></pre></div>
+<p>Then, we are going to use this function to create a &quot;smart&quot; version of the <code>ItemList</code> component. This &quot;smart&quot; component will be like the &quot;dumb&quot; version we currently have, but it will automatically update when the state changes due to action being dispatched through the reducer. To create the smart component, we will use a function called <code>connect()</code> provided by React-Redux. By convention, we name the connected/&quot;smart&quot; component by adding &quot;Container&quot; to the end of the name of its &quot;dumb&quot; counterpart. In this case, our connected component will be called <code>ItemListContainer</code>.</p>
+
+<p>This is what the component should look like with the call to <code>connect()</code> and the <code>mapStateToProps</code> function we wrote above:</p>
+
+<div class="fp">src/components/item_list.js</div>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">React</span> <span class="nx">from</span> <span class="s1">&#39;react&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">connect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;react-redux&#39;</span><span class="p">;</span>
+
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">Item</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;./item&#39;</span><span class="p">;</span>
+
+<span class="kr">export</span> <span class="kr">class</span> <span class="nx">ItemList</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+    <span class="c1">// ... (none of this changes)</span>
+<span class="p">}</span>
+
+<span class="kr">const</span> <span class="nx">mapStateToProps</span> <span class="o">=</span> <span class="p">(</span><span class="nx">state</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="nx">items</span><span class="o">:</span> <span class="nx">state</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;items&#39;</span><span class="p">)</span>
+    <span class="p">};</span>
+<span class="p">};</span>
+
+<span class="kr">export</span> <span class="kr">const</span> <span class="nx">ItemListContainer</span> <span class="o">=</span> <span class="nx">connect</span><span class="p">(</span><span class="nx">mapStateToProps</span><span class="p">)(</span><span class="nx">ItemList</span><span class="p">);</span>
+</code></pre></div>
+<p>Now instead of rendering <code>&lt;ItemList /&gt;</code> in <code>&lt;App /&gt;</code>, we want to render <code>&lt;ItemListContainer /&gt;</code> without giving it any props. Let&#39;s first change our tests for the <code>App</code> component.</p>
+
+<p>Let&#39;s change the last test in <code>app_spec.js</code>:</p>
+
+<div class="fp">test/components/app_spec.js</div>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
+
+<span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;&lt;App /&gt;&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;render()&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="c1">// ...</span>
+
+        <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;renders ItemListContainer&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="nx">expect</span><span class="p">(</span><span class="nx">wrapper</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;Connect(ItemList)&#39;</span><span class="p">)).</span><span class="nx">to</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">length</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+        <span class="p">});</span>
+    <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>Note that instead of using the name we game <code>ItemListContainer</code>, Enzyme will render this component as <code>Connect(ItemList)</code>.</p>
+
+<p>Now this test should fail, so let&#39;s make it pass by changing <code>app.js</code>:</p>
+
+<div class="fp">src/components/app.js</div>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
+
+<span class="kr">export</span> <span class="kr">class</span> <span class="nx">App</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+    <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="s2">&quot;app&quot;</span><span class="o">&gt;</span>
+                <span class="o">&lt;</span><span class="nx">h1</span><span class="o">&gt;</span><span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">name</span> <span class="p">}</span><span class="o">&lt;</span><span class="err">/h1&gt;</span>
+<span class="hll">                <span class="o">&lt;</span><span class="nx">ItemListContainer</span> <span class="o">/&gt;</span>
+</span>            <span class="o">&lt;</span><span class="err">/div&gt;</span>
+        <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Now we have a fully connected comopnent being rendered. If you view the page in the browser, nothing will look any different. However, try dispatching a <code>TOGGLE_ITEM</code> action from the Redux DevTools -- remember to give the action an <code>id</code>. Dispatching the action should result in the item you toggled swapping colors!</p>
+
+<h3>Connecting Components to Actions</h3>
+
+<p>The final step here is to set up a click handler on the <code>Item</code> component so that a <code>TOGGLE_ITEM</code> action will trigger when the user clicks on an <code>Item</code>.</p>
+
+<p>We do this by setting the <code>onClick</code> prop of the <code>div</code> tag inside the <code>Item</code> component. We will set it to a function that gets passed to the component as a prop.</p>
+
+<div class="fp">app/components/item.js</div>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">React</span> <span class="nx">from</span> <span class="s1">&#39;react&#39;</span><span class="p">;</span>
+
+<span class="kr">export</span> <span class="kr">class</span> <span class="nx">Item</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+    <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">complete</span> <span class="o">?</span> <span class="s1">&#39;item complete&#39;</span> <span class="o">:</span> <span class="s1">&#39;item incomplete&#39;</span> <span class="p">}</span>
+                 <span class="nx">onClick</span><span class="o">=</span><span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">toggleItem</span> <span class="p">}</span><span class="o">&gt;</span>
+<span class="hll">                <span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">content</span> <span class="p">}</span>
+</span>            <span class="o">&lt;</span><span class="err">/div&gt;</span>
+        <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><code>this.props.toggleItem</code> will be a function, so we are just telling the component to call that function when the <code>&lt;div&gt;</code> is clicked.</p>
+
+<p>In the same way that we mapped state to props earlier, we are going to map actions to props. This time the function will be called <code>mapDispatchToProps()</code>.</p>
+
+<p>This is how we will define the function and create the connected <code>Item</code>:</p>
+
+<div class="fp">app/components/item.js</div>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">React</span> <span class="nx">from</span> <span class="s1">&#39;react&#39;</span><span class="p">;</span>
+<span class="hll"><span class="kr">import</span> <span class="p">{</span> <span class="nx">connect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;react-redux&#39;</span><span class="p">;</span>
+</span>
+<span class="hll"><span class="kr">import</span> <span class="p">{</span> <span class="nx">toggleItem</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;../action_creators.js&#39;</span><span class="p">;</span>
+</span>
+<span class="kr">export</span> <span class="kr">class</span> <span class="nx">Item</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+    <span class="c1">// ... (doesn&#39;t change)</span>
+<span class="p">}</span>
+
+<span class="kr">const</span> <span class="nx">mapDispatchToProps</span> <span class="o">=</span> <span class="p">(</span><span class="nx">dispatch</span><span class="p">,</span> <span class="nx">ownProps</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="nx">toggleItem</span><span class="o">:</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">dispatch</span><span class="p">(</span><span class="nx">toggleItem</span><span class="p">(</span><span class="nx">ownProps</span><span class="p">.</span><span class="nx">id</span><span class="p">))</span>
+    <span class="p">};</span>
+<span class="p">};</span>
+<span class="kr">export</span> <span class="kr">const</span> <span class="nx">ItemContainer</span> <span class="o">=</span> <span class="nx">connect</span><span class="p">(</span><span class="kc">undefined</span><span class="p">,</span> <span class="nx">mapDispatchToProps</span><span class="p">)(</span><span class="nx">Item</span><span class="p">);</span>
+</code></pre></div>
+<p><code>connect()</code>&#39;s first parameter here is undefined becasue we do not need to <code>mapStateToProps</code> for this function -- all of the props are provided by the parent <code>&lt;ItemList /&gt;</code>.</p>
+
+<p>The final step is to render the connected <code>&lt;ItemContainer /&gt;</code>s rather than <code>&lt;Item /&gt;</code>s in the <code>&lt;ItemList /&gt;</code> component. First, let&#39;s change the test. In this case, we are still passing the same props, we just want to change the name of the component we are rendering from <code>Item</code> to <code>Connect(Item)</code>:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
+
+<span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;&lt;ItemList /&gt;&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">wrapper</span> <span class="o">=</span> <span class="nx">shallow</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">ItemList</span> <span class="nx">items</span><span class="o">=</span><span class="p">{</span><span class="nx">items</span><span class="p">}</span> <span class="o">/&gt;</span><span class="p">);</span>
+    <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;renders Items with correct props&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="hll">        <span class="nx">expect</span><span class="p">(</span><span class="nx">wrapper</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;Connect(Item)&#39;</span><span class="p">)).</span><span class="nx">to</span><span class="p">.</span><span class="nx">have</span><span class="p">.</span><span class="nx">length</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+</span><span class="hll">        <span class="kr">const</span> <span class="nx">firstItemProps</span> <span class="o">=</span> <span class="nx">wrapper</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;Connect(Item)&#39;</span><span class="p">).</span><span class="nx">first</span><span class="p">().</span><span class="nx">props</span><span class="p">();</span>
+</span>        <span class="c1">// ...</span>
+<span class="hll">        <span class="kr">const</span> <span class="nx">secondItemProps</span> <span class="o">=</span> <span class="nx">wrapper</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;Connect(Item)&#39;</span><span class="p">).</span><span class="nx">last</span><span class="p">().</span><span class="nx">props</span><span class="p">();</span>
+</span>        <span class="c1">// ...</span>
+    <span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>Now we can make the change the actual component to get the tests to pass:</p>
+
+<div class="fp">src/components/item_list.js</div>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">React</span> <span class="nx">from</span> <span class="s1">&#39;react&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">connect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;react-redux&#39;</span><span class="p">;</span>
+
+<span class="hll"><span class="kr">import</span> <span class="p">{</span> <span class="nx">ItemContainer</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;./item&#39;</span><span class="p">;</span>
+</span>
+<span class="kr">export</span> <span class="kr">class</span> <span class="nx">ItemList</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
+    <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="s2">&quot;item-list&quot;</span><span class="o">&gt;</span>
+                <span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="nx">props</span><span class="p">.</span><span class="nx">items</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span> <span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="o">=&gt;</span>
+<span class="hll">                    <span class="o">&lt;</span><span class="nx">ItemContainer</span> <span class="nx">key</span><span class="o">=</span><span class="p">{</span><span class="nx">i</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)}</span>
+</span>                          <span class="nx">id</span><span class="o">=</span><span class="p">{</span><span class="nx">i</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)}</span>
+                          <span class="nx">content</span><span class="o">=</span><span class="p">{</span><span class="nx">i</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">)}</span>
+                          <span class="nx">complete</span><span class="o">=</span><span class="p">{</span><span class="nx">i</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;complete&#39;</span><span class="p">)}</span> <span class="o">/&gt;</span>
+                <span class="p">)}</span>
+            <span class="o">&lt;</span><span class="err">/div&gt;</span>
+        <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// ...</span>
+</code></pre></div>
+<p>And we&#39;re done! If you click on the items in your browser, you should see them toggle between green and red!</p>
+
+<h3>Further exercises</h3>
+
+<ol>
+<li>Add a delete button that removes the item from the list</li>
+<li>Add a &quot;create new item&quot; form that allows the user to add a new item to the list</li>
+</ol>
+
+<p>Now that you have an understanding of why Redux is useful and how to use it in basic settings, watch Dan Abramov&#39;s (the creator of Redux) <a href="https://egghead.io/series/getting-started-with-redux">video series on Redux</a>.</p>
+
+                    
+                        <hr />
+                        <p>Eloquently is a recruiting firm. We also host workshops that teach web development and career skills. If you are looking for a job or are interested in joining our web development workshops, please <a href="/index#contact">contact us</a>!</p>
+
+<p>We put together some <a href="/guides/index">guides</a> for participants in our workshops. Feel free to use them. If you see any errors, please submit an issue on our <a href="https://github.com/eloquently/eloquently.github.io">github repository</a>.</p>
+
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="push"></div>
+    </div>
+
+    <section id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                &copy; 2016 Eloquently LLC
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- jQuery -->
+<script src="/js/jquery.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Plugin JavaScript -->
+<script src="/js/jquery.easing.min.js"></script>
+<script src="/js/jquery.fittext.js"></script>
+<script src="/js/wow.min.js"></script>
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73351128-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+</body>
+
+</html>
