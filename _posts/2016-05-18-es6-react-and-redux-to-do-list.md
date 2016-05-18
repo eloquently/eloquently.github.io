@@ -7,9 +7,18 @@ permalink: 'guides/es6-react-redux'
 
 ## React and Redux
 
-This guide assumes you already have an application that has some React components that pass props to each other.
+This guide adds Redux to a simple React to-do list application that has already been built. The starting point for this code is the `basic_components` branch of [this repository](https://github.com/eloquently/redux-todo-guide). This guide will walk through applying Redux to that to-do list application.
 
-You can start with [this simple to-do]() app if you don't have one built already. This guide will walk through applying Redux to that to-do list application, starting on the `basic_components` branch.
+To get started, clone the repository, checkout the `basic_components` branch, and install the dependencies.
+
+```
+git clone https://github.com/eloquently/redux-todo-guide.git
+cd redux-todo-guide
+git checkout basic_components
+npm install
+```
+
+You can run the server for the application by running `npm run webpack-dev-server` in the terminal. Run the tests by running `npm run test:watch` in the terminal.
 
 ### Immutable State
 
@@ -178,6 +187,8 @@ describe('<ItemList />', () => {
     });
 });
 ```
+
+After creating a new `spec` file, you will have to restart your `npm run test:watch` process. To exit it, click on the terminal it is running in and press `ctrl+c`. To start it again, press the up arrow on your keyboard and hit enter.
 
 Then fix the component so that the tests pass and everything looks okay in the browser:
 
@@ -480,7 +491,7 @@ Then, we are going to use this function to create a "smart" version of the `Item
  This is what the component should look like with the call to `connect()` and the `mapStateToProps` function we wrote above:
 
 <div class="fp">src/components/item_list.js</div>
-```js
+```js{2}
 import React from 'react';
 import { connect } from 'react-redux';
 
@@ -501,7 +512,7 @@ export const ItemListContainer = connect(mapStateToProps)(ItemList);
 
 Now instead of rendering `<ItemList />` in `<App />`, we want to render `<ItemListContainer />` without giving it any props. Let's first change our tests for the `App` component.
 
-Let's change the last test in `app_spec.js`:
+Let's change the last test in `app_spec.js`, and delete the test for `ItemList`'s props (the second the last test).
 
 <div class="fp">test/components/app_spec.js</div>
 ```js
@@ -518,13 +529,15 @@ describe('<App />', () => {
 });
 ```
 
-Note that instead of using the name we game `ItemListContainer`, Enzyme will render this component as `Connect(ItemList)`.
+Note that instead of using the name we gave `ItemListContainer`, Enzyme will render this component as `Connect(ItemList)`.
 
 Now this test should fail, so let's make it pass by changing `app.js`:
 
 <div class="fp">src/components/app.js</div>
-```js{8}
+```js{3,10}
 // ...
+
+import { ItemListContainer } from './item_list';
 
 export class App extends React.Component {
     render() {
@@ -538,7 +551,7 @@ export class App extends React.Component {
 }
 ```
 
-Now we have a fully connected comopnent being rendered. If you view the page in the browser, nothing will look any different. However, try dispatching a `TOGGLE_ITEM` action from the Redux DevTools -- remember to give the action an `id`. Dispatching the action should result in the item you toggled swapping colors!
+Now we have a fully connected component being rendered. If you view the page in the browser, nothing will look any different. However, try dispatching a `TOGGLE_ITEM` action from the Redux DevTools -- remember to give the action an `id`. Dispatching the action should result in the item you toggled swapping colors!
 
 ### Connecting Components to Actions
 
