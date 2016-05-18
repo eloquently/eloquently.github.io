@@ -226,7 +226,7 @@ export class StringPlus {
 
 ES6 includes a string interpolation feature. Instead of writing `tempStr = tempStr = this.str[i];`, we could write: ``tempStr = `${tempStr}${this.str[i]}`;``. Note that we are using backticks `` ` `` rather than quote marks. ``str = `var: ${var}`;`` is equivalent to `str = "var: #{var}"` in Ruby.
 
-**Extra interview practice**: It's possible to write `reverse()` so that it doesn't need to use `temp_str`. Try refactoring your method in such a way now. Hint: you'll need the `replaceNthChar` function!
+**Extra interview practice**: It's possible to write `reverse()` so that it doesn't need to use `tempStr`. Try refactoring your method in such a way now. Hint: you'll need the `replaceNthChar` function!
 
 ### Palindromes
 
@@ -287,7 +287,7 @@ describe("StringPlus", () => {
             expect(sp.str).to.eq('racecar');
             sp.str = 'race car';
             sp.isPalindrome();
-            expect(sp.str).to.eq('racecar');
+            expect(sp.str).to.eq('race car');
         });
     });
 });
@@ -306,7 +306,7 @@ export class StringPlus {
 }
 ```
 
-Hint: What happens if you call reverse twice?
+Hint: What happens if you call `reverse()` twice?
 
 ### Immutability and Pure Functions
 
@@ -346,4 +346,4 @@ console.log(reverseString('string')); // => 'gnirts'
 We would call this function a "pure function". Pure functions meet two criteria:
 
 1. Pure functions do not have any side effects. They do not mutate any variables that already exist.
-2. A pure function always returns the same result when it is called with the sae parameter(s). The results do not depend on any part of the application state.
+2. A pure function always returns the same result when it is called with the same parameter(s). The results do not depend on any part of the application state.
