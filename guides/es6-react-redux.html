@@ -77,12 +77,10 @@
 
 <p>You can start with <a href="https://github.com/eloquently/redux-todo-guide">this simple to-do</a> app if you don&#39;t have one built already. This guide will walk through applying Redux to that to-do list application, starting on the <code>basic_components</code> branch.</p>
 
-<p>To get started, clone the repository and checkout the <code>basic_components</code> branch.
-<code>
-git clone https://github.com/eloquently/redux-todo-guide.git
+<p>To get started, clone the repository and checkout the <code>basic_components</code> branch.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">git clone https://github.com/eloquently/redux-todo-guide.git
 git checkout basic_components
-</code></p>
-
+</code></pre></div>
 <h3>Immutable State</h3>
 
 <p>The first requirement of Redux is that the all the state be stored in a single, immutable data structure. For this project, we are going to use data structures provided by a package called ImmutableJS. ImmutableJS provides us with immutable versions of objects and arrays called Maps and Lists. The interface to access them is slightly different, but they have much of the same functionality. The big difference is that if you try to change an immutable Map or List, you will end up with a copy of the object and the original object will remain unchanged. Here is a brief example:</p>
