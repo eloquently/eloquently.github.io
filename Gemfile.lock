@@ -1,4 +1,13 @@
+GIT
+  remote: https://github.com/emckay/pygments.rb
+  revision: aad956b22c5ba5b765739b40342d0ee20e6a6dd4
+  specs:
+    pygments.rb (0.6.3)
+      posix-spawn (~> 0.3.6)
+      yajl-ruby (~> 1.2.0)
+
 GEM
+  remote: https://rubygems.org/
   specs:
     colorator (0.1)
     css_press (0.3.2)
@@ -44,9 +53,6 @@ GEM
     multi_js (0.1.0)
       uglifier (~> 2)
     posix-spawn (0.3.11)
-    pygments.rb (0.6.3)
-      posix-spawn (~> 0.3.6)
-      yajl-ruby (~> 1.2.0)
     rb-fsevent (0.9.7)
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
@@ -66,7 +72,7 @@ DEPENDENCIES
   jekyll
   jekyll-compose
   jekyll-press
-  pygments.rb
+  pygments.rb!
   redcarpet
 
 BUNDLED WITH

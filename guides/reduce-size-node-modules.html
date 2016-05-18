@@ -78,10 +78,10 @@
 <p>Version 2.x of NPM (the default that comes with a blank Cloud9 instance) creates huge <code>node_modules</code> directories. Luckily, it&#39;s easy to update NPM and reduce the size of the <code>node_modules</code> directory.</p>
 
 <p>To check the size of your directories, <code>cd</code> to the directory your project is in, and run:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">du -sh *
+<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>du -sh *
 </code></pre></div>
 <p>You should see a list that looks like this:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">4.0K    README.md
+<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>4.0K    README.md
 1.5M    build
 448M    node_modules
 4.0K    package.json
@@ -90,18 +90,18 @@
 4.0K    webpack.config.js
 </code></pre></div>
 <p>First, update NPM:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">npm install -g npm@latest
+<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>npm install -g npm@latest
 </code></pre></div>
 <p>Next, remove the <code>node_modules</code> directory of your project:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">rm -rf node_modules
+<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>rm -rf node_modules
 </code></pre></div>
 <p>Then, rebuild <code>node_modules/</code>:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">npm install
+<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>npm install
 </code></pre></div>
 <p>You should see that the directory is much smaller and that you have more available disk space!</p>
 
 <p>After compmleting these steps, <code>du -sh *</code> gives me:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">4.0K    README.md
+<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>4.0K    README.md
 1.5M    build
 99M     node_modules
 4.0K    package.json

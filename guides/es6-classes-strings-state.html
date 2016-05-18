@@ -82,10 +82,10 @@
 <p>This guide is also intended to get you to pay attention to how functions read and manipulate state. This will be an important topic when we start working with React and Redux.</p>
 
 <p>You can clone this repository with this command:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">git clone https://github.com/eloquently/es6-classes-strings.git
+<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>git clone https://github.com/eloquently/es6-classes-strings.git
 </code></pre></div>
 <p>Then <code>cd</code> into the directory and run:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">npm install
+<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>npm install
 </code></pre></div>
 <p>You should be all set. The <code>npm run test:watch</code> and <code>npm run webpack:watch</code> should run without any additional configuration.</p>
 
@@ -94,7 +94,7 @@
 <p>We are going to build a wrapper of the <code>String</code> class with additional functionality. To define a class in ES6, we use the following syntax. Create a file called <code>string_plus.js</code> in the <code>src</code> directory and start writing the following code:</p>
 
 <div class="fp">src/string_plus.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">class</span> <span class="nx">StringPlus</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">class</span> <span class="nx">StringPlus</span> <span class="p">{</span>
 
 <span class="p">}</span>
 </code></pre></div>
@@ -103,7 +103,7 @@
 <p>We&#39;ll want to access this class from other programs (such as our test), so we need to export the class:</p>
 
 <div class="fp">src/string_plus.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="hll"><span class="kr">export</span> <span class="kr">class</span> <span class="nx">StringPlus</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="hll"><span class="kr">export</span> <span class="kr">class</span> <span class="nx">StringPlus</span> <span class="p">{</span>
 </span>
 <span class="p">}</span>
 </code></pre></div>
@@ -114,7 +114,7 @@
 <p>Our constructor test will test that we successfully save the parameter in the <code>str</code> property. We&#39;ll also write a test to show what happens when no parameter is given.</p>
 
 <div class="fp">test/string_plus_spec.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;chai&#39;</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;chai&#39;</span><span class="p">;</span>
 
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">StringPlus</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;../src/string_plus&#39;</span><span class="p">;</span>
 
@@ -135,7 +135,7 @@
 <p>Now let&#39;s write the construtor method. In ES6, this is just a function inside the class called <code>constructor</code>:</p>
 
 <div class="fp">src/string_plus.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">export</span> <span class="kr">class</span> <span class="nx">StringPlus</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">export</span> <span class="kr">class</span> <span class="nx">StringPlus</span> <span class="p">{</span>
 <span class="hll">    <span class="nx">constructor</span><span class="p">(</span><span class="nx">initialString</span><span class="p">)</span> <span class="p">{</span>
 </span><span class="hll">        <span class="k">this</span><span class="p">.</span><span class="nx">str</span> <span class="o">=</span> <span class="nx">initialString</span><span class="p">;</span>
 </span><span class="hll">    <span class="p">}</span>
@@ -150,7 +150,7 @@
 <p>Here are some tests that show some examples of how to use this method:</p>
 
 <div class="fp">test/string_plus_spec.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
 
 <span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;StringPlus&quot;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;constructor()&quot;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -200,7 +200,7 @@
 <p>Now let&#39;s write the method:</p>
 
 <div class="fp">src/string_plus.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">export</span> <span class="kr">class</span> <span class="nx">StringPlus</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">export</span> <span class="kr">class</span> <span class="nx">StringPlus</span> <span class="p">{</span>
     <span class="c1">// ...</span>
 
     <span class="nx">replaceNthChar</span><span class="p">(</span><span class="nx">n</span><span class="p">,</span> <span class="nx">newChar</span><span class="p">)</span> <span class="p">{</span>
@@ -221,7 +221,7 @@
 <p>The next function we want to write for our <code>StringPlus</code> class is <code>reverse</code>. This function will reverse all the characters in <code>str</code>. Here are some examples written as tests:</p>
 
 <div class="fp">test/string_plus_spec.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
 
 <span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;StringPlus&quot;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="c1">// ...</span>
@@ -261,7 +261,7 @@
 <p>We can implement this in the code using a <code>for</code> loop. Try writing the method yourself before scrolling down to see our solution. <strong>Note</strong>: there are multiple ways to solve this problem -- this is just one. If your function looks different but passes the test, it&#39;s probably right!</p>
 
 <div class="fp">src/string_plus.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">export</span> <span class="kr">class</span> <span class="nx">StringPlus</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">export</span> <span class="kr">class</span> <span class="nx">StringPlus</span> <span class="p">{</span>
     <span class="c1">// ...</span>
 
     <span class="nx">reverse</span><span class="p">()</span> <span class="p">{</span>
@@ -272,7 +272,7 @@
 <p>Here&#39;s our solution:</p>
 
 <div class="fp">src/string_plus.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">export</span> <span class="kr">class</span> <span class="nx">StringPlus</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">export</span> <span class="kr">class</span> <span class="nx">StringPlus</span> <span class="p">{</span>
     <span class="nx">reverse</span><span class="p">()</span> <span class="p">{</span>
         <span class="kd">let</span> <span class="nx">tempStr</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
         <span class="k">for</span><span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">str</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
@@ -291,7 +291,7 @@
 <p>A palindrome is a word that is spelled the same backwards and forwards. Let&#39;s write a method to determine if a string is a palindrome. Here are some test examples:</p>
 
 <div class="fp">test/string_plus_spec.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
 
 <span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;StringPlus&quot;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="c1">// ...</span>
@@ -324,7 +324,7 @@
 <p>This function is simply reading a property of the object, so it should not change state. Let&#39;s add a test for that:</p>
 
 <div class="fp">test/string_plus_spec.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;StringPlus&quot;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;StringPlus&quot;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="c1">// ...</span>
 
     <span class="nx">describe</span><span class="p">(</span><span class="s2">&quot;isPalindrome()&quot;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -350,7 +350,7 @@
 <p>Now try to implement this method using the <code>reverse</code> function we wrote earlier. It will be a little trickier than it seems at first glance because <code>reverse()</code> changes the object&#39;s state. There are multiple ways to handle this.</p>
 
 <div class="fp">src/string_plus.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">export</span> <span class="kr">class</span> <span class="nx">StringPlus</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">export</span> <span class="kr">class</span> <span class="nx">StringPlus</span> <span class="p">{</span>
     <span class="c1">// ...</span>
 
     <span class="nx">isPalindrome</span><span class="p">()</span> <span class="p">{</span>
@@ -363,7 +363,7 @@
 <h3>Immutability and Pure Functions</h3>
 
 <p>Your <code>isPalindrome()</code> method is likely quite awkward. This could be avoided if <code>reverse()</code> did not mutate state and instead returned a new value. In fact, this is what the default <code>reverse</code> function in Javascript does. Instead of changing the value of the string, calling <code>reverse()</code> on a string just returns a new value and does not mutate the original string. If you want to save the value, you have to create a new variable.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">a</span> <span class="o">=</span> <span class="s2">&quot;string&quot;</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">const</span> <span class="nx">a</span> <span class="o">=</span> <span class="s2">&quot;string&quot;</span><span class="p">;</span>
 <span class="nx">a</span><span class="p">.</span><span class="nx">reverse</span><span class="p">()</span> <span class="c1">// =&gt; &quot;gnirts&quot;</span>
 <span class="nx">a</span> <span class="c1">// =&gt; &quot;string&quot;</span>
 <span class="kr">const</span> <span class="nx">b</span> <span class="o">=</span> <span class="nx">a</span><span class="p">.</span><span class="nx">reverse</span><span class="p">()</span>
@@ -379,7 +379,7 @@
 <p>In fact, in JavaScript, strings are &quot;immutable&quot;. There is no way to change a string without making a copy of it -- all string functions will work like <code>reverse()</code>.</p>
 
 <p>One more piece of terminology. We could write a <code>reverseString</code> function that looked like this:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">reverseString</span> <span class="o">=</span> <span class="p">(</span><span class="nx">str</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">const</span> <span class="nx">reverseString</span> <span class="o">=</span> <span class="p">(</span><span class="nx">str</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="kd">let</span> <span class="nx">tempStr</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
     <span class="k">for</span><span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">str</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
         <span class="nx">tempStr</span> <span class="o">=</span> <span class="nx">tempStr</span> <span class="o">+</span> <span class="nx">str</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>

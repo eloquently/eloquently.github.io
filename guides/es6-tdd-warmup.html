@@ -78,10 +78,10 @@
 <p>We&#39;re going to practice JavaScript. This guide will cover ES6 syntax, testing with Mocha and Chai, and basic iterative and recursive arithmetic functions developed using Test Driven Development (TDD).</p>
 
 <p>Clone this repository to get started:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">git clone https://bitbucket.org/eloquently/unit_01_es6_warmup.git
+<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>git clone https://bitbucket.org/eloquently/unit_01_es6_warmup.git
 </code></pre></div>
 <p>Next, install the packages needed to run this code using the following command:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">npm install
+<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>npm install
 </code></pre></div>
 <p>Node Package Manager (npm) is the JavaScript analog to Ruby&#39;s Gem and Bundler.</p>
 
@@ -98,37 +98,37 @@
 <p>Write the function in <code>index.js</code>:</p>
 
 <div class="fp">src/index.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">function</span> <span class="nx">increment</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kd">function</span> <span class="nx">increment</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div>
 <p>Let&#39;s also output the results. In JavaScript, we output results with the function <code>console.log</code>:</p>
 
 <div class="fp">src/index.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
 
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">increment</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
 </code></pre></div>
 <p>To run the JavaScript file, we will use a program called Node. To run this program, type the following command in your terminal:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">node src/index.js
+<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>node src/index.js
 </code></pre></div>
 <p>You should see the number 2 printed.</p>
 
 <p>We&#39;re going to write a test for this function. We&#39;ll write the test in another program. In order to import the function in the other program, we&#39;ll have to export it from <code>index.js</code>. To do this, simply add the word export before the function declaration:</p>
 
 <div class="fp">src/index.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">export</span> <span class="kd">function</span> <span class="nx">increment</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">export</span> <span class="kd">function</span> <span class="nx">increment</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div>
 <p>Now try to run the program with Node:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">node src/index.js
+<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>node src/index.js
 </code></pre></div>
 <p>We see an error. This is because the <code>export</code> syntax is part of ES6, and node cannot run ES6. To get around this, we are going to use tools called Webpack and Babel to transform our ES6 JavaScript into a form of JavaScript that Node understands. We&#39;ve already configured this application so that you just need to run this command to compile your <code>index.js</code> file and all the packages and other files it depends on into a single file called <code>bundle.js</code>:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">npm run webpack
+<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>npm run webpack
 </code></pre></div>
 <p>Now run this command in the terminal to run your program:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">node build/bundle.js
+<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>node build/bundle.js
 </code></pre></div>
 <p>The program should run as normal again.</p>
 
@@ -137,7 +137,7 @@
 <p>Open <code>test/index_spec.js</code> and add the following line:</p>
 
 <div class="fp">test/index_spec.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;chai&#39;</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;chai&#39;</span><span class="p">;</span>
 
 <span class="hll"><span class="kr">import</span> <span class="p">{</span> <span class="nx">increment</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;../src/index.js&#39;</span><span class="p">;</span>
 </span></code></pre></div>
@@ -150,7 +150,7 @@
 <p>Here&#39;s how we&#39;ll set up the first test:</p>
 
 <div class="fp">test/index_spec.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
 
 <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;index.js&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;increment()&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -181,17 +181,17 @@
 <p>All test files will have this basic structure. There is nothing magical about any of the strings in the above test file. You can write any thing you want and the tests will still behave the same way -- they only affect how the tests are output to the console.</p>
 
 <p>After saving the test file, we run the test by typing the following command in the terminal:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">npm run test
+<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>npm run test
 </code></pre></div>
 <p>You should see that the test passes.</p>
 
 <p>Similar to <code>webpack</code>, we&#39;ve provided you with a &quot;watch&quot; version of the run test command that will run your tests each time a file is saved:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">npm run test:watch
+<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>npm run test:watch
 </code></pre></div>
 <p>Let&#39;s write another test for this function. We want to ensure that it works when the parameter is negative.</p>
 
 <div class="fp">test/index_spec.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
 
 <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;index.js&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;increment()&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -206,13 +206,13 @@
 <span class="p">});</span>
 </code></pre></div>
 <p>Now that we&#39;ve completed the first function, let&#39;s stage our code and then commit:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">git add -A
+<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>git add -A
 git commit -m &quot;increment function&quot;
 </code></pre></div>
 <p>Now we want to write another function: <code>add</code>. This function will take two numbers and return their sum. For the sake of the exercise, it is not allowed to use the <code>+</code> operator -- only the <code>increment</code> function we&#39;ve already written and loops and if statements. First, let&#39;s write a test for the function. You&#39;ll also need to import the <code>add</code> function at the top of the test file.</p>
 
 <div class="fp">test/index_spec.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;chai&#39;</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;chai&#39;</span><span class="p">;</span>
 
 <span class="hll"><span class="kr">import</span> <span class="p">{</span> <span class="nx">increment</span><span class="p">,</span> <span class="nx">add</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;../src/index.js&#39;</span><span class="p">;</span>
 </span>
@@ -231,7 +231,7 @@ git commit -m &quot;increment function&quot;
 <p>Now, let&#39;s write a function that will get the test to pass:</p>
 
 <div class="fp">src/index.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
 
 <span class="kr">export</span> <span class="kd">function</span> <span class="nx">add</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">let</span> <span class="nx">solution</span> <span class="o">=</span> <span class="nx">x</span><span class="p">;</span>
@@ -260,7 +260,7 @@ git commit -m &quot;increment function&quot;
 <p>Let&#39;s add another test for <code>add()</code>:</p>
 
 <div class="fp">test/index_spec.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">//...</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">//...</span>
 
 <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;index.js&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="c1">// ...</span>
@@ -279,7 +279,7 @@ git commit -m &quot;increment function&quot;
 <p>Now let&#39;s add another test:</p>
 
 <div class="fp">test/index_spec.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">//...</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">//...</span>
 
 <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;index.js&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="c1">// ...</span>
@@ -296,7 +296,7 @@ git commit -m &quot;increment function&quot;
 <p>This test should also pass. Now another:</p>
 
 <div class="fp">test/index_spec.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">//...</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">//...</span>
 
 <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;index.js&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="c1">// ...</span>
@@ -315,7 +315,7 @@ git commit -m &quot;increment function&quot;
 <p>Let&#39;s first write some tests so that we understand what <code>decrement()</code> does:</p>
 
 <div class="fp">test/index_spec.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
 
 <span class="hll"><span class="kr">import</span> <span class="p">{</span> <span class="nx">increment</span><span class="p">,</span> <span class="nx">add</span><span class="p">,</span> <span class="nx">decrement</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;../src/index.js&#39;</span><span class="p">;</span>
 </span>
@@ -342,7 +342,7 @@ git commit -m &quot;increment function&quot;
 <p>Now add <code>decrement()</code> to <code>index.js</code>:</p>
 
 <div class="fp">src/index.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">export</span> <span class="kd">function</span> <span class="nx">increment</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">export</span> <span class="kd">function</span> <span class="nx">increment</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
     <span class="c1">// ...</span>
 <span class="p">}</span>
 
@@ -357,7 +357,7 @@ git commit -m &quot;increment function&quot;
 <p>Now we&#39;re ready to fix our add function so it will work when <code>y</code> is negative:</p>
 
 <div class="fp">src/index.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
 
 <span class="kr">export</span> <span class="kd">function</span> <span class="nx">add</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">let</span> <span class="nx">solution</span> <span class="o">=</span> <span class="nx">x</span><span class="p">;</span>
@@ -378,7 +378,7 @@ git commit -m &quot;increment function&quot;
 <p>Now it&#39;s time to for you to write a <code>multiply</code> function. Your multiply function should only use the <code>add</code> function we wrote before and loops and if statements. You are also allowed to make a positive number negative (such as <code>-x</code>). Like <code>add()</code> it should work when either of the parameters are negative or when they are 0. You should write the tests before writing the function:</p>
 
 <div class="fp">test/index_spec.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;chai&#39;</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;chai&#39;</span><span class="p">;</span>
 
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">increment</span><span class="p">,</span> <span class="nx">add</span><span class="p">,</span> <span class="nx">decrement</span><span class="p">,</span> <span class="nx">multiply</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;../src/index.js&#39;</span><span class="p">;</span>
 
@@ -397,7 +397,7 @@ git commit -m &quot;increment function&quot;
 <p>Once you have a guess, try writing the function. You don&#39;t need all the tests to pass right away -- it&#39;s okay to solve them one at a time.</p>
 
 <div class="fp">src/index.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
 
 <span class="kr">export</span> <span class="kd">function</span> <span class="nx">multiply</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
     <span class="cm">/* Multiply code goes here */</span>
@@ -408,7 +408,7 @@ git commit -m &quot;increment function&quot;
 <p>Finally, we want to practice recursion. We could write the <code>add()</code> as a recursive function instead of an interative one (iterative usually means that it uses a loop). A recursive function is one that calls itself. This is what the <code>add</code> function would look like if it was written recursively:</p>
 
 <div class="fp">src/index.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">export</span> <span class="kd">function</span> <span class="nx">add</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">export</span> <span class="kd">function</span> <span class="nx">add</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">if</span><span class="p">(</span><span class="nx">y</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">return</span> <span class="nx">x</span><span class="p">;</span>
     <span class="p">}</span>
@@ -437,7 +437,7 @@ git commit -m &quot;increment function&quot;
 <p>Let&#39;s practice this by writing a function that adds 1 to each element in an array. First the test:</p>
 
 <div class="fp">test/index_spec.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
 
 <span class="hll"><span class="kr">import</span> <span class="p">{</span> <span class="nx">increment</span><span class="p">,</span> <span class="nx">add</span><span class="p">,</span> <span class="nx">decrement</span><span class="p">,</span>
 </span><span class="hll">         <span class="nx">multiply</span><span class="p">,</span> <span class="nx">incrementEach</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;../src/index.js&#39;</span><span class="p">;</span>
@@ -457,7 +457,7 @@ git commit -m &quot;increment function&quot;
 <p>Now for the short-hand function call:</p>
 
 <div class="fp">src/index.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
 
 <span class="kr">export</span> <span class="kd">function</span> <span class="nx">incrementEach</span><span class="p">(</span><span class="nx">array</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">array</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">element</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">element</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
@@ -468,7 +468,7 @@ git commit -m &quot;increment function&quot;
 <p>Now you try implementing a <code>decrementEach</code> function. First the test:</p>
 
 <div class="fp">test/index_spec.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
 
 <span class="hll"><span class="kr">import</span> <span class="p">{</span> <span class="nx">increment</span><span class="p">,</span> <span class="nx">add</span><span class="p">,</span> <span class="nx">decrement</span><span class="p">,</span>
 </span><span class="hll">         <span class="nx">multiply</span><span class="p">,</span> <span class="nx">incrementEach</span><span class="p">,</span> <span class="nx">decrementEach</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;../src/index.js&#39;</span><span class="p">;</span>
@@ -486,7 +486,7 @@ git commit -m &quot;increment function&quot;
 <p>Now the method:</p>
 
 <div class="fp">src/index.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
 
 <span class="kr">export</span> <span class="kd">function</span> <span class="nx">decrementEach</span><span class="p">(</span><span class="nx">array</span><span class="p">)</span> <span class="p">{</span>
     <span class="cm">/* Fill in the blank */</span>
@@ -497,7 +497,7 @@ git commit -m &quot;increment function&quot;
 <p>If we wanted to assign multiple variables to the results of a function that returns an array, <code>ES6</code> allows us to do so very easily. Here&#39;s what it looks like:</p>
 
 <div class="fp">test/index_spec.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
 
 <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;index.js&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="c1">// ...</span>
@@ -520,7 +520,7 @@ git commit -m &quot;increment function&quot;
 <p>In ES6, we have to declare variables when they are set for the first time (or before). We do this by using <code>let</code> or <code>const</code>. If an object will change references (or a primitive will change values), use <code>let</code>. Otherwise use <code>const</code>. Using <code>const</code> with objects (such as arrays) can be confusing because a <code>const</code> object is allowed to mutuate. <code>const</code> just means that the variable can&#39;t start pointing to a new object.</p>
 
 <p>Here are some examples:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">const</span> <span class="nx">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
 <span class="nx">a</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// NOT ALLOWED</span>
 
 <span class="kd">let</span> <span class="nx">b</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
@@ -540,7 +540,7 @@ git commit -m &quot;increment function&quot;
 <h4>Spread Operator</h4>
 
 <p>We could write our <code>decrementEach</code> function so that it takes a list of parameters rather than an array using a &quot;spread&quot; operator (Ruby calls this a &quot;splat&quot; operator). Here&#39;s what the method would look like:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">export</span> <span class="kd">function</span> <span class="nx">decrementEach</span><span class="p">(...</span><span class="nx">array</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">export</span> <span class="kd">function</span> <span class="nx">decrementEach</span><span class="p">(...</span><span class="nx">array</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">array</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">element</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">element</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
 <span class="p">}</span>
 
@@ -549,7 +549,7 @@ git commit -m &quot;increment function&quot;
 <p>As shown above, to call the method, we can no longer pass an array. We have to pass a list of parameters. We would have to rewrite our test to look like this:</p>
 
 <div class="fp">test/index_spec.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
 
 <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;index.js&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="c1">// ...</span>
@@ -562,7 +562,7 @@ git commit -m &quot;increment function&quot;
 <span class="p">});</span>
 </code></pre></div>
 <p>We can also use the spread operator to call a method that takes a list of parameters when we have those parameters in an array:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">];</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">const</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">];</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">decrementEach</span><span class="p">(...</span><span class="nx">arr</span><span class="p">));</span> <span class="c1">// =&gt; [0, 1, 2]</span>
 </code></pre></div>
                     

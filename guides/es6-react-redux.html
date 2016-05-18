@@ -76,7 +76,7 @@
 <p>This guide adds Redux to a simple React to-do list application that has already been built. The starting point for this code is the <code>basic_components</code> branch of <a href="https://github.com/eloquently/redux-todo-guide">this repository</a>. This guide will walk through applying Redux to that to-do list application.</p>
 
 <p>To get started, clone the repository, checkout the <code>basic_components</code> branch, and install the dependencies.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">git clone https://github.com/eloquently/redux-todo-guide.git
+<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>git clone https://github.com/eloquently/redux-todo-guide.git
 cd redux-todo-guide
 git checkout basic_components
 npm install
@@ -86,7 +86,7 @@ npm install
 <h3>Immutable State</h3>
 
 <p>The first requirement of Redux is that the all the state be stored in a single, immutable data structure. For this project, we are going to use data structures provided by a package called ImmutableJS. ImmutableJS provides us with immutable versions of objects and arrays called Maps and Lists. The interface to access them is slightly different, but they have much of the same functionality. The big difference is that if you try to change an immutable Map or List, you will end up with a copy of the object and the original object will remain unchanged. Here is a brief example:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="cm">/* Normal JS Array */</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="cm">/* Normal JS Array */</span>
 <span class="kr">const</span> <span class="nx">a</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">];</span>
 <span class="kr">const</span> <span class="nx">b</span> <span class="o">=</span> <span class="nx">a</span><span class="p">.</span><span class="nx">pop</span><span class="p">();</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">a</span><span class="p">);</span> <span class="c1">// =&gt; [1, 2]</span>
@@ -103,12 +103,12 @@ npm install
 <p>It takes us an extra step to &quot;pop&quot; the immutable <code>x</code>, but the benefits of having immutable data structures is that it&#39;s very easy to keep track of them. Using immutable data structures with Redux allows us to do useful things such as &quot;undo&quot; events that happened many steps ago.</p>
 
 <p>Let&#39;s set up the initial state of our application so that it uses immutable Maps and Lists rather than objects and arrays. First we&#39;ll need to install ImmutableJS:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">npm install --save immutable@^3.8
+<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>npm install --save immutable@^3.8
 </code></pre></div>
 <p>Immutable JS comes with a function called <code>fromJS()</code>, which takes a nested group of objects and arrays and returns an immutable set of nested Lists and Maps. We&#39;ll import it and use it on <code>state</code>:</p>
 
 <div class="fp">src/index.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
 <span class="hll"><span class="kr">import</span> <span class="p">{</span> <span class="nx">fromJS</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;immutable&#39;</span><span class="p">;</span>
 </span>
 <span class="c1">// ...</span>
@@ -138,7 +138,7 @@ npm install
 <p>We&#39;re also defining an initial state in our test for the <code>App</code> component, so let&#39;s change that one to an immutable object as well:</p>
 
 <div class="fp">test/components/app_spec.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
 <span class="hll"><span class="kr">import</span> <span class="p">{</span> <span class="nx">fromJS</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;immutable&#39;</span><span class="p">;</span>
 </span>
 <span class="c1">// ...</span>
@@ -174,7 +174,7 @@ npm install
 <p>Now that we&#39;ve identified this bug, let&#39;s add a test for the <code>App</code> component that checks if it is passing something to <code>&lt;ItemList /&gt;</code>:</p>
 
 <div class="fp">test/components/app_spec.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
 
 <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;&lt;App /&gt;&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;render()&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -191,7 +191,7 @@ npm install
 <p>To fix the error and make the test pass, we need to change the <code>App</code> component so that it correctly extracts the value from the state <code>Map</code>. To get a value out of a <code>Map</code>, we will use the <code>get()</code> function:</p>
 
 <div class="fp">src/components/app.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
 
 <span class="kr">export</span> <span class="kr">class</span> <span class="nx">App</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
     <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
@@ -209,7 +209,7 @@ npm install
 <p>Let&#39;s write a test to ensure that the <code>&lt;Item /&gt;</code>&#39;s get the right props:</p>
 
 <div class="fp">test/components/item_list_spec.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">React</span> <span class="nx">from</span> <span class="s1">&#39;react&#39;</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">import</span> <span class="nx">React</span> <span class="nx">from</span> <span class="s1">&#39;react&#39;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;chai&#39;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">shallow</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;enzyme&#39;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">fromJS</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;immutable&#39;</span><span class="p">;</span>
@@ -240,7 +240,7 @@ npm install
 <p>Then fix the component so that the tests pass and everything looks okay in the browser:</p>
 
 <div class="fp">item_list.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
 
 <span class="kr">export</span> <span class="kr">class</span> <span class="nx">ItemList</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
     <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
@@ -277,7 +277,7 @@ npm install
 <p>Let&#39;s write <code>reducer()</code>!</p>
 
 <div class="fp">src/reducer.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">export</span> <span class="kd">function</span> <span class="nx">reducer</span><span class="p">(</span><span class="nx">currentState</span><span class="p">,</span> <span class="nx">action</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">export</span> <span class="kd">function</span> <span class="nx">reducer</span><span class="p">(</span><span class="nx">currentState</span><span class="p">,</span> <span class="nx">action</span><span class="p">)</span> <span class="p">{</span>
 
 <span class="p">}</span>
 </code></pre></div>
@@ -286,7 +286,7 @@ npm install
 <p>Now let&#39;s start filling in the <code>reducer()</code>. The first thing we want it to do is return an empty <code>Map</code> if no <code>currentState</code> is given. Let&#39;s write a test for this:</p>
 
 <div class="fp">test/reducer_spec.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;chai&#39;</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;chai&#39;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">Map</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;immutable&#39;</span><span class="p">;</span>
 
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">reducer</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;../src/reducer.js&#39;</span><span class="p">;</span>
@@ -300,14 +300,14 @@ npm install
 <p>To make this method pass, we will set a default parameter for <code>currentState</code> and just return <code>currentState</code> inside the function:</p>
 
 <div class="fp">src/reducer.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Map</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;immutable&#39;</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">Map</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;immutable&#39;</span><span class="p">;</span>
 
 <span class="kr">export</span> <span class="kd">function</span> <span class="nx">reducer</span><span class="p">(</span><span class="nx">currentState</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Map</span><span class="p">(),</span> <span class="nx">action</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">currentState</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div>
 <p>Now we are ready to write our <code>TOGGLE_ITEM</code> action. Actions are simply objects that have a <code>type</code> key and any other keys they need (not all actions need additional data). In order to toggle an item, we will also need to know which item to toggle, so we will have to include the item id in the action. Therefore, a <code>TOGGLE_ITEM</code> action will look something like this:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="p">{</span>
     <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;TOGGLE_ITEM&quot;</span><span class="p">,</span>
     <span class="s2">&quot;id&quot;</span><span class="o">:</span> <span class="mi">3</span>
 <span class="p">}</span>
@@ -317,7 +317,7 @@ npm install
 <p>Let&#39;s write a test for this. We&#39;ll also write a test to ensure that the <code>complete</code> value of another item in the list isn&#39;t changed.</p>
 
 <div class="fp">test/reducer_spec.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;chai&#39;</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;chai&#39;</span><span class="p">;</span>
 <span class="hll"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Map</span><span class="p">,</span> <span class="nx">fromJS</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;immutable&#39;</span><span class="p">;</span>
 </span>
 <span class="c1">// ...</span>
@@ -350,12 +350,12 @@ npm install
 <p>The second test will pass right away because right now <code>reducer()</code> just returns the currentState without changing anything. It&#39;s just there to make sure we don&#39;t make a mistake when we change <code>reducer()</code>.</p>
 
 <p>One quick note: ImmutableJS provides us with a function called <code>getIn()</code> that makes it easier to write a statement that has several chained <code>get()</code>&#39;s. We could rewrite our tests so that they look like this instead:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">expect(nextState.getIn([&#39;items&#39;, 0, &#39;complete&#39;])).to.eq(true);
+<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>expect(nextState.getIn([&#39;items&#39;, 0, &#39;complete&#39;])).to.eq(true);
 </code></pre></div>
 <p>After rewriting your tests to use <code>getIn()</code>, it&#39;s time to make these tests pass by adding to our <code>reducer()</code>:</p>
 
 <div class="fp">src/reducer.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
 <span class="kr">export</span> <span class="kd">function</span> <span class="nx">reducer</span><span class="p">(</span><span class="nx">currentState</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Map</span><span class="p">(),</span> <span class="nx">action</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">if</span><span class="p">(</span><span class="nx">action</span> <span class="o">!==</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">switch</span><span class="p">(</span><span class="nx">action</span><span class="p">.</span><span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
@@ -373,7 +373,7 @@ npm install
 <p>This is what that looks like in JavaScript:</p>
 
 <div class="fp">src/reducer.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
 
 <span class="kr">const</span> <span class="nx">toggleItem</span> <span class="o">=</span> <span class="p">(</span><span class="nx">currentState</span><span class="p">,</span> <span class="nx">id</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="kr">const</span> <span class="nx">items</span> <span class="o">=</span> <span class="nx">currentState</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;items&#39;</span><span class="p">);</span>
@@ -395,7 +395,7 @@ npm install
 <p>We&#39;ll put all these &quot;action creators&quot; in a file called <code>action_creators.js</code>:</p>
 
 <div class="fp">src/action_creators.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">export</span> <span class="kd">function</span> <span class="nx">toggleItem</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">export</span> <span class="kd">function</span> <span class="nx">toggleItem</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">return</span> <span class="p">{</span>
         <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;TOGGLE_ITEM&#39;</span><span class="p">,</span>
         <span class="nx">id</span>
@@ -403,7 +403,7 @@ npm install
 <span class="p">}</span>
 </code></pre></div>
 <p>Note that we are using ES6 short-hand for object declaration. When setting a key equal to a variable that has the same name as a key, ES6 permits you to just write the name of the variable/key instead of <code>key: variable</code>. We could have written the object <code>toggleItem()</code> as:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">{
+<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>{
     type: &#39;TOGGLE_ITEM&#39;,
     id: id
 }
@@ -411,7 +411,7 @@ npm install
 <p>Now in our <code>reducer_spec.js</code>, we can use this action creator instead of writing out the action:</p>
 
 <div class="fp">test/reducer_spec.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;chai&#39;</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;chai&#39;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">Map</span><span class="p">,</span> <span class="nx">fromJS</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;immutable&#39;</span><span class="p">;</span>
 
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">reducer</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;../src/reducer.js&#39;</span><span class="p">;</span>
@@ -435,7 +435,7 @@ npm install
 <p>Now that we have a <code>reducer()</code>, it&#39;s time to set up a Redux <code>store</code>. A <code>store</code> is where Redux keeps track of the application state. Redux applications have a single store that will hold a single state object that should never mutate -- only be replaced by new objects by <code>reducer()</code>. A <code>store</code> is linked to a <code>reducer()</code> when the <code>store</code> is created.</p>
 
 <p>Let&#39;s install Redux and React-Redux.</p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">npm install --save redux react-redux
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>npm install --save redux react-redux
 </code></pre></div>
 <p>Now we need to make some changes to <code>index.js</code>. First, we need to create a <code>store</code> object. We will do this with the <code>createStore</code> function provided by <code>redux</code>. <code>createStore()</code> takes three parameters: the <code>reducer</code> function, the initial state, and any &quot;middleware functions&quot;.</p>
 
@@ -448,7 +448,7 @@ npm install
 <p>Here is what <code>index.js</code> should look like:</p>
 
 <div class="fp">src/index.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">React</span> <span class="nx">from</span> <span class="s1">&#39;react&#39;</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">import</span> <span class="nx">React</span> <span class="nx">from</span> <span class="s1">&#39;react&#39;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="nx">ReactDOM</span> <span class="nx">from</span> <span class="s1">&#39;react-dom&#39;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">fromJS</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;immutable&#39;</span><span class="p">;</span>
 <span class="hll"><span class="kr">import</span> <span class="p">{</span><span class="nx">createStore</span><span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;redux&#39;</span><span class="p">;</span>
@@ -495,7 +495,7 @@ npm install
 <p>To connect a component with the state being tracked by the Redux <code>store</code>, we will write a function called <code>mapStateToProps</code>. This function will take a single parameter: the state object, and return a mapping of the names of this component&#39;s props to variables in state.</p>
 
 <p>Let&#39;s do this now for the <code>ItemList</code> component. <code>&lt;ItemList /&gt;</code> only needs one prop: a <code>List</code> of items. This corresponds to the <code>items</code> key/value pair in our state object. Therefore <code>mapStateToProps()</code> for this component looks like:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">mapStateToProps</span> <span class="o">=</span> <span class="p">(</span><span class="nx">state</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">const</span> <span class="nx">mapStateToProps</span> <span class="o">=</span> <span class="p">(</span><span class="nx">state</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="k">return</span> <span class="p">{</span>
         <span class="nx">items</span><span class="o">:</span> <span class="nx">state</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;items&#39;</span><span class="p">)</span>
     <span class="p">};</span>
@@ -506,7 +506,7 @@ npm install
 <p>This is what the component should look like with the call to <code>connect()</code> and the <code>mapStateToProps</code> function we wrote above:</p>
 
 <div class="fp">src/components/item_list.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">React</span> <span class="nx">from</span> <span class="s1">&#39;react&#39;</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">import</span> <span class="nx">React</span> <span class="nx">from</span> <span class="s1">&#39;react&#39;</span><span class="p">;</span>
 <span class="hll"><span class="kr">import</span> <span class="p">{</span> <span class="nx">connect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;react-redux&#39;</span><span class="p">;</span>
 </span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">Item</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;./item&#39;</span><span class="p">;</span>
@@ -528,7 +528,7 @@ npm install
 <p>Let&#39;s change the last test in <code>app_spec.js</code>, and delete the test for <code>ItemList</code>&#39;s props (the second the last test).</p>
 
 <div class="fp">test/components/app_spec.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
 
 <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;&lt;App /&gt;&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;render()&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -545,7 +545,7 @@ npm install
 <p>Now this test should fail, so let&#39;s make it pass by changing <code>app.js</code>:</p>
 
 <div class="fp">src/components/app.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
 
 <span class="hll"><span class="kr">import</span> <span class="p">{</span> <span class="nx">ItemListContainer</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;./item_list&#39;</span><span class="p">;</span>
 </span>
@@ -569,7 +569,7 @@ npm install
 <p>We do this by setting the <code>onClick</code> prop of the <code>div</code> tag inside the <code>Item</code> component. We will set it to a function that gets passed to the component as a prop.</p>
 
 <div class="fp">app/components/item.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">React</span> <span class="nx">from</span> <span class="s1">&#39;react&#39;</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">import</span> <span class="nx">React</span> <span class="nx">from</span> <span class="s1">&#39;react&#39;</span><span class="p">;</span>
 
 <span class="kr">export</span> <span class="kr">class</span> <span class="nx">Item</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
     <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
@@ -589,7 +589,7 @@ npm install
 <p>This is how we will define the function and create the connected <code>Item</code>:</p>
 
 <div class="fp">app/components/item.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">React</span> <span class="nx">from</span> <span class="s1">&#39;react&#39;</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">import</span> <span class="nx">React</span> <span class="nx">from</span> <span class="s1">&#39;react&#39;</span><span class="p">;</span>
 <span class="hll"><span class="kr">import</span> <span class="p">{</span> <span class="nx">connect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;react-redux&#39;</span><span class="p">;</span>
 </span>
 <span class="hll"><span class="kr">import</span> <span class="p">{</span> <span class="nx">toggleItem</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;../action_creators.js&#39;</span><span class="p">;</span>
@@ -608,7 +608,7 @@ npm install
 <p><code>connect()</code>&#39;s first parameter here is undefined becasue we do not need to <code>mapStateToProps</code> for this function -- all of the props are provided by the parent <code>&lt;ItemList /&gt;</code>.</p>
 
 <p>The final step is to render the connected <code>&lt;ItemContainer /&gt;</code>s rather than <code>&lt;Item /&gt;</code>s in the <code>&lt;ItemList /&gt;</code> component. First, let&#39;s change the test. In this case, we are still passing the same props, we just want to change the name of the component we are rendering from <code>Item</code> to <code>Connect(Item)</code>:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
 
 <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;&lt;ItemList /&gt;&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="kr">const</span> <span class="nx">wrapper</span> <span class="o">=</span> <span class="nx">shallow</span><span class="p">(</span><span class="o">&lt;</span><span class="nx">ItemList</span> <span class="nx">items</span><span class="o">=</span><span class="p">{</span><span class="nx">items</span><span class="p">}</span> <span class="o">/&gt;</span><span class="p">);</span>
@@ -624,7 +624,7 @@ npm install
 <p>Now we can make the change the actual component to get the tests to pass:</p>
 
 <div class="fp">src/components/item_list.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">React</span> <span class="nx">from</span> <span class="s1">&#39;react&#39;</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">import</span> <span class="nx">React</span> <span class="nx">from</span> <span class="s1">&#39;react&#39;</span><span class="p">;</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">connect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;react-redux&#39;</span><span class="p">;</span>
 
 <span class="hll"><span class="kr">import</span> <span class="p">{</span> <span class="nx">ItemContainer</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;./item&#39;</span><span class="p">;</span>
