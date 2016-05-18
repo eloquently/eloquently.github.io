@@ -73,13 +73,13 @@
                 <div class="post-content">
                     <h2>React and Redux</h2>
 
-<p>This guide assumes you already have an application that has some React components that pass props to each other.</p>
+<p>This guide adds Redux to an application that has already been built. The starting point for this code is the <code>basic_components</code> branch of <a href="https://github.com/eloquently/redux-todo-guide">this repository</a>. This guide will walk through applying Redux to that to-do list application.</p>
 
-<p>You can start with <a href="https://github.com/eloquently/redux-todo-guide">this simple to-do</a> app if you don&#39;t have one built already. This guide will walk through applying Redux to that to-do list application, starting on the <code>basic_components</code> branch.</p>
-
-<p>To get started, clone the repository and checkout the <code>basic_components</code> branch.</p>
+<p>To get started, clone the repository, checkout the <code>basic_components</code> branch, and install the dependencies.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">git clone https://github.com/eloquently/redux-todo-guide.git
+cd redux-todo-guide
 git checkout basic_components
+npm install
 </code></pre></div>
 <h3>Immutable State</h3>
 
@@ -233,6 +233,8 @@ git checkout basic_components
     <span class="p">});</span>
 <span class="p">});</span>
 </code></pre></div>
+<p>After creating a new <code>spec</code> file, you will have to restart your <code>npm run test:watch</code> process. To exit it, click on the terminal it is running in and press <code>ctrl+c</code>. To start it again, press the up arrow on your keyboard and hit enter.</p>
+
 <p>Then fix the component so that the tests pass and everything looks okay in the browser:</p>
 
 <div class="fp">item_list.js</div>
@@ -503,8 +505,8 @@ git checkout basic_components
 
 <div class="fp">src/components/item_list.js</div>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">React</span> <span class="nx">from</span> <span class="s1">&#39;react&#39;</span><span class="p">;</span>
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">connect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;react-redux&#39;</span><span class="p">;</span>
-
+<span class="hll"><span class="kr">import</span> <span class="p">{</span> <span class="nx">connect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;react-redux&#39;</span><span class="p">;</span>
+</span>
 <span class="kr">import</span> <span class="p">{</span> <span class="nx">Item</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;./item&#39;</span><span class="p">;</span>
 
 <span class="kr">export</span> <span class="kr">class</span> <span class="nx">ItemList</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
@@ -536,13 +538,15 @@ git checkout basic_components
     <span class="p">});</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>Note that instead of using the name we game <code>ItemListContainer</code>, Enzyme will render this component as <code>Connect(ItemList)</code>.</p>
+<p>Note that instead of using the name we gave <code>ItemListContainer</code>, Enzyme will render this component as <code>Connect(ItemList)</code>.</p>
 
 <p>Now this test should fail, so let&#39;s make it pass by changing <code>app.js</code>:</p>
 
 <div class="fp">src/components/app.js</div>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
 
+<span class="hll"><span class="kr">import</span> <span class="p">{</span> <span class="nx">ItemListContainer</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;./item_list&#39;</span><span class="p">;</span>
+</span>
 <span class="kr">export</span> <span class="kr">class</span> <span class="nx">App</span> <span class="kr">extends</span> <span class="nx">React</span><span class="p">.</span><span class="nx">Component</span> <span class="p">{</span>
     <span class="nx">render</span><span class="p">()</span> <span class="p">{</span>
         <span class="k">return</span> <span class="p">(</span>
