@@ -21,8 +21,9 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/main.css" type="text/css">
-    <link rel="stylesheet" href="/css/syntax.css" type="text/css">
+    <link rel="stylesheet" href="/css/prism.css" type="text/css">
 
+    <script src="/js/prism.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -80,36 +81,46 @@
 <p>Add the following gems to the <code>:development</code> group in your <code>Gemfile</code>:</p>
 
 <div class="file-path">Gemfile</div>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span></span><span class="n">group</span> <span class="ss">:development</span> <span class="k">do</span>
-    <span class="c1"># ...</span>
-<span class="hll">    <span class="n">gem</span> <span class="s1">&#39;guard-livereload&#39;</span><span class="p">,</span> <span class="s1">&#39;~&gt; 2.5&#39;</span>
-</span><span class="hll">    <span class="n">gem</span> <span class="s1">&#39;rack-livereload&#39;</span><span class="p">,</span> <span class="s1">&#39;~&gt; 0.3.16&#39;</span>
-</span><span class="k">end</span>
-</code></pre></div>
+
+<pre data-line="3-4" class="line-numbers"><code class="language-ruby">group :development do
+    # ...
+    gem &#39;guard-livereload&#39;, &#39;~&gt; 2.5&#39;
+    gem &#39;rack-livereload&#39;, &#39;~&gt; 0.3.16&#39;
+end
+</code></pre>
+
 <p>Run this in your bash console:</p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>bundle install
+
+<pre data-line="" class=""><code class="language-bash">bundle install
 guard init livereload
-</code></pre></div>
+</code></pre>
+
 <p>Add one line to <code>config/environments/development.rb</code>:</p>
 
 <div class="file-path">config/environments/development.rb</div>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span></span><span class="no">Rails</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">configure</span> <span class="k">do</span>
-<span class="hll">    <span class="n">config</span><span class="o">.</span><span class="n">middleware</span><span class="o">.</span><span class="n">insert_after</span> <span class="no">ActionDispatch</span><span class="o">::</span><span class="no">Static</span><span class="p">,</span> <span class="no">Rack</span><span class="o">::</span><span class="no">LiveReload</span><span class="p">,</span> <span class="ss">host</span><span class="p">:</span> <span class="s1">&#39;YOUR CLOUD9 URL HERE&#39;</span><span class="p">,</span> <span class="ss">port</span><span class="p">:</span> <span class="mi">8081</span>
-</span>    <span class="c1"># ...</span>
-<span class="k">end</span>
-</code></pre></div>
+
+<pre data-line="2" class="line-numbers"><code class="language-ruby">Rails.application.configure do
+    config.middleware.insert_after ActionDispatch::Static, Rack::LiveReload, host: &#39;YOUR CLOUD9 URL HERE&#39;, port: 8081
+    # ...
+end
+</code></pre>
+
 <p>If you&#39;re not on Cloud9, omit the <code>host:</code> and <code>port:</code> parameters. If you are on Cloud9, enter the URL you view your application at (without the https:// part).</p>
 
 <p>If you&#39;re on Cloud9, replace this line in your <code>Guardfile</code>:</p>
 
 <div class="file-path">Guardfile</div>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span></span><span class="n">guard</span> <span class="s1">&#39;livereload&#39;</span> <span class="k">do</span>
-</code></pre></div>
+
+<pre data-line="" class="line-numbers"><code class="language-ruby">guard &#39;livereload&#39; do
+</code></pre>
+
 <p>with this line:</p>
 
 <div class="file-path">Guardfile</div>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span></span><span class="n">guard</span> <span class="s1">&#39;livereload&#39;</span><span class="p">,</span> <span class="ss">port</span><span class="p">:</span> <span class="mi">8081</span> <span class="k">do</span>
-</code></pre></div>
+
+<pre data-line="" class="line-numbers"><code class="language-ruby">guard &#39;livereload&#39;, port: 8081 do
+</code></pre>
+
 <p>Now run <code>guard</code> in your bash terminal. You should see a line that says: <code>INFO - LiveReload is waiting for a browser to connect.</code>.</p>
 
 <p>Now run your rails server. If you&#39;re on Cloud9 visit the page, but change <code>https</code> in the address bar to <code>http</code>.</p>

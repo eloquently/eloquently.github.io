@@ -21,8 +21,9 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/main.css" type="text/css">
-    <link rel="stylesheet" href="/css/syntax.css" type="text/css">
+    <link rel="stylesheet" href="/css/prism.css" type="text/css">
 
+    <script src="/js/prism.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -78,37 +79,49 @@
 <p>Version 2.x of NPM (the default that comes with a blank Cloud9 instance) creates huge <code>node_modules</code> directories. Luckily, it&#39;s easy to update NPM and reduce the size of the <code>node_modules</code> directory.</p>
 
 <p>To check the size of your directories, <code>cd</code> to the directory your project is in, and run:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>du -sh *
-</code></pre></div>
+
+<pre data-line="" class=""><code class="language-text">du -sh *
+</code></pre>
+
 <p>You should see a list that looks like this:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>4.0K    README.md
+
+<pre data-line="" class=""><code class="language-text">4.0K    README.md
 1.5M    build
 448M    node_modules
 4.0K    package.json
 32K     src
 20K     test
 4.0K    webpack.config.js
-</code></pre></div>
+</code></pre>
+
 <p>First, update NPM:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>npm install -g npm@latest
-</code></pre></div>
+
+<pre data-line="" class=""><code class="language-text">npm install -g npm@latest
+</code></pre>
+
 <p>Next, remove the <code>node_modules</code> directory of your project:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>rm -rf node_modules
-</code></pre></div>
+
+<pre data-line="" class=""><code class="language-text">rm -rf node_modules
+</code></pre>
+
 <p>Then, rebuild <code>node_modules/</code>:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>npm install
-</code></pre></div>
+
+<pre data-line="" class=""><code class="language-text">npm install
+</code></pre>
+
 <p>You should see that the directory is much smaller and that you have more available disk space!</p>
 
 <p>After compmleting these steps, <code>du -sh *</code> gives me:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>4.0K    README.md
+
+<pre data-line="" class=""><code class="language-text">4.0K    README.md
 1.5M    build
 99M     node_modules
 4.0K    package.json
 32K     src
 20K     test
 4.0K    webpack.config.js
-</code></pre></div>
+</code></pre>
+
 <p>These steps saved me 300 MB! NPM 2 installs each package&#39;s dependencies separately, so if two packages depend on the same library, you end up with two copies of it. NPM 3 doesn&#39;t install redundant packages, which can result in big file space savings.</p>
 
                     

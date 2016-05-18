@@ -21,8 +21,9 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/main.css" type="text/css">
-    <link rel="stylesheet" href="/css/syntax.css" type="text/css">
+    <link rel="stylesheet" href="/css/prism.css" type="text/css">
 
+    <script src="/js/prism.js"></script>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -78,11 +79,15 @@
 <p>We&#39;re going to practice JavaScript. This guide will cover ES6 syntax, testing with Mocha and Chai, and basic iterative and recursive arithmetic functions developed using Test Driven Development (TDD).</p>
 
 <p>Clone this repository to get started:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>git clone https://bitbucket.org/eloquently/unit_01_es6_warmup.git
-</code></pre></div>
+
+<pre data-line="" class=""><code class="language-text">git clone https://bitbucket.org/eloquently/unit_01_es6_warmup.git
+</code></pre>
+
 <p>Next, install the packages needed to run this code using the following command:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>npm install
-</code></pre></div>
+
+<pre data-line="" class=""><code class="language-text">npm install
+</code></pre>
+
 <p>Node Package Manager (npm) is the JavaScript analog to Ruby&#39;s Gem and Bundler.</p>
 
 <p>In this directory structure, our code goes in the <code>src</code> directory and the tests go in the <code>test</code> directory.</p>
@@ -98,38 +103,52 @@
 <p>Write the function in <code>index.js</code>:</p>
 
 <div class="fp">src/index.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kd">function</span> <span class="nx">increment</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">function increment(x) {
+    return x + 1;
+}
+</code></pre>
+
 <p>Let&#39;s also output the results. In JavaScript, we output results with the function <code>console.log</code>:</p>
 
 <div class="fp">src/index.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
 
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">increment</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span>
-</code></pre></div>
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+console.log(increment(1));
+</code></pre>
+
 <p>To run the JavaScript file, we will use a program called Node. To run this program, type the following command in your terminal:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>node src/index.js
-</code></pre></div>
+
+<pre data-line="" class=""><code class="language-text">node src/index.js
+</code></pre>
+
 <p>You should see the number 2 printed.</p>
 
 <p>We&#39;re going to write a test for this function. We&#39;ll write the test in another program. In order to import the function in the other program, we&#39;ll have to export it from <code>index.js</code>. To do this, simply add the word export before the function declaration:</p>
 
 <div class="fp">src/index.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">export</span> <span class="kd">function</span> <span class="nx">increment</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">export function increment(x) {
+    return x + 1;
+}
+</code></pre>
+
 <p>Now try to run the program with Node:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>node src/index.js
-</code></pre></div>
+
+<pre data-line="" class=""><code class="language-text">node src/index.js
+</code></pre>
+
 <p>We see an error. This is because the <code>export</code> syntax is part of ES6, and node cannot run ES6. To get around this, we are going to use tools called Webpack and Babel to transform our ES6 JavaScript into a form of JavaScript that Node understands. We&#39;ve already configured this application so that you just need to run this command to compile your <code>index.js</code> file and all the packages and other files it depends on into a single file called <code>bundle.js</code>:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>npm run webpack
-</code></pre></div>
+
+<pre data-line="" class=""><code class="language-text">npm run webpack
+</code></pre>
+
 <p>Now run this command in the terminal to run your program:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>node build/bundle.js
-</code></pre></div>
+
+<pre data-line="" class=""><code class="language-text">node build/bundle.js
+</code></pre>
+
 <p>The program should run as normal again.</p>
 
 <p>If you don&#39;t want to type <code>npm run webpack</code> each time you change your files, open a new terminal and run <code>npm run webpack:watch</code>. Make sure your new terminal is in the correct directory. This process will watch your files and run webpack each time they are saved.</p>
@@ -137,10 +156,12 @@
 <p>Open <code>test/index_spec.js</code> and add the following line:</p>
 
 <div class="fp">test/index_spec.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;chai&#39;</span><span class="p">;</span>
 
-<span class="hll"><span class="kr">import</span> <span class="p">{</span> <span class="nx">increment</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;../src/index.js&#39;</span><span class="p">;</span>
-</span></code></pre></div>
+<pre data-line="3" class="line-numbers"><code class="language-js">import { expect } from &#39;chai&#39;;
+
+import { increment } from &#39;../src/index.js&#39;;
+</code></pre>
+
 <p>Now we have access to the <code>increment</code> function from this test file. Every time you want to access a function or class from another file, you will need to export it from the file it is defined in and import it in the file you want to use it in.</p>
 
 <p>We will use <code>describe()</code> and <code>it()</code> to keep our tests organized. Each nested <code>describe()</code> will show up indented one level in the tests. The first argument passed to <code>describe</code> is the name of the thing we are testing. Nothing magical happens with the name string, so feel free to type whatever you want. The second argument is a function that contains more <code>describe</code> blocks or tests.</p>
@@ -150,16 +171,18 @@
 <p>Here&#39;s how we&#39;ll set up the first test:</p>
 
 <div class="fp">test/index_spec.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
 
-<span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;index.js&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;increment()&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;adds 1 to the parameter&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-            <span class="nx">expect</span><span class="p">(</span><span class="nx">increment</span><span class="p">(</span><span class="mi">1</span><span class="p">)).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-        <span class="p">});</span>
-    <span class="p">});</span>
-<span class="p">});</span>
-</code></pre></div>
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+describe(&#39;index.js&#39;, () =&gt; {
+    describe(&#39;increment()&#39;, () =&gt; {
+        it(&#39;adds 1 to the parameter&#39;, () =&gt; {
+            expect(increment(1)).to.eq(2);
+        });
+    });
+});
+</code></pre>
+
 <p>We can read this test like this:</p>
 
 <ul>
@@ -181,66 +204,78 @@
 <p>All test files will have this basic structure. There is nothing magical about any of the strings in the above test file. You can write any thing you want and the tests will still behave the same way -- they only affect how the tests are output to the console.</p>
 
 <p>After saving the test file, we run the test by typing the following command in the terminal:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>npm run test
-</code></pre></div>
+
+<pre data-line="" class=""><code class="language-text">npm run test
+</code></pre>
+
 <p>You should see that the test passes.</p>
 
 <p>Similar to <code>webpack</code>, we&#39;ve provided you with a &quot;watch&quot; version of the run test command that will run your tests each time a file is saved:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>npm run test:watch
-</code></pre></div>
+
+<pre data-line="" class=""><code class="language-text">npm run test:watch
+</code></pre>
+
 <p>Let&#39;s write another test for this function. We want to ensure that it works when the parameter is negative.</p>
 
 <div class="fp">test/index_spec.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
 
-<span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;index.js&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;increment()&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;adds 1 to the parameter&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-            <span class="nx">expect</span><span class="p">(</span><span class="nx">increment</span><span class="p">(</span><span class="mi">1</span><span class="p">)).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-        <span class="p">});</span>
+<pre data-line="9-11" class="line-numbers"><code class="language-js">// ...
 
-<span class="hll">        <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;works with negative numbers&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-</span><span class="hll">            <span class="nx">expect</span><span class="p">(</span><span class="nx">increment</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">)).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="cm">/*Insert number here*/</span><span class="p">);</span>
-</span><span class="hll">        <span class="p">});</span>
-</span>    <span class="p">});</span>
-<span class="p">});</span>
-</code></pre></div>
+describe(&#39;index.js&#39;, () =&gt; {
+    describe(&#39;increment()&#39;, () =&gt; {
+        it(&#39;adds 1 to the parameter&#39;, () =&gt; {
+            expect(increment(1)).to.eq(2);
+        });
+
+        it(&#39;works with negative numbers&#39;, () =&gt; {
+            expect(increment(-5)).to.eq(/*Insert number here*/);
+        });
+    });
+});
+</code></pre>
+
 <p>Now that we&#39;ve completed the first function, let&#39;s stage our code and then commit:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text"><span></span>git add -A
+
+<pre data-line="" class=""><code class="language-text">git add -A
 git commit -m &quot;increment function&quot;
-</code></pre></div>
+</code></pre>
+
 <p>Now we want to write another function: <code>add</code>. This function will take two numbers and return their sum. For the sake of the exercise, it is not allowed to use the <code>+</code> operator -- only the <code>increment</code> function we&#39;ve already written and loops and if statements. First, let&#39;s write a test for the function. You&#39;ll also need to import the <code>add</code> function at the top of the test file.</p>
 
 <div class="fp">test/index_spec.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;chai&#39;</span><span class="p">;</span>
 
-<span class="hll"><span class="kr">import</span> <span class="p">{</span> <span class="nx">increment</span><span class="p">,</span> <span class="nx">add</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;../src/index.js&#39;</span><span class="p">;</span>
-</span>
-<span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;index.js&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;increment()&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="c1">// ...</span>
-    <span class="p">});</span>
+<pre data-line="3,10-14" class="line-numbers"><code class="language-js">import { expect } from &#39;chai&#39;;
 
-<span class="hll">    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;add()&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-</span><span class="hll">        <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;adds two parameters&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-</span><span class="hll">            <span class="nx">expect</span><span class="p">(</span><span class="nx">add</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">)).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
-</span><span class="hll">        <span class="p">});</span>
-</span><span class="hll">    <span class="p">});</span>
-</span><span class="p">});</span>
-</code></pre></div>
+import { increment, add } from &#39;../src/index.js&#39;;
+
+describe(&#39;index.js&#39;, () =&gt; {
+    describe(&#39;increment()&#39;, () =&gt; {
+        // ...
+    });
+
+    describe(&#39;add()&#39;, () =&gt; {
+        it(&#39;adds two parameters&#39;, () =&gt; {
+            expect(add(4, 6)).to.eq(10);
+        });
+    });
+});
+</code></pre>
+
 <p>Now, let&#39;s write a function that will get the test to pass:</p>
 
 <div class="fp">src/index.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
 
-<span class="kr">export</span> <span class="kd">function</span> <span class="nx">add</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">let</span> <span class="nx">solution</span> <span class="o">=</span> <span class="nx">x</span><span class="p">;</span>
-    <span class="k">for</span><span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">y</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">solution</span> <span class="o">=</span> <span class="nx">increment</span><span class="p">(</span><span class="nx">solution</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="nx">solution</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div>
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+export function add(x, y) {
+    let solution = x;
+    for(let i = 0; i &lt; y; i++) {
+        solution = increment(solution);
+    }
+    return solution;
+}
+</code></pre>
+
 <p>What is this function doing? First it creates a variable called <code>solution</code> and sets it equal to <code>x</code>, the first parameter. Then it starts a loop. <code>for</code> loops are very common in JavaScript. This loop takes three lines of code. It runs the first statement (<code>let i = 0</code>) before starting the loop. This statement creates a variable <code>i</code> and sets it initial value to <code>0</code>. Then, at the start of each iteration of the loop (including the first one), it checks to see if <code>i</code> is less than <code>y</code>. If it is, it runs the body of the loop. After running through the body of the loop, it runs the third statement (<code>i++</code>). This statement adds one to <code>i</code> and saves that value. <code>i++</code> is equivalent to <code>i += 1</code>, which is equivalent to <code>i = i + 1</code> (we could also write it as <code>increment(i)</code>). It will continue looping until the condition in the second statement is false.</p>
 
 <p>In English, a terse description of this function would be &quot;increment <code>x</code> <code>y</code> times&quot;. A more detailed description would be:</p>
@@ -260,166 +295,184 @@ git commit -m &quot;increment function&quot;
 <p>Let&#39;s add another test for <code>add()</code>:</p>
 
 <div class="fp">test/index_spec.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">//...</span>
 
-<span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;index.js&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="c1">// ...</span>
+<pre data-line="9-11" class="line-numbers"><code class="language-js">//...
 
-    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;add()&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="c1">// ...</span>
+describe(&#39;index.js&#39;, () =&gt; {
+    // ...
 
-<span class="hll">        <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;works if second parameter is 0&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-</span><span class="hll">            <span class="nx">expect</span><span class="p">(</span><span class="nx">add</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">)).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
-</span><span class="hll">        <span class="p">});</span>
-</span>    <span class="p">});</span>
-<span class="p">});</span>
-</code></pre></div>
+    describe(&#39;add()&#39;, () =&gt; {
+        // ...
+
+        it(&#39;works if second parameter is 0&#39;, () =&gt; {
+            expect(add(4, 0)).to.eq(4);
+        });
+    });
+});
+</code></pre>
+
 <p>This test should pass with the method as it is currently written.</p>
 
 <p>Now let&#39;s add another test:</p>
 
 <div class="fp">test/index_spec.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">//...</span>
 
-<span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;index.js&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="c1">// ...</span>
+<pre data-line="9-11" class="line-numbers"><code class="language-js">//...
 
-    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;add()&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="c1">// ...</span>
+describe(&#39;index.js&#39;, () =&gt; {
+    // ...
 
-<span class="hll">        <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;works if first parameter is negative&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-</span><span class="hll">            <span class="nx">expect</span><span class="p">(</span><span class="nx">add</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">)).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-</span><span class="hll">        <span class="p">});</span>
-</span>    <span class="p">});</span>
-<span class="p">});</span>
-</code></pre></div>
+    describe(&#39;add()&#39;, () =&gt; {
+        // ...
+
+        it(&#39;works if first parameter is negative&#39;, () =&gt; {
+            expect(add(-2, 4)).to.eq(2);
+        });
+    });
+});
+</code></pre>
+
 <p>This test should also pass. Now another:</p>
 
 <div class="fp">test/index_spec.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">//...</span>
 
-<span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;index.js&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="c1">// ...</span>
+<pre data-line="9-11" class="line-numbers"><code class="language-js">//...
 
-    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;add()&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="c1">// ...</span>
+describe(&#39;index.js&#39;, () =&gt; {
+    // ...
 
-<span class="hll">        <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;works if second parameter is negative&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-</span><span class="hll">            <span class="nx">expect</span><span class="p">(</span><span class="nx">add</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">)).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-</span><span class="hll">        <span class="p">});</span>
-</span>    <span class="p">});</span>
-<span class="p">});</span>
-</code></pre></div>
+    describe(&#39;add()&#39;, () =&gt; {
+        // ...
+
+        it(&#39;works if second parameter is negative&#39;, () =&gt; {
+            expect(add(4, -3)).to.eq(1);
+        });
+    });
+});
+</code></pre>
+
 <p>Uh oh! This test failed. It says the actual value we got was <code>4</code> but the expected value was <code>1</code>. Let&#39;s fix this. We&#39;ll fix it by creating a <code>decrement</code> function that looks like the <code>increment</code> function:</p>
 
 <p>Let&#39;s first write some tests so that we understand what <code>decrement()</code> does:</p>
 
 <div class="fp">test/index_spec.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
 
-<span class="hll"><span class="kr">import</span> <span class="p">{</span> <span class="nx">increment</span><span class="p">,</span> <span class="nx">add</span><span class="p">,</span> <span class="nx">decrement</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;../src/index.js&#39;</span><span class="p">;</span>
-</span>
-<span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;index.js&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;increment()&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="c1">// ...</span>
-    <span class="p">});</span>
+<pre data-line="3,10-18" class="line-numbers"><code class="language-js">// ...
 
-<span class="hll">    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;decrement()&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-</span><span class="hll">        <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;subtracts 1 from the parameter&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-</span><span class="hll">            <span class="nx">expect</span><span class="p">(</span><span class="nx">decrement</span><span class="p">(</span><span class="mi">3</span><span class="p">)).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="cm">/* Insert number here */</span><span class="p">);</span>
-</span><span class="hll">        <span class="p">});</span>
-</span><span class="hll">
-</span><span class="hll">        <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;works with negative numbers&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-</span><span class="hll">            <span class="cm">/* Write this test yourself! */</span>
-</span><span class="hll">        <span class="p">});</span>
-</span><span class="hll">    <span class="p">});</span>
-</span>
-    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;add()&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="c1">// ...</span>
-    <span class="p">});</span>
-<span class="p">});</span>
-</code></pre></div>
+import { increment, add, decrement } from &#39;../src/index.js&#39;;
+
+describe(&#39;index.js&#39;, () =&gt; {
+    describe(&#39;increment()&#39;, () =&gt; {
+        // ...
+    });
+
+    describe(&#39;decrement()&#39;, () =&gt; {
+        it(&#39;subtracts 1 from the parameter&#39;, () =&gt; {
+            expect(decrement(3)).to.eq(/* Insert number here */);
+        });
+
+        it(&#39;works with negative numbers&#39;, () =&gt; {
+            /* Write this test yourself! */
+        });
+    });
+
+    describe(&#39;add()&#39;, () =&gt; {
+        // ...
+    });
+});
+</code></pre>
+
 <p>Now add <code>decrement()</code> to <code>index.js</code>:</p>
 
 <div class="fp">src/index.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">export</span> <span class="kd">function</span> <span class="nx">increment</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// ...</span>
-<span class="p">}</span>
 
-<span class="hll"><span class="kr">export</span> <span class="kd">function</span> <span class="nx">decrement</span><span class="p">(</span><span class="nx">x</span><span class="p">)</span> <span class="p">{</span>
-</span><span class="hll">    <span class="cm">/* Write this function */</span>
-</span><span class="hll"><span class="p">}</span>
-</span>
-<span class="kr">export</span> <span class="kd">function</span> <span class="nx">add</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">// ...</span>
-<span class="p">}</span>
-</code></pre></div>
+<pre data-line="5-7" class="line-numbers"><code class="language-js">export function increment(x) {
+    // ...
+}
+
+export function decrement(x) {
+    /* Write this function */
+}
+
+export function add(x, y) {
+    // ...
+}
+</code></pre>
+
 <p>Now we&#39;re ready to fix our add function so it will work when <code>y</code> is negative:</p>
 
 <div class="fp">src/index.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
 
-<span class="kr">export</span> <span class="kd">function</span> <span class="nx">add</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kd">let</span> <span class="nx">solution</span> <span class="o">=</span> <span class="nx">x</span><span class="p">;</span>
-    <span class="k">if</span><span class="p">(</span><span class="nx">y</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">for</span><span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">y</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">solution</span> <span class="o">=</span> <span class="nx">increment</span><span class="p">(</span><span class="nx">solution</span><span class="p">);</span>
-        <span class="p">}</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-        <span class="k">for</span><span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">y</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-            <span class="cm">/* Fill in the blank */</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="nx">solution</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div>
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+export function add(x, y) {
+    let solution = x;
+    if(y &gt;= 0) {
+        for(let i = 0; i &lt; y; i++) {
+            solution = increment(solution);
+        }
+    } else {
+        for(let i = y; i &lt; 0; i++) {
+            /* Fill in the blank */
+        }
+    }
+    return solution;
+}
+</code></pre>
+
 <p>After the tests pass, commit your code!</p>
 
 <p>Now it&#39;s time to for you to write a <code>multiply</code> function. Your multiply function should only use the <code>add</code> function we wrote before and loops and if statements. You are also allowed to make a positive number negative (such as <code>-x</code>). Like <code>add()</code> it should work when either of the parameters are negative or when they are 0. You should write the tests before writing the function:</p>
 
 <div class="fp">test/index_spec.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">import</span> <span class="p">{</span> <span class="nx">expect</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;chai&#39;</span><span class="p">;</span>
 
-<span class="kr">import</span> <span class="p">{</span> <span class="nx">increment</span><span class="p">,</span> <span class="nx">add</span><span class="p">,</span> <span class="nx">decrement</span><span class="p">,</span> <span class="nx">multiply</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;../src/index.js&#39;</span><span class="p">;</span>
+<pre data-line="" class="line-numbers"><code class="language-js">import { expect } from &#39;chai&#39;;
 
-<span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;index.js&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="c1">// ...</span>
+import { increment, add, decrement, multiply } from &#39;../src/index.js&#39;;
 
-    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;multiply()&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="cm">/* Write tests for multiply here. */</span>
-        <span class="cm">/* You should have tests for when the parameters are negative and 0 */</span>
-        <span class="cm">/* Feel free to borrow code from the tests we wrote for add() */</span>
-    <span class="p">});</span>
-<span class="p">});</span>
-</code></pre></div>
+describe(&#39;index.js&#39;, () =&gt; {
+    // ...
+
+    describe(&#39;multiply()&#39;, () =&gt; {
+        /* Write tests for multiply here. */
+        /* You should have tests for when the parameters are negative and 0 */
+        /* Feel free to borrow code from the tests we wrote for add() */
+    });
+});
+</code></pre>
+
 <p>If you are having trouble with the function, think about how you would solve 5 * 2 if you only knew how to add. How would you solve 5 * 3? How about 5 * 4?</p>
 
 <p>Once you have a guess, try writing the function. You don&#39;t need all the tests to pass right away -- it&#39;s okay to solve them one at a time.</p>
 
 <div class="fp">src/index.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
 
-<span class="kr">export</span> <span class="kd">function</span> <span class="nx">multiply</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
-    <span class="cm">/* Multiply code goes here */</span>
-<span class="p">}</span>
-</code></pre></div>
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+export function multiply(x, y) {
+    /* Multiply code goes here */
+}
+</code></pre>
+
 <p>After you get all the tests to pass, commit your code!</p>
 
 <p>Finally, we want to practice recursion. We could write the <code>add()</code> as a recursive function instead of an interative one (iterative usually means that it uses a loop). A recursive function is one that calls itself. This is what the <code>add</code> function would look like if it was written recursively:</p>
 
 <div class="fp">src/index.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">export</span> <span class="kd">function</span> <span class="nx">add</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span><span class="p">(</span><span class="nx">y</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">x</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">y</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">increment</span><span class="p">(</span><span class="nx">add</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">decrement</span><span class="p">(</span><span class="nx">y</span><span class="p">)));</span>
-    <span class="p">}</span>
-    <span class="k">else</span> <span class="p">{</span>
-        <span class="cm">/* What goes here? */</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">export function add(x, y) {
+    if(y == 0) {
+        return x;
+    }
+    else if(y &gt; 0) {
+        return increment(add(x, decrement(y)));
+    }
+    else {
+        /* What goes here? */
+    }
+}
+</code></pre>
+
 <p>All the tests for <code>add()</code> should pass.</p>
 
 <p>Now refactor your multiply function so that it is recursive rather than iterative.</p>
@@ -437,134 +490,152 @@ git commit -m &quot;increment function&quot;
 <p>Let&#39;s practice this by writing a function that adds 1 to each element in an array. First the test:</p>
 
 <div class="fp">test/index_spec.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
 
-<span class="hll"><span class="kr">import</span> <span class="p">{</span> <span class="nx">increment</span><span class="p">,</span> <span class="nx">add</span><span class="p">,</span> <span class="nx">decrement</span><span class="p">,</span>
-</span><span class="hll">         <span class="nx">multiply</span><span class="p">,</span> <span class="nx">incrementEach</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;../src/index.js&#39;</span><span class="p">;</span>
-</span>
-<span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;index.js&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="c1">// ...</span>
+<pre data-line="3-4,9-13" class="line-numbers"><code class="language-js">// ...
 
-<span class="hll">    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;incrementEach()&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-</span><span class="hll">        <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;increases each element&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-</span><span class="hll">            <span class="nx">expect</span><span class="p">(</span><span class="nx">incrementEach</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eql</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]);</span>
-</span><span class="hll">        <span class="p">});</span>
-</span><span class="hll">    <span class="p">});</span>
-</span><span class="p">});</span>
-</code></pre></div>
+import { increment, add, decrement,
+         multiply, incrementEach } from &#39;../src/index.js&#39;;
+
+describe(&#39;index.js&#39;, () =&gt; {
+    // ...
+
+    describe(&#39;incrementEach()&#39;, () =&gt; {
+        it(&#39;increases each element&#39;, () =&gt; {
+            expect(incrementEach([1, 2, 3])).to.eql([2, 3, 4]);
+        });
+    });
+});
+</code></pre>
+
 <p>In this test, we use <code>eql()</code> instead of <code>eq()</code>. When comparing two arrays with <code>eq()</code> it will check to see if their references are equal (i.e. they point to same place in memory). When comparing two arrays with <code>eql()</code>, Chai will check that their values are the same.</p>
 
 <p>Now for the short-hand function call:</p>
 
 <div class="fp">src/index.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
 
-<span class="kr">export</span> <span class="kd">function</span> <span class="nx">incrementEach</span><span class="p">(</span><span class="nx">array</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">array</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">element</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">element</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
-<span class="p">}</span>
-</code></pre></div>
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+export function incrementEach(array) {
+    return array.map((element) =&gt; element + 1);
+}
+</code></pre>
+
 <p>In this case, our function is only one line and it returns the value calculated. This means we can omit the <code>{}</code>s and the <code>return</code>.</p>
 
 <p>Now you try implementing a <code>decrementEach</code> function. First the test:</p>
 
 <div class="fp">test/index_spec.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
 
-<span class="hll"><span class="kr">import</span> <span class="p">{</span> <span class="nx">increment</span><span class="p">,</span> <span class="nx">add</span><span class="p">,</span> <span class="nx">decrement</span><span class="p">,</span>
-</span><span class="hll">         <span class="nx">multiply</span><span class="p">,</span> <span class="nx">incrementEach</span><span class="p">,</span> <span class="nx">decrementEach</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">&#39;../src/index.js&#39;</span><span class="p">;</span>
-</span>
-<span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;index.js&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="c1">// ...</span>
+<pre data-line="3-4,9-13" class="line-numbers"><code class="language-js">// ...
 
-<span class="hll">    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;decrementEach()&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-</span><span class="hll">        <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;decreases each element&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-</span><span class="hll">            <span class="nx">expect</span><span class="p">(</span><span class="nx">decrementEach</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eql</span><span class="p">(</span><span class="cm">/* Fill in the blank */</span><span class="p">);</span>
-</span><span class="hll">        <span class="p">});</span>
-</span><span class="hll">    <span class="p">});</span>
-</span><span class="p">});</span>
-</code></pre></div>
+import { increment, add, decrement,
+         multiply, incrementEach, decrementEach } from &#39;../src/index.js&#39;;
+
+describe(&#39;index.js&#39;, () =&gt; {
+    // ...
+
+    describe(&#39;decrementEach()&#39;, () =&gt; {
+        it(&#39;decreases each element&#39;, () =&gt; {
+            expect(decrementEach([1, 2, 3])).to.eql(/* Fill in the blank */);
+        });
+    });
+});
+</code></pre>
+
 <p>Now the method:</p>
 
 <div class="fp">src/index.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
 
-<span class="kr">export</span> <span class="kd">function</span> <span class="nx">decrementEach</span><span class="p">(</span><span class="nx">array</span><span class="p">)</span> <span class="p">{</span>
-    <span class="cm">/* Fill in the blank */</span>
-<span class="p">}</span>
-</code></pre></div>
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+export function decrementEach(array) {
+    /* Fill in the blank */
+}
+</code></pre>
+
 <h4>Multiple Assignment</h4>
 
 <p>If we wanted to assign multiple variables to the results of a function that returns an array, <code>ES6</code> allows us to do so very easily. Here&#39;s what it looks like:</p>
 
 <div class="fp">test/index_spec.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
 
-<span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;index.js&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="c1">// ...</span>
+<pre data-line="9-13" class="line-numbers"><code class="language-js">// ...
 
-    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;incrementEach()&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="c1">// ...</span>
+describe(&#39;index.js&#39;, () =&gt; {
+    // ...
 
-<span class="hll">        <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;multiple assignment example&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-</span><span class="hll">            <span class="kr">const</span> <span class="p">[</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">]</span> <span class="o">=</span> <span class="nx">incrementEach</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]);</span>
-</span><span class="hll">            <span class="nx">expect</span><span class="p">(</span><span class="nx">a</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="mi">11</span><span class="p">);</span>
-</span><span class="hll">            <span class="nx">expect</span><span class="p">(</span><span class="nx">b</span><span class="p">).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eq</span><span class="p">(</span><span class="mi">21</span><span class="p">);</span>
-</span><span class="hll">        <span class="p">});</span>
-</span>    <span class="p">});</span>
+    describe(&#39;incrementEach()&#39;, () =&gt; {
+        // ...
 
-    <span class="c1">// ...</span>
-<span class="p">});</span>
-</code></pre></div>
+        it(&#39;multiple assignment example&#39;, () =&gt; {
+            const [a, b] = incrementEach([10, 20]);
+            expect(a).to.eq(11);
+            expect(b).to.eq(21);
+        });
+    });
+
+    // ...
+});
+</code></pre>
+
 <h4><code>const</code> vs. <code>let</code></h4>
 
 <p>In ES6, we have to declare variables when they are set for the first time (or before). We do this by using <code>let</code> or <code>const</code>. If an object will change references (or a primitive will change values), use <code>let</code>. Otherwise use <code>const</code>. Using <code>const</code> with objects (such as arrays) can be confusing because a <code>const</code> object is allowed to mutuate. <code>const</code> just means that the variable can&#39;t start pointing to a new object.</p>
 
 <p>Here are some examples:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">const</span> <span class="nx">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-<span class="nx">a</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// NOT ALLOWED</span>
 
-<span class="kd">let</span> <span class="nx">b</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-<span class="nx">b</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span> <span class="c1">// ALLOWED</span>
+<pre data-line="" class="line-numbers"><code class="language-js">const a = 1;
+a += 1; // NOT ALLOWED
 
-<span class="kr">const</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">];</span>
-<span class="nx">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span> <span class="c1">// ALLOWED</span>
-<span class="nx">arr</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span> <span class="c1">// ALLOWED</span>
-<span class="nx">arr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">];</span> <span class="c1">// NOT ALLOWED</span>
-<span class="nx">arr</span> <span class="o">=</span> <span class="nx">arr</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">el</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">el</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span> <span class="c1">// NOT ALLOWED</span>
+let b = 1;
+b += 1; // ALLOWED
 
-<span class="kr">const</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;a&quot;</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="o">:</span> <span class="mi">2</span> <span class="p">}</span>
-<span class="nx">obj</span><span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span> <span class="c1">// Allowed</span>
-<span class="nx">obj</span><span class="p">[</span><span class="s2">&quot;newKey&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span> <span class="c1">// Allowed</span>
-<span class="nx">obj</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;a&quot;</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;newKey&quot;</span><span class="o">:</span> <span class="mi">3</span> <span class="p">};</span> <span class="c1">// NOT ALLOWED</span>
-</code></pre></div>
+const arr = [1, 2, 3];
+arr[0] = 10; // ALLOWED
+arr.push(4); // ALLOWED
+arr = [4, 5, 6]; // NOT ALLOWED
+arr = arr.map((el) =&gt; el + 1); // NOT ALLOWED
+
+const obj = { &quot;a&quot;: 1, &quot;b&quot;: 2 }
+obj[&quot;a&quot;] = 10; // Allowed
+obj[&quot;newKey&quot;] = 3; // Allowed
+obj = { &quot;a&quot;: 1, &quot;b&quot;: 2, &quot;newKey&quot;: 3 }; // NOT ALLOWED
+</code></pre>
+
 <h4>Spread Operator</h4>
 
 <p>We could write our <code>decrementEach</code> function so that it takes a list of parameters rather than an array using a &quot;spread&quot; operator (Ruby calls this a &quot;splat&quot; operator). Here&#39;s what the method would look like:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">export</span> <span class="kd">function</span> <span class="nx">decrementEach</span><span class="p">(...</span><span class="nx">array</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">array</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">element</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">element</span> <span class="o">-</span> <span class="mi">1</span><span class="p">);</span>
-<span class="p">}</span>
 
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">decrementEach</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">));</span> <span class="c1">// =&gt; [0, 1]</span>
-</code></pre></div>
+<pre data-line="" class="line-numbers"><code class="language-js">export function decrementEach(...array) {
+    return array.map((element) =&gt; element - 1);
+}
+
+console.log(decrementEach(1, 2)); // =&gt; [0, 1]
+</code></pre>
+
 <p>As shown above, to call the method, we can no longer pass an array. We have to pass a list of parameters. We would have to rewrite our test to look like this:</p>
 
 <div class="fp">test/index_spec.js</div>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="c1">// ...</span>
 
-<span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;index.js&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="c1">// ...</span>
+<pre data-line="8" class="line-numbers"><code class="language-js">// ...
 
-    <span class="nx">describe</span><span class="p">(</span><span class="s1">&#39;decrementEach()&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;decreases each element&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-<span class="hll">            <span class="nx">expect</span><span class="p">(</span><span class="nx">decrementEach</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)).</span><span class="nx">to</span><span class="p">.</span><span class="nx">eql</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]);</span>
-</span>        <span class="p">});</span>
-    <span class="p">});</span>
-<span class="p">});</span>
-</code></pre></div>
+describe(&#39;index.js&#39;, () =&gt; {
+    // ...
+
+    describe(&#39;decrementEach()&#39;, () =&gt; {
+        it(&#39;decreases each element&#39;, () =&gt; {
+            expect(decrementEach(1, 2, 3)).to.eql([0, 1, 2]);
+        });
+    });
+});
+</code></pre>
+
 <p>We can also use the spread operator to call a method that takes a list of parameters when we have those parameters in an array:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="kr">const</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">];</span>
-<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">decrementEach</span><span class="p">(...</span><span class="nx">arr</span><span class="p">));</span> <span class="c1">// =&gt; [0, 1, 2]</span>
-</code></pre></div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">const arr = [1, 2, 3];
+console.log(decrementEach(...arr)); // =&gt; [0, 1, 2]
+</code></pre>
+
                     
                         <hr />
                         <p>Eloquently is a recruiting firm. We also host workshops that teach web development and career skills. If you are looking for a job or are interested in joining our web development workshops, please <a href="/index#contact">contact us</a>!</p>
