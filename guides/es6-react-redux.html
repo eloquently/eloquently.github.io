@@ -523,7 +523,7 @@ npm install
 </code></pre></div>
 <p>Now instead of rendering <code>&lt;ItemList /&gt;</code> in <code>&lt;App /&gt;</code>, we want to render <code>&lt;ItemListContainer /&gt;</code> without giving it any props. Let&#39;s first change our tests for the <code>App</code> component.</p>
 
-<p>Let&#39;s change the last test in <code>app_spec.js</code>:</p>
+<p>Let&#39;s change the last test in <code>app_spec.js</code>, and delete the test for <code>ItemList</code>&#39;s props (the second the last test).</p>
 
 <div class="fp">test/components/app_spec.js</div>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// ...</span>
