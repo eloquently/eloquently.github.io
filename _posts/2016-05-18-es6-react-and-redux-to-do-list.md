@@ -7,6 +7,8 @@ permalink: 'guides/es6-react-redux'
 
 ## React and Redux
 
+<hr class="left" />
+
 This guide adds Redux to a simple React to-do list application that has already been built. The starting point for this code is the `basic_components` branch of [this repository](https://github.com/eloquently/redux-todo-guide). This guide will walk through applying Redux to that to-do list application.
 
 To get started, clone the repository, checkout the `basic_components` branch, and install the dependencies.
