@@ -104,7 +104,7 @@ The first step is to install the necessary Babel packages as development depende
 npm install --save-dev babel-core babel-loader babel-preset-es2015 babel-preset-react
 ```
 
-Now let's create a config file to tell Webpack which files to read and write. Our config file will also tell Webpack to use Babel when it encounters files that end with `.js` or `.jsx`.
+Now let's create a config file to tell Webpack which files to read and write. Our config file will also tell Webpack to use Babel when it encounters files that end with `.js` or `.jsx`. The config file will be called `webpack.config.js` and it will be in the root directory of your project (the `react_blackjack/` in my setup).
 
 When Webpack compiles the application, it will start with the file: `./app/index.js` (yet to be created). We specify this with `entry`. `entry` can also be an array of files, but at this point, we just need a single entry point.
 
@@ -205,7 +205,7 @@ Instead of typing out `node_modules/.bin/webpack` each time we want to build the
 }
 ```
 
-Now we can create `bundle.js` by running `npm run webpack` and if we ant `webpack` to update `bundle.js` each time we save a file, we can run `npm run webpack:watch`
+Now we can create `bundle.js` by running `npm run webpack` and if we want Webpack to update `bundle.js` each time we save a file, we can run `npm run webpack:watch`
 
 #### Talking Through the First Build
 
@@ -1106,7 +1106,7 @@ Our tests pass, but if we look at our application in the browser, it is not very
 
 #### SASS
 
-First we need to configure `webpack` to compile our `.scss` files to `.sass`. Previously, we set up `babel` to transform our ES6 `.js` files. We are going to do something similar for our (not yet created) `.scss` files. First let's install `sass-loader` and `node-sass`:
+First we need to configure Webpack to compile our `.scss` files to `.sass`. Previously, we set up `babel` to transform our ES6 `.js` files. We are going to do something similar for our (not yet created) `.scss` files. First let's install `sass-loader` and `node-sass`:
 
 ```
 npm install --save-dev style-loader css-loader sass-loader node-sass
@@ -1139,13 +1139,12 @@ module.exports = {
 };
 ```
 
-Now, `webpack` will build our `.scss` files. We've also turned on "source maps", which tell the inspect tool on our browsers which `.scss` file each style comes from. Source maps can slow down build times if you have a large application, but they make debugging much easier.
+Now, Webpack will build our `.scss` files. We've also turned on "source maps", which tell the inspect tool on our browsers which `.scss` file each style comes from. Source maps can slow down build times if you have a large application, but they make debugging much easier.
 
 Now we can start making stylesheet files. We'll have a `main.scss` file that is only responsible for importing all of the other `.scss` files in our application.
 
+<div class="fp">app/css/main.scss</div>
 ```scss
-/* app/css/main.scss */
-
 @import 'components/all';
 ```
 
@@ -1155,17 +1154,15 @@ The `components/` directory will have a file called `_all.scss` that imports eac
 
 The `_all.scss` file looks like this:
 
+<div class="fp">app/css/components/_all.scss</div>
 ```scss
-/* app/css/components/_all.scss */
-
 @import 'card';
 ```
 
 And now we can create a `card.scss` file:
 
+<div class="fp">app/css/components/card.scss</div>
 ```scss
-/* app/css/components/card.scss */
-
 .card {
     background-color: blanchedalmond;
     /* Yes -- blanchedalmond is a real color name */
@@ -1292,9 +1289,8 @@ Once you see the application, try changing the `background-color` in `app/css/co
 
 We're not going to go into much depth with SASS. Feel free to use my stylesheet or tweak it however you want. Here's mine:
 
+<div class="fp">app/css/components/card.scss</div>
 ```scss
-/* app/css/components/card.scss */
-
 .card {
     display: inline-block;
     border: 1px solid black;
@@ -1363,18 +1359,16 @@ Notice that as you change this file, your browser reloads the stylesheet without
 
 Let's also put a little bit of styling on the `Info` component. First, we need to change `components/_all.scss`:
 
+<div class="fp">app/css/components/_all.scss</div>
 ```scss
-/* app/css/components/_all.scss */
-
 @import 'card';
 @import 'info';
 ```
 
 Then we can create an `info.scss` file and give it some styles. I'm just going to space things out a little bit.
 
+<div class="fp">app/css/components/info.scss</div>
 ```scss
-/* app/css/components/info.scss */
-
 #info {
     margin-bottom: 10px;
 
