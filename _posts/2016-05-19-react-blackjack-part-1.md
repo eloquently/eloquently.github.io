@@ -138,6 +138,18 @@ module.exports = {
 };
 ```
 
+We also need to tell Babel which presets to use while transforming our code in `package.json` so that we'll get the correct transformations when we run other scripts (such as tests). We do this in the `package.json` file:
+
+<div class="fp">package.json</div>
+```js
+{
+    //...
+    "babel": {
+        "presets": ["es2015", "react"]
+    }
+}
+```
+
 ### A First Build
 
 Let's do the first build of our application. We're going to need a few more directories and files.
@@ -312,7 +324,9 @@ ReactDOM.render(
 );
 ```
 
-If you open the page in your browser and open the JavaScript console (`ctrl` + `shift` + `j` on Windows), you should see a `List`. Since we're dealing with ImmutableJS objects rather than native JavaScript objects and arrays, it's hard to view them in the console. To fix that, I installed a [chrome extension](https://chrome.google.com/webstore/detail/immutablejs-object-format/hgldghadipiblonfkkicmgcbbijnpeog) that gives a custom formatter for ImmutableJS objects. After you install it, you may need to close the developer tools console and refresh the page (or close the tab and open a new one). You will also need to enable custom formatters in the developer tools options (access this by pressing `F1` after clicking somewhere in the developer tools console).
+Try opening the `index.html` page in your browser. In Cloud9, you can do this by right clicking the `index.html` file and selecting preview. In the new window that pops up, click the button next to the settings button in the top right. If you're not on Cloud9, you can just choose "Open File" from the menu in your browser and find `index.html`.
+
+Once you have the page open, open the Console tab in the developer tools (`ctrl` + `shift` + `j` on Windows), you should see a `List`. Since we're dealing with ImmutableJS objects rather than native JavaScript objects and arrays, it's hard to view them in the console. To fix that, I installed a [chrome extension](https://chrome.google.com/webstore/detail/immutablejs-object-format/hgldghadipiblonfkkicmgcbbijnpeog) that gives a custom formatter for ImmutableJS objects. After you install it, you may need to close the developer tools console and refresh the page (or close the tab and open a new one). You will also need to enable custom formatters in the developer tools options (access this by pressing `F1` after clicking somewhere in the developer tools console).
 
 You should see a `List` containing `Map`s for each card.
 
@@ -361,7 +375,7 @@ To run the tests, we'll use the command
 mocha --compilers js:babel-core/register --recursive
 ```
 
-This tells `mocha` to use `Babel` to transfrom our code correctly and to search through our project recursively to find any tests to run.
+This tells Mocha to use Babel to transfrom our code correctly and to search through our project recursively to find any tests to run. If you try running it now, it won't find any tests and might show you an error message.
 
 We don't want to type this out each time we want to run our tests, so we can add this to our `package.json`.
 
@@ -372,7 +386,7 @@ We don't want to type this out each time we want to run our tests, so we can add
     "scripts": {
         "webpack": "node_modules/.bin/webpack",
         "webpack:watch": "npm run webpack -- --watch",
-        "test": "mocha --compilers js:babel-core/register"
+        "test": "mocha --compilers js:babel-core/register --recursive"
     }
     // ...
 }
@@ -393,7 +407,7 @@ We also want to set up our tests to run each time we save a file (similar to usi
     "scripts": {
         "webpack": "node_modules/.bin/webpack",
         "webpack:watch": "npm run webpack -- --watch",
-        "test": "mocha --compilers js:babel-core/register",
+        "test": "mocha --compilers js:babel-core/register --recursive",
         "test:watch": "npm run test -- --watch"
     }
     // ...
@@ -427,7 +441,7 @@ To tell `mocha` to load this helper file, we'll add the `--require ./test/test_h
     "scripts": {
         "webpack": "node_modules/.bin/webpack",
         "webpack:watch": "npm run webpack -- --watch",
-        "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js",
+        "test": "mocha --compilers js:babel-core/register --recursive --require ./test/test_helper.js",
         "test:watch": "npm run test -- --watch"
     }
     // ...
