@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Eloquently - Learning and Recruiting</title>
+
+    <!-- Custom Fonts -->
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css" type="text/css">
+
+    <!-- Plugin CSS -->
+    <link rel="stylesheet" href="/css/animate.min.css" type="text/css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css" type="text/css">
+    <link rel="stylesheet" href="/css/prism.css" type="text/css">
+
+    <script src="/js/prism.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+
+</head>
+
+
+<body>
+    <div class="wrapper">
+        <!-- Navigation -->
+        <nav id="mainNav" class="nav navbar navbar-default full-color">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand page-scroll" href="/index">ELOQUENTLY</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a class="page-scroll" href="/index">Home</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="/workshops">Workshops</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="/guides/index">Guides</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+
+        <div class="container post">
+            <div class="row">
+                <!--<div class="post-options pull-right">
+                    <div class="show">
+                        <a href="#postOptions" data-toggle="collapse" class="pull-right btn btn-default btn-sm">Display Options</a>
+                    </div>
+                    <div class="options collapse" id="postOptions">
+                        <input type="checkbox" checked data-toggle="toggle" data-on="Annotations On" data-off="Annotations Off" data-onstyle="primary-light" data-width="175">
+                        <br />
+                        <input type="checkbox" checked data-toggle="toggle" data-on="Line Numbers On" data-off="Line Numbers Off" data-onstyle="primary-light" data-width="175">
+                    </div>
+                </div>-->
+                <div class="post-content">
+                    <h2>React Blackjack Part 2</h2>
+
+<p><hr class="left" /></p>
+
+<p>This is the second part of this guide. View the first part <a href="/guides/react-blackjack-part-1">here</a>.</p>
+
+<h3>Setting up the Game</h3>
+
+<p>We haven&#39;t thought too much about what our application will need to do in order to play a game of blackjack.</p>
+
+<p>One obvious way to make our game look more like blackjack is that one of the dealer&#39;s cards should be face down -- not face up.</p>
+
+<p>There are a number of different ways to implement this feature. One would be to add a boolean <code>faceDown</code> property to the <code>card</code> objects we created earlier in this guide. This is a viable solution, but for this application, I think of <code>faceDown</code> as more of display logic than an inherent property of a card. If you make a new deck of cards would they all be face up or face down?</p>
+
+<p>Another solution is to modify our <code>Hand</code> component to just display the first card as face down. There are a few drawbacks here. Sometimes, the <code>Hand</code> will need to display the dealer&#39;s first card face up, such as when the player chooses &quot;stand&quot; and the dealer starts drawing. This means that our <code>Hand</code> component needs to know the <code>hasStood</code> state variable. <code>Hand</code> also needs to know whether it is the dealer&#39;s hand or the player&#39;s hand. It&#39;s typically a good strategy to limit the number of props being passed into a component. This approach would make our <code>Hand</code> component less modular. That is, it would be harder to use the <code>Hand</code> component for in another card game with out making significant changes to it.</p>
+
+<p>Another drawback to both of these approaches is that we are deciding what the card will be before it is shown to the user. Displaying the card face down is just a cosmetic change -- the card&#39;s suit and rank are still in the application state. Since we are building a front-end application, the state tree is in the browser, and thus it is available to the user.</p>
+
+<p>The way we will solve this is to set up our <code>Hand</code> components to take a dummy card that it will display as a face down card. The dummy card won&#39;t come from the deck and won&#39;t have a suit or rank. After the player stands, we&#39;ll secretly deal an extra card to the dealer and remove the dummy card, so nothing will look strange to the user.</p>
+
+<p>This logic suggests something else about our <code>deal</code> function: since the <code>Deck</code> object we&#39;re playing with is stored in state, the player can tell which card will be dealt next by looking at the end of the deck. This ruins the game. Let&#39;s fix this first.</p>
+
+<h3>Refactoring the <code>deal</code> Function</h3>
+
+<p>Let&#39;s first add a test for our deal function. If we deal 1 card from the same deck 10 times, they shouldn&#39;t all be the same card. This new test will replace the <code>&#39;puts correct cards in hand&#39;</code> test.</p>
+
+<div class="fp">test/lib/cards_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+describe(&#39;cards.js&#39;, () =&gt; {
+
+   // ...
+
+   describe(&#39;deal&#39;, () =&gt; {
+
+       // ...
+
+       it(&#39;returns hand of n cards&#39;, () =&gt; {
+           expect(new_hand.size).to.eq(n);
+       });
+
+       it(&#39;does not deal same card each time&#39;, () =&gt; {
+           const cards = [];
+           for(let i = 0; i &lt; 10; i += 1) {
+               cards.push(deal(deck, 1)[1].first());
+           }
+           const all_same = cards.reduce( (prev, curr) =&gt; prev &amp;&amp; (cards[0] === curr), true );
+           expect(all_same).to.eq(false);
+       });
+   });
+});
+</code></pre>
+
+<p>Now we&#39;ll change the <code>deal</code> function:</p>
+
+<div class="fp">app/lib/cards.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">import { fromJS, List } from &#39;immutable&#39;;
+
+// ...
+
+// deal n cards from random position in deck
+export const deal = (deck, n) =&gt; {
+   if(n == 1) {
+       const r = Math.floor(Math.random() * deck.size);
+       let dealtCards = new List([deck.get(r)]);
+       let newDeck = deck.remove(r);
+       return [newDeck, dealtCards]
+   }
+
+   let dealtCards = new List();
+   let newDeck = deck;
+   for(let i = 0; i &lt; n; i += 1) {
+       let [d, c] = deal(newDeck, 1);
+       dealtCards = dealtCards.push(c.first());
+       newDeck = d;
+   }
+   return [newDeck, dealtCards];
+};
+</code></pre>
+
+<p>Your test should pass now. Since we are randomly choosing cards from the deck, there is a <code>1/(52^9)</code> chance that they will all be the same. This means that once out of every <code>2.8 * 10^15</code> times you run your test, it will fail. I think we can live with those odds!</p>
+
+<h3>Dummy Cards</h3>
+
+<p>We are just going to use an empty <code>Map</code> object as a dummy card. This means that when we pass <code>Hand</code> a <code>cards</code> prop with one or more empty <code>Map</code>s it should render <code>Card</code> objects with a <code>faceDown=true</code> prop.</p>
+
+<p>We&#39;ll also modify our other test to make sure that the non-dummy cards get <code>faceDown=false</code>:</p>
+
+<div class="fp">test/components/hand_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">// ...
+
+describe(&#39;&lt;Hand /&gt;&#39;, () =&gt; {
+   describe(&#39;without dummy cards&#39;, () =&gt; {
+
+       // ...
+
+       it(&#39;gives each card the correct props&#39;, () =&gt; {
+           hand.forEach((card, i) =&gt; {
+               expect(cards.at(i)).to.have.prop(&#39;suit&#39;, card.get(&#39;suit&#39;));
+               expect(cards.at(i)).to.have.prop(&#39;rank&#39;, card.get(&#39;rank&#39;));
+               expect(cards.at(i)).to.have.prop(&#39;faceDown&#39;, false);
+           });
+       });
+   });
+
+   describe(&#39;with dummy cards&#39;, () =&gt; {
+       const rendered = shallow(&lt;Hand cards={hand.push(new Map())} /&gt;);
+       const cards = rendered.find(&#39;Card&#39;);
+
+       it(&#39;renders correct number of cards&#39;, () =&gt; {
+           expect(cards).to.have.length(n+1);
+       });
+
+       it(&#39;gives dummy card faceDown=true&#39;, () =&gt; {
+           expect(cards.last()).to.have.prop(&#39;faceDown&#39;, true);
+       });
+   });
+
+});
+</code></pre>
+
+<p>Now let&#39;s make the tests pass:</p>
+
+<div class="fp">app/components/hand.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">import React from &#39;react&#39;;
+import Card from &#39;./card&#39;;
+
+export default class Hand extends React.Component {
+   render() {
+       return (
+           &lt;div className=&quot;hand&quot;&gt;
+               {this.props.cards.map((card, i) =&gt;
+                   &lt;Card suit={card.get(&#39;suit&#39;)}
+                         rank={card.get(&#39;rank&#39;)}
+                         faceDown={!(card.has(&#39;suit&#39;) &amp;&amp; card.has(&#39;rank&#39;))}
+                         key={i} /&gt;
+               )}
+           &lt;/div&gt;
+       );
+   }
+};
+</code></pre>
+
+<p>We want our <code>Card</code> class to give face down cards a <code>face-down</code> class instead of their <code>suit</code> as a class so that we can apply the appropriate styling.</p>
+
+<p>Let&#39;s write the test!</p>
+
+<div class="fp">test/components/card_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">// ...
+
+describe(&#39;&lt;Card /&gt;&#39;, () =&gt; {
+   describe(&#39;non-dummy card&#39;, () =&gt; {
+       const suit = &#39;C&#39;;
+       const rank = 2;
+
+       // ...
+   });
+
+   describe(&#39;non-dummy card&#39;, () =&gt; {
+       const suit = undefined;
+       const rank = undefined;
+       const rendered = shallow(&lt;Card suit={suit} rank={rank} faceDown={true} /&gt;);
+
+       it(&#39;adds face-down class&#39;, () =&gt; {
+           expect(rendered.find(&#39;.card.face-down&#39;)).to.have.length(1);
+       });
+   });
+
+});
+</code></pre>
+
+<p>Now the code to make it pass:</p>
+
+<div class="fp">app/components/card.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">// ...
+
+export default class Card extends React.Component {
+   render() {
+       return (
+           &lt;div className={`card ${this.props.suit ? this.props.suit : &#39;face-down&#39;}`}&gt;
+               // ...
+           &lt;/div&gt;
+       );
+   }
+}
+</code></pre>
+
+<p>Now let&#39;s change the initial application state to give the dealer one dummy card and one real card.</p>
+
+<div class="fp">app/index.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+import { fromJS, Map } from &#39;immutable&#39;;
+
+// ...
+
+[deck, dealerHand] = deal(deck, 1);
+
+dealerHand = dealerHand.push(new Map());
+
+// ...
+</code></pre>
+
+<p>And, finally, we&#39;ll add a style for <code>face-down</code> cards:</p>
+
+<div class="fp">app/css/components/card.scss</div>
+
+<pre data-line="" class="line-numbers"><code class="language-scss">.card {
+   /* ... */
+   &amp;.face-down {
+       /* pattern from http://lea.verou.me/css3patterns/ */
+
+       background-color:silver;
+       background-image:
+       radial-gradient(circle at 100% 150%, silver 24%, white 25%, white 28%, silver 29%, silver 36%, white 36%, white 40%, transparent 40%, transparent),
+       radial-gradient(circle at 0    150%, silver 24%, white 25%, white 28%, silver 29%, silver 36%, white 36%, white 40%, transparent 40%, transparent),
+       radial-gradient(circle at 50%  100%, white 10%, silver 11%, silver 23%, white 24%, white 30%, silver 31%, silver 43%, white 44%, white 50%, silver 51%, silver 63%, white 64%, white 71%, transparent 71%, transparent),
+       radial-gradient(circle at 100% 50%, white 5%, silver 6%, silver 15%, white 16%, white 20%, silver 21%, silver 30%, white 31%, white 35%, silver 36%, silver 45%, white 46%, white 49%, transparent 50%, transparent),
+       radial-gradient(circle at 0    50%, white 5%, silver 6%, silver 15%, white 16%, white 20%, silver 21%, silver 30%, white 31%, white 35%, silver 36%, silver 45%, white 46%, white 49%, transparent 50%, transparent);
+       background-size:100px 50px;
+   }
+}
+</code></pre>
+
+<p>Now it looks like we&#39;re ready to play blackjack!</p>
+
+<h3>Connecting Components</h3>
+
+<p>Before we make those &quot;hit&quot; and &quot;stand&quot; buttons do things, we need to set up our components to update automatically when the state changes.</p>
+
+<p>Specifically, if we add a new card to the player&#39;s hand in the state <code>Map</code>, we want the <code>Hand</code> component to be re-rendered.</p>
+
+<p>This is where the hard work setting up an immutable state and pure components pays off. We can now easily use Redux to turn our components into &quot;smart components&quot;.</p>
+
+<p>Redux keeps track of the application&#39;s state with a <code>store</code>. We can modify the state through a &quot;reducer&quot; function. Redux requires us to use a single <code>store</code> and a single <code>reducer()</code>. <code>reducer()</code> must be a pure function -- that is, it must not mutate the current state but rather return a new one. Luckily for us, we are using an immutable <code>Map</code> to track state, so we don&#39;t have to worry about accidentally mutating state.</p>
+
+<p>Let&#39;s install the necessary packages:</p>
+
+<pre data-line="" class=""><code class="language-text">npm install --save redux react-redux
+</code></pre>
+
+<p>The first step is to create the <code>reducer</code> function. This function will take two arguments: the current state and the desired action. It will return the new state after performing the action.</p>
+
+<h4>Simple Actions</h4>
+
+<p>The first action we want to build is the <code>SETUP_GAME</code> action. When the reducer receives a <code>SETUP_GAME</code>, it should set up the deck and hands for the player and dealer. Let&#39;s write a test for this:</p>
+
+<div class="fp">test/reducer_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">import { Map } from &#39;immutable&#39;;
+import { expect } from &#39;chai&#39;;
+
+import reducer from &#39;../app/reducer&#39;;
+
+describe(&#39;reducer&#39;, () =&gt; {
+   describe(&quot;SETUP_GAME&quot;, () =&gt; {
+       const action = {
+           type: &#39;SETUP_GAME&#39;
+       };
+       describe(&quot;with empty initial state&quot;, () =&gt; {
+           const initialState = undefined;
+           const nextState = reducer(initialState, action);
+
+           it(&#39;sets up deck&#39;, () =&gt; {
+               expect(nextState.get(&#39;deck&#39;).size).to.eq(49);
+           });
+
+           it(&#39;sets up playerHand&#39;, () =&gt; {
+               expect(nextState.get(&#39;playerHand&#39;).size).to.eq(2);
+           });
+
+           it(&#39;sets up dealerHand&#39;, () =&gt; {
+               expect(nextState.get(&#39;dealerHand&#39;).size).to.eq(2);
+               expect(nextState.get(&#39;dealerHand&#39;).last()).to.eq(new Map());
+           });
+
+           it(&#39;sets up hasStood&#39;, () =&gt; {
+               expect(nextState.get(&#39;hasStood&#39;)).to.eq(false);
+           })
+       });
+   });
+});
+</code></pre>
+
+<p>To get these tests to pass, let&#39;s write a first version of <code>reducer()</code>:</p>
+
+<div class="fp">app/reducer.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">import { Map } from &#39;immutable&#39;;
+
+const setupGame = (currentState) =&gt; {
+   // coming soon
+};
+
+export default function(currentState=new Map(), action) {
+   switch(action.type) {
+       case &#39;SETUP_GAME&#39;:
+           return setupGame(currentState);
+   }
+   return currentState;
+}
+</code></pre>
+
+<p>To keep our code organized, we will have <code>reducer()</code> call other functions that actually do the work. This keeps our code more modular. Eventually if you have many different actions, you can break these functions out into different files to keep things even more organized and allow multiple people to work on different parts of your program at the same time.</p>
+
+<p>To fill in <code>setupGame()</code>, we&#39;ll copy over the code from <code>index.js</code>:</p>
+
+<div class="fp">app/reducer.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">const setupGame = () =&gt; {
+   let deck = newDeck();
+   let playerHand, dealerHand;
+
+   [deck, playerHand] = deal(deck, 2);
+   [deck, dealerHand] = deal(deck, 1);
+
+   dealerHand = dealerHand.push(new Map());
+
+   const newState = new Map({ deck, playerHand, dealerHand });
+
+   return newState;
+};
+
+export default function(currentState=new Map(), action) {
+   switch(action.type) {
+       case &#39;SETUP_GAME&#39;:
+           return setupGame();
+   }
+   return currentState;
+}
+</code></pre>
+
+<p>The tests should pass now. We also want to be able to send a <code>SETUP_GAME</code> action between each of the games in a session. This means that instead of replacing <code>currentState</code> with the result of <code>setupGame()</code>, we should merge it, so that other state variables like <code>winCount</code> won&#39;t be lost.</p>
+
+<p>Let&#39;s write the test for this behavior:</p>
+
+<div class="fp">test/reducer_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+describe(&#39;reducer&#39;, () =&gt; {
+   describe(&quot;SETUP_GAME&quot;, () =&gt; {
+       const action = {
+           type: &#39;SETUP_GAME&#39;
+       };
+
+       // ...
+
+       describe(&quot;with existing initial state&quot;, () =&gt; {
+           const initialState = new Map({&#39;winCount&#39;: 10, &#39;lossCount&#39;: 7, &#39;deck&#39;: &#39;fake deck&#39;});
+           const nextState = reducer(initialState, action);
+
+           it(&#39;adds new variables&#39;, () =&gt; {
+               expect(Array.from(nextState.keys())).to.include(&#39;deck&#39;, &#39;playerHand&#39;, &#39;dealerHand&#39;, &#39;hasStood&#39;);
+           });
+
+           it(&#39;keeps old variables&#39;, () =&gt; {
+               expect(nextState.get(&#39;winCount&#39;)).to.eq(10);
+               expect(nextState.get(&#39;lossCount&#39;)).to.eq(7);
+           });
+
+           it(&#39;overwrites old variables&#39;, () =&gt; {
+               expect(nextState.get(&#39;deck&#39;)).not.to.eq(&#39;fake deck&#39;);
+           });
+       });
+   });
+});
+</code></pre>
+
+<p>Now to make it pass, we just need to make a couple of small changes in <code>reducer.js</code>:</p>
+
+<div class="fp">app/reducer.js</div>
+
+<pre data-line="7" class="line-numbers"><code class="language-js">// ...
+
+const setupGame = (<mark>currentState</mark>) =&gt; {
+
+   // ...
+
+   return currentState.merge(newState);
+};
+
+export default function(currentState=new Map(), action) {
+   switch(action.type) {
+       case &#39;SETUP_GAME&#39;:
+           return setupGame(<mark>currentState</mark>);
+   }
+   return currentState;
+}
+</code></pre>
+
+<p>Now let&#39;s add a similar action: <code>SET_RECORD</code>. This action will set the player&#39;s win and loss records to whatever win and loss values are part of the action. First the test:</p>
+
+<div class="fp">test/reducer_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+describe(&#39;reducer&#39;, () =&gt; {
+   describe(&quot;SETUP_GAME&quot;, () =&gt; {
+
+       // ...
+
+   });
+
+   describe(&quot;SET_RECORD&quot;, () =&gt; {
+       const action = {
+           type: &#39;SET_RECORD&#39;,
+           wins: 3,
+           losses: 2
+       };
+
+       const initialState = new Map({&#39;winCount&#39;: 10, &#39;lossCount&#39;: 7, &#39;deck&#39;: &#39;fake deck&#39;});
+       const nextState = reducer(initialState, action);
+
+       it(&#39;sets winCount and lossCount&#39;, () =&gt; {
+           expect(nextState.get(&#39;winCount&#39;)).to.eq(3);
+           expect(nextState.get(&#39;lossCount&#39;)).to.eq(2);
+       });
+
+       it(&#39;keeps old variables&#39;, () =&gt; {
+           expect(nextState.get(&#39;deck&#39;)).to.eq(&#39;fake deck&#39;);
+       });
+   });
+});
+</code></pre>
+
+<p>Then the code:</p>
+
+<div class="fp">app/reducer.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+const setRecord = (currentState, wins, losses) =&gt; {
+   return currentState.merge(new Map({ &quot;winCount&quot;: wins, &quot;lossCount&quot;: losses }));
+}
+
+export default function(currentState=new Map(), action) {
+   switch(action.type) {
+       case &#39;SETUP_GAME&#39;:
+           return setupGame(currentState);
+       case &#39;SET_RECORD&#39;:
+           return setRecord(currentState, action.wins, action.losses);
+   }
+   return currentState;
+}
+</code></pre>
+
+<h3>Action Creators</h3>
+
+<p>Instead of writing out actions as objects (e.g: <code>const action = { type: &#39;SET_RECORD&#39;, wins: 3, losses: 2 };</code>), we are going to write some helper functions that create the actions for us. This makes our code a little more DRY and organized.</p>
+
+<p>These functions are very simple, so there is no need to write tests for them. They&#39;re also going to be short, so we can put them all in one file:</p>
+
+<div class="fp">app/action_creators.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">export function setupGame() {
+   return { &quot;type&quot;: &quot;SETUP_GAME&quot; }
+}
+
+export function setRecord(wins, losses) {
+   return {
+       &quot;type&quot;: &quot;SET_RECORD&quot;,
+       wins,
+       losses
+   };
+}
+</code></pre>
+
+<p>Now in our <code>reducer()</code> tests, we can import and call these functions to create our actions:</p>
+
+<div class="fp">test/reducer_spec.js</div>
+
+<pre data-line="2,8,14" class="line-numbers"><code class="language-js">// ...
+import { setupGame, setRecord } from &#39;../app/action_creators&#39;;
+
+import reducer from &#39;../app/reducer&#39;;
+
+describe(&#39;reducer&#39;, () =&gt; {
+   describe(&quot;SETUP_GAME&quot;, () =&gt; {
+       const action = setupGame();
+
+       // ...
+   });
+
+   describe(&quot;SET_RECORD&quot;, () =&gt; {
+       const action = setRecord(3, 2);
+
+       // ...
+   });
+});
+</code></pre>
+
+<p>If we dispatch <code>SETUP_GAME</code> and <code>SET_RECORD</code> with <code>0</code> wins and <code>0</code> losses, we get the initial values we want for all the state variables (<code>deck</code>, <code>playerHand</code>, <code>dealerHand</code>, <code>winCount</code>, <code>lossCount</code>, and <code>hasStood</code>). When our application starts, we will want to execute both of these actions.</p>
+
+<p>Let&#39;s set up a Redux <code>store</code> and dispatch some actions to it to get our intiial state in <code>index.js</code>. First, we&#39;ll create the store and link it with our reducer function:</p>
+
+<div class="file-path">app/index.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">import React from &#39;react&#39;;
+import ReactDOM from &#39;react-dom&#39;;
+import App from &#39;./components/app.js&#39;;
+import {createStore} from &#39;redux&#39;;
+
+import { reducer } from &#39;./reducer&#39;;
+
+require(&#39;./css/main.scss&#39;);
+
+let store = createStore(reducer);
+
+// ...
+</code></pre>
+
+<p>Next we&#39;ll import the action creators and dispatch the actions to set up the game.</p>
+
+<div class="file-path">app/index.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+import { reducer } from &#39;./reducer&#39;;
+import { setupGame, setRecord } from &#39;../app/action_creators&#39;;
+
+require(&#39;./css/main.scss&#39;);
+
+let store = createStore(reducer);
+
+store.dispatch(setupGame());
+store.dispatch(setRecord(0, 0));
+
+// ...
+</code></pre>
+
+<p>Now we need to share the <code>store</code> with our React components. React-Redux provides us with a component called <code>Provider</code> that takes care of that for us. We just need to wrap the <code>App</code> component with <code>Provider</code> and pass <code>Provider</code> our <code>store</code> as a prop. We&#39;ll also change the <code>state</code> prop from <code>App</code> to get the state from <code>store</code>.</p>
+
+<div class="file-path">app/index.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">import React from &#39;react&#39;;
+import ReactDOM from &#39;react-dom&#39;;
+import App from &#39;./components/app.js&#39;;
+import {createStore} from &#39;redux&#39;;
+import { Provider } from &#39;react-redux&#39;;
+
+import { reducer } from &#39;./reducer&#39;;
+import { setupGame, setRecord } from &#39;../app/action_creators&#39;;
+
+require(&#39;./css/main.scss&#39;);
+
+let store = createStore(reducer);
+
+store.dispatch(setupGame());
+store.dispatch(setRecord(0, 0));
+
+ReactDOM.render(
+   &lt;Provider store={store}&gt;
+       &lt;App /&gt;
+   &lt;/Provider&gt;,
+   document.getElementById(&#39;app&#39;)
+);
+</code></pre>
+
+<p>Now if we look at the application in the browser, it should look the same as before we replaced <code>state</code> with <code>store</code>. Congratulations! You just dispatched your first Redux actions!</p>
+
+<h3>React and Redux DevTools</h3>
+
+<p>Let&#39;s take a quick break from writing code and check out the DevTools for React and Redux. This guide will talk about how to use the tools in Chrome. They are extremely useful for debugging and developing your application, so if you don&#39;t have Chrome, download it and go through this section!</p>
+
+<h4>React DevTools</h4>
+
+<p>You can install the React DevTools <a href="https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en">here</a>. After adding the extension and refreshing your browser (you may have to restart it), you will see a new tab on the Chrome Developer Tool panel (open with <code>ctrl+shift+j</code>).</p>
+
+<p>If you switch to the React tab, you will see a DOM composed of the React components you wrote along with the props being passed to them. This is very useful if you want to see which props a component has.</p>
+
+<h4>Redux DevTools</h4>
+
+<p>While the React DevTools are very useful, they are also not that exciting. The Redux DevTools (install them <a href="https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en">here</a>), on the other hand are pretty cool. It keeps track of all actions dispatched by your application.</p>
+
+<p>We do need to change one thing in our code to get the webtools to work. When we define <code>store</code>, we can tell it to use middleware. Middleware functions do things with actions after they are dispatched, but before they reach the reducer. It is easy to write your own middleware, but for now, we will just use a function provided by <a href="https://github.com/zalmoxisus/redux-devtools-extension">someone else</a>.</p>
+
+<p>The Chrome extension attaches a middleware function to <code>window</code> called <code>devToolsExtension()</code>. We can pass this to <code>createStore</code> as the third parameter. The second parameter is for the initial state, but we don&#39;t need this so we&#39;ll just use <code>undefined</code>.</p>
+
+<div class="file-path">app/index.js</div>
+
+<div class="fp">...</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">require(&#39;./css/main.scss&#39;);
+
+let store = createStore(reducer, undefined, window.devToolsExtension ? window.devToolsExtension() : undefined);
+
+// ...
+</code></pre>
+
+<p>Now refresh the page with our application and go to the Redux tab on the DevTool panel (if you don&#39;t see the Redux tab on your DevTool panel, restart your browser). If everything is working, you should see three events: <code>@@INIT</code>, <code>SETUP_GAME</code>, and <code>SET_RECORD</code>. These are the actions that our application has dispatched so far. Later, we will make the buttons on the application dispatch actions, and when you click on them, new actions will appear on this list in real-time.</p>
+
+<p>Because reducers are pure functions operating on an immutable state, Redux allows for &quot;time-travel&quot;. In practice, this means that it&#39;s very easy to go back in time in your application by &quot;undoing&quot; the last action(s). You can do this in the DevTools by simply clicking on the name of an action. If you click on the <code>SET_RECORD</code> action, we will be taken back in time to the state of the application before that action was performed.</p>
+
+<p>You can even undo an action that was not the last one performed! Try undoing <code>SETUP_GAME</code> and see what happens to the state after <code>SET_RECORD</code>.</p>
+
+<p>We can also use the DevTool to dispatch new actions. Click on the dispatcher button and type in:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">{
+type: &quot;SET_RECORD&quot;,
+wins: 1,
+losses: 0
+}
+</code></pre>
+
+<p>When you hit dispatch, look at the new application state at the bottom of the action list. Our components don&#39;t update to reflect the new state because they are not yet linked up with the application state in <code>store</code>. Let&#39;s fix that!</p>
+
+<h3>Mapping State to Props</h3>
+
+<p>Right now, our application passes the entire state tree down to the <code>App</code> component, which sends the state variables down to it&#39;s children components. This process is somewhat wasteful. The <code>App</code> component doesn&#39;t do anything with <code>winCount</code> or <code>hasStood</code> -- it just passes those variables straight to the <code>Info</code> component. The <code>App</code> component still needs to know the state variables <code>playerHand</code> and <code>dealerHand</code> because it has to pass these to the <code>Hand</code> components, but there is no reason for it to know <code>wincount</code>, <code>lossCount</code> or <code>hasStood</code>.</p>
+
+<p>We could simply our components and make them more modular by having each component read from the state tree only the variables it needs. Redux allows us to do this easily with a function called <code>mapStateToProps</code>. <code>mapStateToProps</code> is going to take the entire state tree as a parameter, and return an object where the keys are names of props for the object.</p>
+
+<h4>Connecting <code>&lt;Info&gt;</code></h4>
+
+<p>For the <code>Info</code> component, a <code>mapStateToProps</code> function might look something like this:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">function mapStateToProps(state) {
+ return {
+   winCount: state.get(&#39;winCount&#39;),
+   lossCount: state.get(&#39;lossCount&#39;),
+   hasStood: state.get(&#39;hasStood&#39;)
+ };
+}
+</code></pre>
+
+<p>The React-Redux package gives us a function called <code>connect</code> that takes a <code>mapStateToProps</code> function as an argument and returns another function that takes a React component as an argument and returns a &quot;smart&quot; component that will automatically update when state changes. A Redux convention is to refer to the &quot;smart&quot; version of a component as a container, so the &quot;smart&quot; version of the <code>Info</code> component is the <code>InfoContainer</code>. Let&#39;s add <code>mapStateToProps()</code> to our <code>info.js</code> file and create <code>InfoContainer</code>:</p>
+
+<div class="file-path">app/components/info.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">import React from &#39;react&#39;;
+import { connect } from &#39;react-redux&#39;;
+
+export class Info extends React.Component {
+   // ...
+};
+
+function mapStateToProps(state) {
+ return {
+   winCount: state.get(&#39;winCount&#39;),
+   lossCount: state.get(&#39;lossCount&#39;),
+   hasStood: state.get(&#39;hasStood&#39;)
+ };
+}
+
+export const InfoContainer = connect(mapStateToProps)(Info);
+</code></pre>
+
+<p>Since we&#39;ve changed the export for <code>info.js</code>, we need to modify the imports for <code>info_spec.js</code>:</p>
+
+<div class="file-path">test/components/info_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">import React from &#39;react&#39;;
+import { expect } from &#39;chai&#39;;
+import { shallow } from &#39;enzyme&#39;;
+
+import { Info } from &#39;../../app/components/info&#39;;
+</code></pre>
+
+<p>Now, we should change our <code>App</code> component to render <code>&lt;InfoContainer&gt;</code> rather than <code>&lt;Info&gt;</code>. We also no longer need to pass any props because now <code>&lt;InfoContainer&gt;</code> is getting them straight from the <code>store</code>! Let&#39;s change our <code>App</code> component tests to reflect these changes we want to make:</p>
+
+<div class="fp">test/components/app_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">// ...
+
+describe(&#39;&lt;App /&gt;&#39;, () =&gt; {
+   const rendered = shallow(&lt;App state={state} /&gt;);
+
+   it(&#39;renders one &lt;InfoContainer /&gt; component&#39;, () =&gt; {
+       expect(rendered.find(&#39;Connect(Info)&#39;)).to.have.length(1);
+   });
+
+   // removed passes props to &lt;Info /&gt; test
+
+   it(&#39;renders two &lt;Hand /&gt; components&#39;, () =&gt; {
+       // ...
+   });
+
+   it(&#39;passes props to &lt;Hand /&gt;s&#39;, () =&gt; {
+       // ...
+   });
+});
+</code></pre>
+
+<p>Redux-React calls the connected components <code>&lt;Connect(COMPONENT NAME)&gt;</code>, so we need to check for that component in our shallow rendering rather than <code>&lt;InfoContainer&gt;</code>.</p>
+
+<p>Now let&#39;s make the test pass by changing <code>&lt;App&gt;</code>&#39;s <code>render</code> function:</p>
+
+<div class="file-path">app/components/app.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">// ...
+
+export class App extends React.Component {
+   render() {
+       return (
+           &lt;div className=&quot;app&quot;&gt;
+               &lt;h1&gt;React Blackjack&lt;/h1&gt;
+               &lt;InfoContainer /&gt;
+               // ...
+           &lt;/div&gt;
+       );
+   }
+};
+
+</code></pre>
+
+<p>Great! Now let&#39;s look at the application in the browser. Try dispatching some <code>SET_RECORD</code> actions from the Redux DevTools and watch your application instantaneously update!</p>
+
+<h4>Connecting <code>&lt;App&gt;</code></h4>
+
+<p>Now that we have <code>&lt;Info&gt;</code> connected, let&#39;s write a <code>mapStateToProps</code> function for <code>&lt;App&gt;</code> and create the <code>AppContainer</code> class;</p>
+
+<div class="file-path">app/components/app.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">// ...
+
+import { connect } from &#39;react-redux&#39;;
+
+export class App extends React.Component {
+   // ...
+};
+
+function mapStateToProps(state) {
+    return {
+        playerHand: state.get(&#39;playerHand&#39;),
+        dealerHand: state.get(&#39;dealerHand&#39;)
+    };
+}
+
+export const AppContainer = connect(mapStateToProps)(App);
+</code></pre>
+
+<p>Instead of reading <code>playerHand</code> and <code>dealerHand</code> from the state <code>Map</code>, these are just passed directly as props, so we need to make a couple small changes to the <code>render</code> function:</p>
+
+<div class="file-path">app/components/app.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">// ...
+
+export class App extends React.Component {
+   render() {
+       return (
+           &lt;div className=&quot;app&quot;&gt;
+               // ...
+               &lt;strong&gt;Player hand:&lt;/strong&gt;
+               &lt;Hand cards={this.props.playerHand } /&gt;
+               &lt;strong&gt;Dealer hand:&lt;/strong&gt;
+               &lt;Hand cards={this.props.dealerHand } /&gt;
+           &lt;/div&gt;
+       );
+   }
+};
+</code></pre>
+
+<p>We also need to change our <code>app_spec.js</code> to pass these props individually to <code>&lt;App&gt;</code> rather than passing the entire state <code>Map</code>:</p>
+
+<div class="file-path">test/components/app_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">// ...
+
+describe(&#39;&lt;App /&gt;&#39;, () =&gt; {
+   const rendered = shallow(&lt;App playerHand={playerHand} dealerHand={dealerHand} /&gt;);
+
+   // ...
+});
+</code></pre>
+
+<p>The only thing left to do is to change the component that we&#39;re rendering in <code>index.js</code>:</p>
+
+<div class="file-path">app/index.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">// ...
+
+ReactDOM.render(
+   &lt;Provider store={store}&gt;
+       &lt;AppContainer /&gt;
+   &lt;/Provider&gt;,
+   document.getElementById(&#39;app&#39;)
+);
+</code></pre>
+
+<p>Now we can run the application in the browser, and you should see the cards changing if you try dispatching <code>SETUP_GAME</code> actions!</p>
+
+<h3>A Pure Deck</h3>
+
+<p>While dispatching and removing <code>SETUP_GAME</code> actions, you may have noticed that the application doesn&#39;t always behave as you would expect. For example, if you dispatch a second <code>SETUP_GAME</code> action, and then undo the first <code>SETUP_GAME</code>, the cards change! Because the second <code>SETUP_GAME</code> action is simply overwriting the state variables set by the first <code>SETUP_GAME</code> action, undoing the first <code>SETUP_GAME</code> shouldn&#39;t have any affect on the current application state.</p>
+
+<p>Why does this happen? Because <code>newDeck()</code> and <code>deal()</code> are not pure functions. A pure function has two characteristics:</p>
+
+<ul>
+<li>A pure function always returns the same value when it&#39;s given the same parameters.</li>
+<li>A pure function does not have any side effects (e.g. mutating the parameters or other state variables).</li>
+</ul>
+
+<h4>Pure <code>deal()</code></h4>
+
+<p>Our <code>deal()</code> is impure because it returns different results when we pass it the same <code>deck</code> and <code>n</code>. We actually did this on purpose so that users wouldn&#39;t be able to tell which card is coming next! Oops.</p>
+
+<p>To fix this, we need to change the way we calculate random numbers. By default, <code>Math.random()</code> will calculate a random number using an arbitrary seed. We can fix this by using a random number generator that allows us to control the seed. Let&#39;s install such a generator from <code>npm</code>:</p>
+
+<pre data-line="" class=""><code class="language-text">npm install --save seedrandom
+</code></pre>
+
+<p>To make <code>deal()</code> a pure function, we&#39;ll give it an extra parameter: the seed we want <code>seedrandom</code> to use. Let&#39;s write the tests that describe how <code>deal()</code> should behave when it takes a seed as a parameter:</p>
+
+<div class="fp">test/lib/cards_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+describe(&#39;cards.js&#39;, () =&gt; {
+
+   // ...
+
+   describe(&#39;deal&#39;, () =&gt; {
+
+       // ...
+
+       it(&#39;deals same card each time with same seed&#39;, () =&gt; {
+           const cards = [];
+           for(let i = 0; i &lt; 10; i += 1) {
+               cards.push(deal(deck, 1, 1)[1].first());
+           }
+           const all_same = cards.reduce( (prev, curr) =&gt; prev &amp;&amp; (cards[0] === curr), true );
+           expect(all_same).to.eq(true);
+       });
+
+       it(&#39;does not deal same card each time with different seeds&#39;, () =&gt; {
+           const cards = [];
+           for(let i = 0; i &lt; 10; i += 1) {
+               cards.push(deal(deck, 1, i)[1].first());
+           }
+           const all_same = cards.reduce( (prev, curr) =&gt; prev &amp;&amp; (cards[0] === curr), true );
+           expect(all_same).to.eq(false);
+       });
+   });
+});
+</code></pre>
+
+<p>Now let&#39;s change the <code>deal</code> function to pass the test. We&#39;ll need to replace <code>Math.random()</code> with <code>seedrandom</code> and add the seed parameter to the recursive call:</p>
+
+<div class="file-path">app/lib/cards.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">import { fromJS, List } from &#39;immutable&#39;;
+import seedrandom from &#39;seedrandom&#39;;
+
+// ...
+
+// deal n cards from arbitrary position in deck
+export const deal = (deck, n, seed) =&gt; {
+   if(n == 1) {
+       const r = Math.floor(seedrandom(seed)() * deck.size);
+       let dealtCards = new List([deck.get(r)]);
+       let newDeck = deck.remove(r);
+       return [newDeck, dealtCards]
+   }
+
+   let dealtCards = new List();
+   let newDeck = deck;
+   for(let i = 0; i &lt; n; i += 1) {
+       let [d, c] = deal(newDeck, 1, seed + i);
+       dealtCards = dealtCards.push(c.first());
+       newDeck = d;
+   }
+   return [newDeck, dealtCards];
+};
+</code></pre>
+
+<p>Now we&#39;ll need to change the <code>SETUP_GAME</code> action to use this pure version of <code>deal()</code>. We&#39;ll add a seed to the action creator that is the current system time by default.</p>
+
+<div class="file-path">app/action_creators.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">export function setupGame(seed=new Date().getTime()) {
+   return { &quot;type&quot;: &quot;SETUP_GAME&quot;, seed };
+}
+
+// ...
+</code></pre>
+
+<p>Finally, we need to change the <code>reducer</code> function to pass this seed along to <code>deal()</code>:</p>
+
+<div class="file-path">app/reducer.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+const setupGame = (currentState, seed) =&gt; {
+
+   // ...
+
+   [deck, playerHand] = deal(deck, 2, seed);
+   [deck, dealerHand] = deal(deck, 1, seed + 1);
+
+   // ...
+};
+
+// ...
+
+export default function(currentState=new Map(), action) {
+   switch(action.type) {
+       case &#39;SETUP_GAME&#39;:
+           return setupGame(currentState, action.seed);
+       // ...
+   }
+   return currentState;
+}
+</code></pre>
+
+<h4>Pure <code>newDeck()</code></h4>
+
+<p>We need to make similar changes to the <code>newDeck</code> function -- specifically the <code>shuffle</code> helper function.</p>
+
+<p>First, let&#39;s write the tests:</p>
+
+<div class="file-path">test/lib/cards_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+describe(&#39;cards.js&#39;, () =&gt; {
+   describe(&#39;newDeck&#39;, () =&gt; {
+
+       // ...
+
+       it(&#39;returns same deck with same seed&#39;, () =&gt; {
+           expect(newDeck(1)).to.eq(newDeck(1));
+       });
+
+       it(&#39;returns different deck with different seeds&#39;, () =&gt; {
+           expect(newDeck(1)).not.to.eq(newDeck(2));
+       });
+   });
+
+   // ...
+
+});
+</code></pre>
+
+<p>Now let&#39;s change <code>newDeck()</code> and <code>shuffle()</code>:</p>
+
+<div class="file-path">app/lib/cards.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+export const shuffle = (array, seed) =&gt; {
+   // ...
+
+   for (i = array.length; i; i -= 1) {
+       j = Math.floor(seedrandom(seed + i)() * i);
+
+       // ...
+   }
+};
+
+export const newDeck = (seed) =&gt; {
+   // ...
+
+   shuffle(deck, seed);
+
+   // ...
+};
+
+// ...
+</code></pre>
+
+<p>And finally, let&#39;s change <code>reducer()</code>:</p>
+
+<div class="file-path">app/reducer.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+const setupGame = (currentState, seed) =&gt; {
+   let deck = newDeck(seed);
+
+   // ...
+};
+</code></pre>
+
+<p>Now if you add and delete <code>SETUP_GAME</code> events in the Redux DevTools, you shouldn&#39;t see the cards change when you undo an old <code>SETUP_GAME</code> action. If you undo the most recent <code>SETUP_GAME</code>, you should see the cards that used to be there!</p>
+
+<p>This is a small example of how things can go wrong with Redux if your <code>reducer</code> function isn&#39;t pure or if you accidentally mutate state. It also shows how easy it is to accidentally introduce an impure function.</p>
+
+<h3>Mapping Dispatch to Props</h3>
+
+<p>Now we finally get to make those buttons do something when clicked. Let&#39;s work on &quot;hit&quot; first.</p>
+
+<h4>The &quot;Hit&quot; Button</h4>
+
+<p>The hit button needs to add a card to the player&#39;s hand. We want to dispatch a <code>DEAL_TO_PLAYER</code> action when the button is pressed. Let&#39;s first write the action creator for <code>DEAL_TO_PLAYER</code>:</p>
+
+<div class="file-path">app/action_creators.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+export function dealToPlayer(seed=new Date().getTime()) {
+   return { &quot;type&quot;: &quot;DEAL_TO_PLAYER&quot;, seed };
+}
+</code></pre>
+
+<p>When this action is dispatched, we should add a card to <code>playerHand</code>. Let&#39;s write the test:</p>
+
+<div class="file-path">test/reducer_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">import { Map, List } from &#39;immutable&#39;;
+import { expect } from &#39;chai&#39;;
+import { setupGame, setRecord, dealToPlayer } from &#39;../app/action_creators&#39;;
+import { newDeck } from &#39;../app/lib/cards.js&#39;;
+
+import reducer from &#39;../app/reducer&#39;;
+
+describe(&#39;reducer&#39;, () =&gt; {
+   // ...
+
+   describe(&quot;DEAL_TO_PLAYER&quot;, () =&gt; {
+       const action = dealToPlayer();
+       const initialState = new Map({&quot;playerHand&quot;: new List(), &quot;deck&quot;: newDeck()});
+       const nextState = reducer(initialState, action);
+
+       it(&#39;adds one card to player hand&#39;, () =&gt; {
+           expect(nextState.get(&#39;playerHand&#39;).size).to.eq(initialState.get(&#39;playerHand&#39;).size + 1);
+       });
+
+       it(&#39;removes one card from deck&#39;, () =&gt; {
+           expect(nextState.get(&#39;deck&#39;).size).to.eq(initialState.get(&#39;deck&#39;).size - 1);
+       });
+   });
+});
+</code></pre>
+
+<p>Now let&#39;s add the method to <code>reducer()</code>:</p>
+
+<div class="file-path">app/reducer.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">
+// ...
+
+const dealToPlayer = (currentState, seed) =&gt; {
+   const [deck, newCard] = deal(currentState.get(&#39;deck&#39;), 1, seed);
+
+   const playerHand = currentState.get(&#39;playerHand&#39;).push(newCard.get(0));
+
+   return currentState.merge(new Map({ deck, playerHand }));
+};
+
+export default function(currentState=new Map(), action) {
+   switch(action.type) {
+       // ...
+
+       case &#39;DEAL_TO_PLAYER&#39;:
+           return dealToPlayer(currentState, action.seed);
+   }
+   return currentState;
+}
+</code></pre>
+
+<p>Now try dispatching some <code>DEAL_TO_PLAYER</code> actions in the Redux DevTools. If everything seems to be working, it&#39;s time to set up the &quot;hit&quot; button to dispatch this action when it is clicked.</p>
+
+<p>Redux-React provides us with a way to connect props and actions. We are first going to modify the <code>Info</code> component so that the &quot;hit&quot; button will run call some function when it is pressed. We will pass the function it should call into the component as a prop.</p>
+
+<p>Let&#39;s first write the test. We are going to use a new testing utility called Sinon. Sinon allows us to &quot;spy&quot; on functions to see how many times they&#39;ve been called and with what parameters. It has some other very useful features. <a href="http://jaketrent.com/post/sinon-spies-vs-stubs/">Here</a> is a quick guide and <a href="http://sinonjs.org/">here</a> is the full documentation with plenty of examples.</p>
+
+<p>For this test, we&#39;ll use a Sinon spy as the prop we pass to <code>Info</code> that will eventually end up as the action on the &quot;hit&quot; button. We&#39;ll then simulate a click event and expect that the spy has been called once.</p>
+
+<p>First, let&#39;s install Sinon:</p>
+
+<pre data-line="" class=""><code class="language-text">npm install --save-dev sinon
+</code></pre>
+
+<p>Now let&#39;s write the test:</p>
+
+<div class="file-path">test/components/info_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">// ...
+import sinon from &#39;sinon&#39;;
+import { shallow, simulate } from &#39;enzyme&#39;;
+
+// ...
+
+describe(&#39;&lt;Info /&gt;&#39;, () =&gt; {
+   describe(&#39;when hasStood is false&#39;, () =&gt; {
+       const onClickHitSpy = sinon.spy();
+       const rendered = shallow(&lt;Info winCount={1}
+                                      lossCount={2}
+                                      hasStood={false}
+                                      dealToPlayer={onClickHitSpy}
+                                      /&gt;);
+
+       // ...
+
+       it(&#39;invokes prop function when Hit is clicked&#39;, () =&gt; {
+           buttons.first().simulate(&#39;click&#39;);
+           expect(onClickHitSpy.calledOnce).to.eq(true);
+       });
+   });
+
+   // ...
+
+});
+</code></pre>
+
+<p>To make our test pass, let&#39;s add this functionality to the <code>Info</code> component:</p>
+
+<div class="file-name">app/components/info.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">// ...
+
+export class Info extends React.Component {
+   render() {
+       return (
+           &lt;div id=&quot;info&quot;&gt;
+               // ...
+               &lt;span id=&quot;buttons&quot;&gt;
+                   &lt;button disabled={this.props.hasStood} onClick={this.props.onClickHit}&gt;Hit&lt;/button&gt;
+                   // ...
+               &lt;/span&gt;
+           &lt;/div&gt;
+       );
+   }
+};
+
+// ...
+</code></pre>
+
+<p>Now, our pure <code>Info</code> component will call any function we pass to it as a prop. We want our connected <code>InfoContainer</code> to use the correct function as a prop.</p>
+
+<p>We can do this with a <code>mapDispatchToProps</code> function that looks like <code>mapStateToProps()</code>:</p>
+
+<div class="file-path">app/components/info.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+function mapStateToProps(state) {
+ // ...
+}
+const mapDispatchToProps = (dispatch) =&gt; {
+ return {
+   onClickHit: () =&gt; {
+     dispatch(dealToPlayer())
+   }
+ }
+}
+
+export const InfoContainer = connect(mapStateToProps, mapDispatchToProps)(Info);
+</code></pre>
+
+<p>If you look at the application in the browser and click on &quot;Hit&quot;, you should get another card!</p>
+
+<h4>The &quot;Stand&quot; Button</h4>
+
+<p>We&#39;re going to follow the same steps to add the functionality for the &quot;Stand&quot; button. At this point in the tutorial you should be able to do this yourself. Try to do it by following the steps listed above before checking your work with my solution below.</p>
+
+<p>First, add a <code>STAND</code> action:</p>
+
+<div class="file-path">app/action_creators.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+export function stand() {
+   return { &quot;type&quot;: &quot;STAND&quot; };
+}
+</code></pre>
+
+<p>We want the stand action to change the <code>hasStood</code> state variable to false. Here&#39;s what the <code>reducer()</code> test looks like:</p>
+
+<div class="file-path">test/reducer_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+import { setupGame, setRecord, dealToPlayer, stand } from &#39;../app/action_creators&#39;;
+
+// ...
+
+describe(&#39;reducer&#39;, () =&gt; {
+   // ...
+
+   describe(&quot;STAND&quot;, () =&gt; {
+       const action = stand();
+       const initialState = new Map({&quot;hasStood&quot;: false});
+       const nextState = reducer(initialState, action);
+
+       it(&#39;sets hasStood to true&#39;, () =&gt; {
+           expect(nextState.get(&#39;hasStood&#39;)).to.eq(true);
+       });
+   });
+});
+</code></pre>
+
+<p>Now we add <code>STAND</code> to the <code>reducer</code> function:</p>
+
+<div class="file-path">app/reducer.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+const stand = (currentState) =&gt; {
+   return currentState.merge(new Map({&quot;hasStood&quot;: true}));
+};
+
+export default function(currentState=new Map(), action) {
+   switch(action.type) {
+       case &#39;SETUP_GAME&#39;:
+           return setupGame(currentState, action.seed);
+       case &#39;SET_RECORD&#39;:
+           return setRecord(currentState, action.wins, action.losses);
+       case &#39;DEAL_TO_PLAYER&#39;:
+           return dealToPlayer(currentState, action.seed);
+       case &#39;STAND&#39;:
+           return stand(currentState);
+   }
+   return currentState;
+}
+</code></pre>
+
+<p>Now we add the prop and map it to dispatch in the <code>Info</code> component. First the test:</p>
+
+<div class="file-path">test/components/info_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">
+// ...
+
+describe(&#39;&lt;Info /&gt;&#39;, () =&gt; {
+   describe(&#39;when hasStood is false&#39;, () =&gt; {
+       const onClickHitSpy = sinon.spy();
+       const onClickStandSpy = sinon.spy();
+       const rendered = shallow(&lt;Info winCount={1}
+                                      lossCount={2}
+                                      hasStood={false}
+                                      onClickHit={onClickHitSpy}
+                                      onClickStand={onClickStandSpy}
+                                      /&gt;);
+       // ...
+
+       it(&#39;invokes prop function when Hit is clicked&#39;, () =&gt; {
+           buttons.last().simulate(&#39;click&#39;);
+           expect(onClickStandSpy.calledOnce).to.eq(true);
+       });
+   });
+
+   // ...
+
+});
+</code></pre>
+
+<p>Then the code:</p>
+
+<div class="fp">app/components/info.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">
+// ...
+
+import { dealToPlayer, stand } from &#39;../action_creators&#39;;
+
+export class Info extends React.Component {
+   render() {
+       return (
+           &lt;div id=&quot;info&quot;&gt;
+               // ...
+               &lt;span id=&quot;buttons&quot;&gt;
+                   &lt;button disabled={this.props.hasStood}
+                           onClick={this.props.onClickHit}&gt;
+                       Hit
+                   &lt;/button&gt;
+                   &lt;button disabled={this.props.hasStood}
+                           onClick={this.props.onClickStand}&gt;
+                       Stand
+                   &lt;/button&gt;
+               &lt;/span&gt;
+           &lt;/div&gt;
+       );
+   }
+};
+
+const mapStateToProps = (state) =&gt; {
+ // ...
+}
+const mapDispatchToProps = (dispatch) =&gt; {
+   return {
+       onClickHit: () =&gt; {
+           dispatch(dealToPlayer());
+       },
+       onClickStand: () =&gt; {
+           dispatch(stand());
+       }
+   };
+};
+
+export const InfoContainer = connect(mapStateToProps, mapDispatchToProps)(Info);
+</code></pre>
+
+<p>Now when you hit &quot;Stand&quot;, the buttons will be disabled.</p>
+
+<p>At this point, our application is functional. Try clicking the &quot;Hit&quot; and &quot;Stand&quot; buttons in the browser, and you should see the desired behavior. Try playing around with the Redux DevTools.</p>
+
+<p>In the next section, we will finish up our app by adding logic to the reducers that prevents too many cards from being drawn, deals cards to the dealer after the player stands, and adds to the win and loss counts!</p>
+
+                    
+                        <hr />
+                        <p>Eloquently is a recruiting firm. We also host workshops that teach web development and career skills. If you are looking for a job or are interested in joining our web development workshops, please <a href="/index#contact">contact us</a>!</p>
+
+<p>We put together some <a href="/guides/index">guides</a> for participants in our workshops. Feel free to use them. If you see any errors, please submit an issue on our <a href="https://github.com/eloquently/eloquently.github.io">github repository</a>.</p>
+
+<p>These guides are a work in progress. If you see any errors or have a suggestion for a better way to do something, please <a href="/index#contact">let us know</a>.</p>
+
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="push"></div>
+    </div>
+
+    <section id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                &copy; 2016 Eloquently LLC
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- jQuery -->
+<script src="/js/jquery.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Plugin JavaScript -->
+<script src="/js/jquery.easing.min.js"></script>
+<script src="/js/jquery.fittext.js"></script>
+<script src="/js/wow.min.js"></script>
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73351128-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    <script async src="//genius.codes"></script>
+</body>
+
+</html>
