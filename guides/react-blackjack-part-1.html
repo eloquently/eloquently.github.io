@@ -1078,9 +1078,10 @@ const n = 2;
 
 describe(&#39;&lt;Hand /&gt;&#39;, () =&gt; {
     const rendered = shallow(&lt;Hand cards={hand} /&gt;);
+    const cards = rendered.find(&#39;Card&#39;);
 
     it(&#39;renders correct number of cards&#39;, () =&gt; {
-        expect(rendered.find(&#39;Card&#39;)).to.have.length(n);
+        expect(cards).to.have.length(n);
     });
 
     it(&#39;gives each card the correct props&#39;, () =&gt; {
