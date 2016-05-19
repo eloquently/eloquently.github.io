@@ -210,6 +210,18 @@ module.exports = {
 };
 </code></pre>
 
+<p>We also need to tell Babel which presets to use while transforming our code in <code>package.json</code> so that we&#39;ll get the correct transformations when we run other scripts (such as tests). We do this in the <code>package.json</code> file:</p>
+
+<div class="fp">package.json</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">{
+    //...
+    &quot;babel&quot;: {
+        &quot;presets&quot;: [&quot;es2015&quot;, &quot;react&quot;]
+    }
+}
+</code></pre>
+
 <h3>A First Build</h3>
 
 <p>Let&#39;s do the first build of our application. We&#39;re going to need a few more directories and files.</p>
@@ -383,7 +395,9 @@ ReactDOM.render(
 );
 </code></pre>
 
-<p>If you open the page in your browser and open the JavaScript console (<code>ctrl</code> + <code>shift</code> + <code>j</code> on Windows), you should see a <code>List</code>. Since we&#39;re dealing with ImmutableJS objects rather than native JavaScript objects and arrays, it&#39;s hard to view them in the console. To fix that, I installed a <a href="https://chrome.google.com/webstore/detail/immutablejs-object-format/hgldghadipiblonfkkicmgcbbijnpeog">chrome extension</a> that gives a custom formatter for ImmutableJS objects. After you install it, you may need to close the developer tools console and refresh the page (or close the tab and open a new one). You will also need to enable custom formatters in the developer tools options (access this by pressing <code>F1</code> after clicking somewhere in the developer tools console).</p>
+<p>Try opening the <code>index.html</code> page in your browser. In Cloud9, you can do this by right clicking the <code>index.html</code> file and selecting preview. In the new window that pops up, click the button next to the settings button in the top right. If you&#39;re not on Cloud9, you can just choose &quot;Open File&quot; from the menu in your browser and find <code>index.html</code>.</p>
+
+<p>Once you have the page open, open the Console tab in the developer tools (<code>ctrl</code> + <code>shift</code> + <code>j</code> on Windows), you should see a <code>List</code>. Since we&#39;re dealing with ImmutableJS objects rather than native JavaScript objects and arrays, it&#39;s hard to view them in the console. To fix that, I installed a <a href="https://chrome.google.com/webstore/detail/immutablejs-object-format/hgldghadipiblonfkkicmgcbbijnpeog">chrome extension</a> that gives a custom formatter for ImmutableJS objects. After you install it, you may need to close the developer tools console and refresh the page (or close the tab and open a new one). You will also need to enable custom formatters in the developer tools options (access this by pressing <code>F1</code> after clicking somewhere in the developer tools console).</p>
 
 <p>You should see a <code>List</code> containing <code>Map</code>s for each card.</p>
 
@@ -430,7 +444,7 @@ console.log(dealerHand);
 <pre data-line="" class=""><code class="language-text">mocha --compilers js:babel-core/register --recursive
 </code></pre>
 
-<p>This tells <code>mocha</code> to use <code>Babel</code> to transfrom our code correctly and to search through our project recursively to find any tests to run.</p>
+<p>This tells Mocha to use Babel to transfrom our code correctly and to search through our project recursively to find any tests to run. If you try running it now, it won&#39;t find any tests and might show you an error message.</p>
 
 <p>We don&#39;t want to type this out each time we want to run our tests, so we can add this to our <code>package.json</code>.</p>
 
@@ -441,7 +455,7 @@ console.log(dealerHand);
     &quot;scripts&quot;: {
         &quot;webpack&quot;: &quot;node_modules/.bin/webpack&quot;,
         &quot;webpack:watch&quot;: &quot;npm run webpack -- --watch&quot;,
-        &quot;test&quot;: &quot;mocha --compilers js:babel-core/register&quot;
+        &quot;test&quot;: &quot;mocha --compilers js:babel-core/register --recursive&quot;
     }
     // ...
 }
@@ -461,7 +475,7 @@ console.log(dealerHand);
     &quot;scripts&quot;: {
         &quot;webpack&quot;: &quot;node_modules/.bin/webpack&quot;,
         &quot;webpack:watch&quot;: &quot;npm run webpack -- --watch&quot;,
-        &quot;test&quot;: &quot;mocha --compilers js:babel-core/register&quot;,
+        &quot;test&quot;: &quot;mocha --compilers js:babel-core/register --recursive&quot;,
         &quot;test:watch&quot;: &quot;npm run test -- --watch&quot;
     }
     // ...
@@ -494,7 +508,7 @@ chai.use(chaiImmutable);
     &quot;scripts&quot;: {
         &quot;webpack&quot;: &quot;node_modules/.bin/webpack&quot;,
         &quot;webpack:watch&quot;: &quot;npm run webpack -- --watch&quot;,
-        &quot;test&quot;: &quot;mocha --compilers js:babel-core/register --require ./test/test_helper.js&quot;,
+        &quot;test&quot;: &quot;mocha --compilers js:babel-core/register --recursive --require ./test/test_helper.js&quot;,
         &quot;test:watch&quot;: &quot;npm run test -- --watch&quot;
     }
     // ...
