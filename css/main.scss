@@ -324,12 +324,18 @@ header.workshop-header {
     @include button-variant(white, $theme-primary, $theme-primary);
 }
 
+.btn-primary-light {
+    @include button-variant(black, lighten($theme-primary, 20%), $theme-primary);
+}
+
 .btn {
     @include sans-serif-font;
-    border: none;
-    border-radius: 300px;
     font-weight: 700;
     text-transform: uppercase;
+}
+
+.btn-round {
+    border-radius: 300px;
 }
 
 .btn-xl {
@@ -376,4 +382,10 @@ header.workshop-header {
             margin-bottom:0;
         }
     }
+}
+
+.collapsing {
+    -webkit-transition: none;
+    transition: none;
+    height: auto;
 }
