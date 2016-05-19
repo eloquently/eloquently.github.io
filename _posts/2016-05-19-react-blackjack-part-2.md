@@ -1,24 +1,30 @@
 ---
 layout: post
 title: React Blackjack Part 2
-permalink: 'guides/react-blackjack-part-1'
+date: 2016-05-19
+permalink: 'guides/react-blackjack-part-2'
 ---
 
-## Setting up the Game
+## React Blackjack Part 2
+<hr class="left" />
+
+This is the second part of this guide. View the first part [here]({% post_url 2016-05-19-react-blackjack-part-1 %}).
+
+### Setting up the Game
 
 We haven't thought too much about what our application will need to do in order to play a game of blackjack.
 
-One obvious way to make our game look more like blackjack is that the dealer's first card should be face down -- not face up.
+One obvious way to make our game look more like blackjack is that one of the dealer's cards should be face down -- not face up.
 
-There are a number of different ways to implement this feature. One would be to add a boolean `face_down` property to the `Card` objects we create at the very beginning of the program. This is a viable solution, but for this application, I think of `face_down` as more of display logic than an inherent property of a card.
+There are a number of different ways to implement this feature. One would be to add a boolean `faceDown` property to the `card` objects we created earlier in this guide. This is a viable solution, but for this application, I think of `faceDown` as more of display logic than an inherent property of a card. If you make a new deck of cards would they all be face up or face down?
 
-Another solution is to modify our `Hand` component to just display the first card as face down. There are a few drawbacks here. Sometimes, the `Hand` will need to display the dealer's first card face up, such as when the player chooses "stand" and the dealer starts drawing. This means that our `Hand` component needs to know the `hasStood` state variable. `Hand` also needs to know whether it is the dealer's hand or the player's hand. It's typically a good strategy to limit the number of props being passed into a component. This approach makes our `Hand` component less modular -- it would be harder to use `Hand` in another card game.
+Another solution is to modify our `Hand` component to just display the first card as face down. There are a few drawbacks here. Sometimes, the `Hand` will need to display the dealer's first card face up, such as when the player chooses "stand" and the dealer starts drawing. This means that our `Hand` component needs to know the `hasStood` state variable. `Hand` also needs to know whether it is the dealer's hand or the player's hand. It's typically a good strategy to limit the number of props being passed into a component. This approach would make our `Hand` component less modular. That is, it would be harder to use the `Hand` component for in another card game with out making significant changes to it.
 
 Another drawback to both of these approaches is that we are deciding what the card will be before it is shown to the user. Displaying the card face down is just a cosmetic change -- the card's suit and rank are still in the application state. Since we are building a front-end application, the state tree is in the browser, and thus it is available to the user.
 
-The way we will solve this is to set up our `Hand` components to take a dummy card that it will display as a face down card. The dummy card won't come from the deck and won't have a suit or rank. After the player stands, we'll deal an extra card to the dealer and remove the dummy card.
+The way we will solve this is to set up our `Hand` components to take a dummy card that it will display as a face down card. The dummy card won't come from the deck and won't have a suit or rank. After the player stands, we'll secretly deal an extra card to the dealer and remove the dummy card, so nothing will look strange to the user.
 
-This logic suggests something else about our `deal` function: since the `Deck` object we're playing with is stored in state, the player can tell which card will be dealt next. This ruins the game. Let's fix this first.
+This logic suggests something else about our `deal` function: since the `Deck` object we're playing with is stored in state, the player can tell which card will be dealt next by looking at the end of the deck. This ruins the game. Let's fix this first.
 
 ### Refactoring the `deal` Function
 
@@ -210,9 +216,8 @@ dealerHand = dealerHand.push(new Map());
 
 And, finally, we'll add a style for `face-down` cards:
 
+<div class="fp">app/css/components/card.scss</div>
 ```scss
-/* app/css/components/card.scss */
-
 .card {
    /* ... */
    &.face-down {
@@ -232,13 +237,13 @@ And, finally, we'll add a style for `face-down` cards:
 
 Now it looks like we're ready to play blackjack!
 
-## Connecting Components
+### Connecting Components
 
-Before we make those "hit" and "stand" buttons do things, we need to set up our components to automatically update when the state changes.
+Before we make those "hit" and "stand" buttons do things, we need to set up our components to update automatically when the state changes.
 
-Specifically, if we add a new card to the player's hand in the state `Map`, we want the `Hand` component to automatically update.
+Specifically, if we add a new card to the player's hand in the state `Map`, we want the `Hand` component to be re-rendered.
 
-This is where our hard-work setting up an immutable state and pure components pays off. We can now easily use Redux to turn our components into "smart components".
+This is where the hard work setting up an immutable state and pure components pays off. We can now easily use Redux to turn our components into "smart components".
 
 Redux keeps track of the application's state with a `store`. We can modify the state through a "reducer" function. Redux requires us to use a single `store` and a single `reducer()`. `reducer()` must be a pure function -- that is, it must not mutate the current state but rather return a new one. Luckily for us, we are using an immutable `Map` to track state, so we don't have to worry about accidentally mutating state.
 
@@ -250,7 +255,7 @@ npm install --save redux react-redux
 
 The first step is to create the `reducer` function. This function will take two arguments: the current state and the desired action. It will return the new state after performing the action.
 
-### Simple Actions
+#### Simple Actions
 
 The first action we want to build is the `SETUP_GAME` action. When the reducer receives a `SETUP_GAME`, it should set up the deck and hands for the player and dealer. Let's write a test for this:
 
@@ -291,7 +296,7 @@ describe('reducer', () => {
 });
 ```
 
-To get these tests to pass, let's write our first version of the `reducer` function:
+To get these tests to pass, let's write a first version of `reducer()`:
 
 <div class="fp">app/reducer.js</div>
 ```js
@@ -310,7 +315,7 @@ export default function(currentState=new Map(), action) {
 }
 ```
 
-To keep our code organized, we will have `reducer()` call other functions that actually manage state. This keeps our code more modular.
+To keep our code organized, we will have `reducer()` call other functions that actually do the work. This keeps our code more modular. Eventually if you have many different actions, you can break these functions out into different files to keep things even more organized and allow multiple people to work on different parts of your program at the same time.
 
 To fill in `setupGame()`, we'll copy over the code from `index.js`:
 
@@ -379,10 +384,10 @@ describe('reducer', () => {
 Now to make it pass, we just need to make a couple of small changes in `reducer.js`:
 
 <div class="fp">app/reducer.js</div>
-```js
+```js{7}
 // ...
 
-const setupGame = (currentState) => {
+const setupGame = (<mark>currentState</mark>) => {
 
    // ...
 
@@ -392,13 +397,13 @@ const setupGame = (currentState) => {
 export default function(currentState=new Map(), action) {
    switch(action.type) {
        case 'SETUP_GAME':
-           return setupGame(currentState);
+           return setupGame(<mark>currentState</mark>);
    }
    return currentState;
 }
 ```
 
-Now let's add a similar action: `SET_RECORD`. This action will set the player's win and loss records to `0`. First the test:
+Now let's add a similar action: `SET_RECORD`. This action will set the player's win and loss records to whatever win and loss values are part of the action. First the test:
 
 <div class="fp">test/reducer_spec.js</div>
 ```js
@@ -478,7 +483,7 @@ export function setRecord(wins, losses) {
 Now in our `reducer()` tests, we can import and call these functions to create our actions:
 
 <div class="fp">test/reducer_spec.js</div>
-```js
+```js{2,8,14}
 // ...
 import { setupGame, setRecord } from '../app/action_creators';
 
@@ -519,9 +524,11 @@ let store = createStore(reducer);
 // ...
 ```
 
+Next we'll import the action creators and dispatch the actions to set up the game.
+
 <div class="file-path">app/index.js</div>
-<div class="fp">...</div>
 ```js
+// ...
 import { reducer } from './reducer';
 import { setupGame, setRecord } from '../app/action_creators';
 
@@ -535,7 +542,7 @@ store.dispatch(setRecord(0, 0));
 // ...
 ```
 
-Now we need to share the `store` with our React components. `react-redux` provides us with a component called `Provider` that takes care of that for us. We just need to wrap the `App` component with `Provider` and pass `Provider` our `store` as a prop. We'll also change the `state` prop from `App` to get the state from `store`.
+Now we need to share the `store` with our React components. React-Redux provides us with a component called `Provider` that takes care of that for us. We just need to wrap the `App` component with `Provider` and pass `Provider` our `store` as a prop. We'll also change the `state` prop from `App` to get the state from `store`.
 
 <div class="file-path">app/index.js</div>
 ```jsx
@@ -695,8 +702,9 @@ Redux-React calls the connected components `<Connect(COMPONENT NAME)>`, so we ne
 Now let's make the test pass by changing `<App>`'s `render` function:
 
 <div class="file-path">app/components/app.js</div>
-<div class="fp">...</div>
 ```jsx
+// ...
+
 export class App extends React.Component {
    render() {
        return (
@@ -718,8 +726,9 @@ Great! Now let's look at the application in the browser. Try dispatching some `S
 Now that we have `<Info>` connected, let's write a `mapStateToProps` function for `<App>` and create the `AppContainer` class;
 
 <div class="file-path">app/components/app.js</div>
-<div class="fp">...</div>
 ```jsx
+// ...
+
 import { connect } from 'react-redux';
 
 export class App extends React.Component {
@@ -727,10 +736,10 @@ export class App extends React.Component {
 };
 
 function mapStateToProps(state) {
- return {
-   playerHand: state.get('playerHand'),
-   dealerHand: state.get('dealerHand')
- };
+    return {
+        playerHand: state.get('playerHand'),
+        dealerHand: state.get('dealerHand')
+    };
 }
 
 export const AppContainer = connect(mapStateToProps)(App);
@@ -739,15 +748,17 @@ export const AppContainer = connect(mapStateToProps)(App);
 Instead of reading `playerHand` and `dealerHand` from the state `Map`, these are just passed directly as props, so we need to make a couple small changes to the `render` function:
 
 <div class="file-path">app/components/app.js</div>
-<div class="fp">...</div>
 ```jsx
+// ...
+
 export class App extends React.Component {
    render() {
        return (
            <div className="app">
                // ...
+               <strong>Player hand:</strong>
                <Hand cards={this.props.playerHand } />
-               <strong>Dealer's hand:</strong>
+               <strong>Dealer hand:</strong>
                <Hand cards={this.props.dealerHand } />
            </div>
        );
@@ -758,7 +769,7 @@ export class App extends React.Component {
 We also need to change our `app_spec.js` to pass these props individually to `<App>` rather than passing the entire state `Map`:
 
 <div class="file-path">test/components/app_spec.js</div>
-```
+```jsx
 // ...
 
 describe('<App />', () => {
@@ -771,7 +782,7 @@ describe('<App />', () => {
 The only thing left to do is to change the component that we're rendering in `index.js`:
 
 <div class="file-path">app/index.js</div>
-```
+```jsx
 // ...
 
 ReactDOM.render(
@@ -911,6 +922,7 @@ export default function(currentState=new Map(), action) {
 We need to make similar changes to the `newDeck` function -- specifically the `shuffle` helper function.
 
 First, let's write the tests:
+
 <div class="file-path">test/lib/cards_spec.js</div>
 ```js
 // ...
@@ -962,6 +974,7 @@ export const newDeck = (seed) => {
 ```
 
 And finally, let's change `reducer()`:
+
 <div class="file-path">app/reducer.js</div>
 ```js
 // ...
@@ -973,7 +986,7 @@ const setupGame = (currentState, seed) => {
 };
 ```
 
-Now if you add and delete `SETUP_GAME` events in the Redux DevTools, you shouldn't see the cards change when you undo an old `SETUP_GAME` and if you undo the most recent `SETUP_GAME`, you should see the cards that used to be there!
+Now if you add and delete `SETUP_GAME` events in the Redux DevTools, you shouldn't see the cards change when you undo an old `SETUP_GAME` action. If you undo the most recent `SETUP_GAME`, you should see the cards that used to be there!
 
 This is a small example of how things can go wrong with Redux if your `reducer` function isn't pure or if you accidentally mutate state. It also shows how easy it is to accidentally introduce an impure function.
 
@@ -1240,7 +1253,7 @@ describe('<Info />', () => {
 
 Then the code:
 
-// app/components/info.js
+<div class="fp">app/components/info.js</div>
 ```jsx
 
 // ...
@@ -1285,3 +1298,7 @@ export const InfoContainer = connect(mapStateToProps, mapDispatchToProps)(Info);
 ```
 
 Now when you hit "Stand", the buttons will be disabled.
+
+At this point, our application is functional. Try clicking the "Hit" and "Stand" buttons in the browser, and you should see the desired behavior. Try playing around with the Redux DevTools.
+
+In the next section, we will finish up our app by adding logic to the reducers that prevents too many cards from being drawn, deals cards to the dealer after the player stands, and adds to the win and loss counts!

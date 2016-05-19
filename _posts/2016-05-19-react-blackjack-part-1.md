@@ -98,7 +98,7 @@ Other tutorials and guides may install Webpack globally using the `-g` flag. Thi
 
 We also will need a package called Babel in order to use ES6 and React's JSX (more on that in a bit). Specifically, we want Webpack to run Babel for us on any JavaScript files Webpack tries to build. Babel will transform our ES6 code to a version of JavaScript supported by browsers.
 
-The first step is to install the necessary Babel packages as development dependencies. The `babel-loader` package provides a "loader" that Webpack can use to run Babel. `babel-preset-es2015` and `babel-preset-react` will allow babel to interpret ES6 files and
+The first step is to install the necessary Babel packages as development dependencies. The `babel-loader` package provides a "loader" that Webpack can use to run Babel. `babel-preset-es2015` and `babel-preset-react` will allow babel to interpret ES6 files and JSX respectively.
 
 ```
 npm install --save-dev babel-core babel-loader babel-preset-es2015 babel-preset-react
@@ -1002,9 +1002,10 @@ const n = 2;
 
 describe('<Hand />', () => {
     const rendered = shallow(<Hand cards={hand} />);
+    const cards = rendered.find('Card');
 
     it('renders correct number of cards', () => {
-        expect(rendered.find('Card')).to.have.length(n);
+        expect(cards).to.have.length(n);
     });
 
     it('gives each card the correct props', () => {
@@ -1131,16 +1132,16 @@ We'll use `sass-loader` in our `webpack.config.js` file, but `node-sass` will ac
 Next, we need to put this loader into our configuration file:
 
 <div class="fp">webpack.config.js</div>
-```js
+```js{5,13-16}
 // ...
 
 module.exports = {
     // ...
-    devtool: "source-map",
+    "devtool": "source-map",
     "module": {
         "loaders": [
             {
-                "test": /.js?$/,
+                "test": /\.jsx?$/,
                 "loader": 'babel-loader',
                 "exclude": /node_modules/
             },
@@ -1216,7 +1217,7 @@ npm install --save-dev react-hot-loader
 Then, we need to make some changes to our `webpack.config.js` file:
 
 <div class="fp">webpack.config.js</div>
-```js
+```js{7,8,29-35}
 var webpack = require('webpack');
 
 const path = require('path');
@@ -1231,12 +1232,12 @@ module.exports = {
         "path": path.join(__dirname, 'build'),
         "filename": "bundle.js"
     },
-    devtool: "source-map",
+    "devtool": "source-map",
     "module": {
         "loaders": [
             {
-                "test": /.js?$/,
-                "loader": 'react-hot!babel-loader',
+                "test": /\.jsx?$/,
+                "loader": '<mark>react-hot!</mark>babel-loader',
                 "exclude": /node_modules/
             },
             {
@@ -1245,11 +1246,11 @@ module.exports = {
             }
         ]
     },
-    devServer: {
+    "devServer": {
         contentBase: './build',
         hot: true
     },
-    plugins: [
+    "plugins": [
         new webpack.HotModuleReplacementPlugin()
     ]
 };
@@ -1397,4 +1398,4 @@ Then we can create an `info.scss` file and give it some styles. I'm just going t
 
 Now that our application is looking beautiful (well that might be a stretch unless you did some custom styling), we can move on to implementing some of the game logic.
 
-This is the end of Part 1 of this guide. In the next part, we will start thinking about the logic for the game and work on connecting our components to the application state!
+This is the end of Part 1 of this guide. In the [next part]({% post_url 2016-05-19-react-blackjack-part-2 %}), we will start thinking about the logic for the game and work on connecting our components to the application state!
