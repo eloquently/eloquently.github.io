@@ -36,7 +36,7 @@ cd react_blackjack
 
 We are going to use NPM for this project. [NPM](https://www.npmjs.com/) is a package manager for JavaScript packages.
 
-To initialize a new project using NPM, we run the command `npm init`. This program will ask us a series of questions, and then create a `package.json` file based on our answers. You can use the default answers to the questions by pressing enter. If you don't like the default answer, feel free to type your own before pressing enter.
+To initialize a new project using NPM, we run the command `npm init`. This program will ask us a series of questions, and then create a `package.json` file based on our answers. You can use the default answers to the questions by pressing enter. If you don't like the default answer, feel free to type your own before pressing enter. Don't worry too much about the answers, you can always change them later in `package.json`.
 
 You should now see a file called `package.json` in your `react_blackjack` directory. Among other things, this file will keep track of the packages our project depends on (similar to a `Gemfile` in Ruby) as well as provide basic information about our project, such as the name, description, and git repository.
 
