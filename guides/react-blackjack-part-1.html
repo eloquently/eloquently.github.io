@@ -1,0 +1,1507 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Eloquently - Learning and Recruiting</title>
+
+    <!-- Custom Fonts -->
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css" type="text/css">
+
+    <!-- Plugin CSS -->
+    <link rel="stylesheet" href="/css/animate.min.css" type="text/css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css" type="text/css">
+    <link rel="stylesheet" href="/css/prism.css" type="text/css">
+
+    <script src="/js/prism.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+
+</head>
+
+
+<body>
+    <div class="wrapper">
+        <!-- Navigation -->
+        <nav id="mainNav" class="nav navbar navbar-default full-color">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand page-scroll" href="/index">ELOQUENTLY</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a class="page-scroll" href="/index">Home</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="/workshops">Workshops</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="/guides/index">Guides</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+
+        <div class="container post">
+            <div class="row">
+                <!--<div class="post-options pull-right">
+                    <div class="show">
+                        <a href="#postOptions" data-toggle="collapse" class="pull-right btn btn-default btn-sm">Display Options</a>
+                    </div>
+                    <div class="options collapse" id="postOptions">
+                        <input type="checkbox" checked data-toggle="toggle" data-on="Annotations On" data-off="Annotations Off" data-onstyle="primary-light" data-width="175">
+                        <br />
+                        <input type="checkbox" checked data-toggle="toggle" data-on="Line Numbers On" data-off="Line Numbers Off" data-onstyle="primary-light" data-width="175">
+                    </div>
+                </div>-->
+                <div class="post-content">
+                    <h2>React Blackjack Part 1</h2>
+
+<p><hr class="left" /></p>
+
+<p>We&#39;re going to create a blackjack game using React.js and Redux. This time we&#39;ll be starting with a completely empty directory and setting up all the tools in the guide -- no boilerplate here!</p>
+
+<p>What&#39;s the point of setting everything up from scratch? Because there are so many different options as far as which tools to use, when you start working on projects with other developers or building something off of code someone else wrote, you won&#39;t always be able to use a pre-made repository with all the tools you are used to.</p>
+
+<p>You may have to learn a new toolset or figure out how to add the tools you prefer to the project. Going through the installation of these tools will help you understand how everything fits together and which packages are responsible for what. We don&#39;t install everything right away, but instead add dependencies to our project as they&#39;re needed.</p>
+
+<p>It&#39;s also somewhat common to ask candidates what tools they use and to ask them to describe how various packages fit together to make sure the candidate really understands how a platform works.</p>
+
+<p>Let&#39;s get started!</p>
+
+<h2>Setting Up</h2>
+
+<p>To start, create a directory. I called mine <code>react_blackjack</code>.</p>
+
+<p>Use <code>cd</code> to navigate to the directory</p>
+
+<pre data-line="" class=""><code class="language-text">cd react_blackjack
+</code></pre>
+
+<p>We are going to use NPM for this project. <a href="https://www.npmjs.com/">NPM</a> is a package manager for JavaScript packages.</p>
+
+<p>To initialize a new project using NPM, we run the command <code>npm init</code>. This program will ask us a series of questions, and then create a <code>package.json</code> file based on our answers. You can use the default answers to the questions by pressing enter. If you don&#39;t like the default answer, feel free to type your own before pressing enter.</p>
+
+<p>You should now see a file called <code>package.json</code> in your <code>react_blackjack</code> directory. Among other things, this file will keep track of the packages our project depends on (similar to a <code>Gemfile</code> in Ruby) as well as provide basic information about our project, such as the name, description, and git repository.</p>
+
+<h3>Setting up our Environment</h3>
+
+<h4>Installing NPM and React</h4>
+
+<p>To install packages using NPM, we use commands that look like this:</p>
+
+<pre data-line="" class=""><code class="language-text">npm install --save package_name
+</code></pre>
+
+<p>By default, this will look up a package named <code>package_name</code>, download <code>package_name</code> to the <code>node_modules</code> directory, and add the dependency and its version number to our <code>package.json</code> file.</p>
+
+<p>We can specify in our <code>package.json</code> file that we only need a certain package (such as a testing library) in development environments by using <code>--save-dev</code> instead of <code>--save</code> when we install that package.</p>
+
+<p>Let&#39;s see what happens when we install the <code>react</code> package. We will need React in both the development and production environment, so we use <code>--save</code>. If you omit the <code>--save</code> tag, the package will still be installed, but it won&#39;t be added to your <code>package.json</code> file. If you ever forget <code>--save</code>, go ahead and run the command again.</p>
+
+<pre data-line="" class=""><code class="language-text">npm install --save react
+</code></pre>
+
+<p>This downloaded the React package (and the packages it depends on) into the <code>node_modules</code> directory and added the following lines to the <code>package.json</code> file. You don&#39;t need to type these, just verify that they are in <code>package.json</code>.</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">&quot;dependencies&quot;: {
+    &quot;react&quot;: &quot;^15.0.2&quot;
+  }
+</code></pre>
+
+<p>If you moved your code to another directory or a completely different file and ran <code>npm install</code>, NPM would install all the dependencies in your <code>package.json</code> file (in our case, just <code>react</code>). The caret (<code>^</code>) before the version number tells NPM to install the latest version of <code>react</code> that is less than <code>16.0.0</code> and greater than <code>15.0.2</code> (the latest version when this guide was last updated).</p>
+
+<p>We&#39;ll also need the ReactDOM package that allows React to render its components to the DOM.</p>
+
+<!-- [comment]: <> (Needs description of react-dom) -->
+
+<pre data-line="" class=""><code class="language-text">npm install --save react-dom
+</code></pre>
+
+<h4>Webpack and Babel</h4>
+
+<p>We are going to use Webpack to compile all of our dependencies into a single <code>.js</code> file.</p>
+
+<!-- [comment]: <> (Needs more details about what webpack is) -->
+
+<p>Let&#39;s install Webpack. Webpack is only used to prepare our application for production, so we won&#39;t need it once we&#39;re actually in production. Let&#39;s install it as a development dependency:</p>
+
+<pre data-line="" class=""><code class="language-text">npm install --save-dev webpack
+</code></pre>
+
+<p>To run Webpack, we need to find the binary created by NPM. On my system (a Cloud9 workspace), it is in the <code>node_modules/.bin/</code> directory. To run Webpack, we&#39;ll need to type <code>node_modules/.bin/webpack</code> in the terminal.</p>
+
+<p style="background-color:lightblue; margin-bottom: 16px; padding: 20px;">
+Other tutorials and guides may install Webpack globally using the `-g` flag. This allows Webpack to be run by typing `webpack` rather than `node_modules/.bin/webpack` on the terminal. We prefer not to use global packages where possible to avoid dependency issues. We'll make a shortcut for running Webpack soon.
+</p>
+
+<p>We also will need a package called Babel in order to use ES6 and React&#39;s JSX (more on that in a bit). Specifically, we want Webpack to run Babel for us on any JavaScript files Webpack tries to build. Babel will transform our ES6 code to a version of JavaScript supported by browsers.</p>
+
+<p>The first step is to install the necessary Babel packages as development dependencies. The <code>babel-loader</code> package provides a &quot;loader&quot; that Webpack can use to run Babel. <code>babel-preset-es2015</code> and <code>babel-preset-react</code> will allow babel to interpret ES6 files and</p>
+
+<pre data-line="" class=""><code class="language-text">npm install --save-dev babel-core babel-loader babel-preset-es2015 babel-preset-react
+</code></pre>
+
+<p>Now let&#39;s create a config file to tell Webpack which files to read and write. Our config file will also tell Webpack to use Babel when it encounters files that end with <code>.js</code> or <code>.jsx</code>.</p>
+
+<p>When Webpack compiles the application, it will start with the file: <code>./app/index.js</code> (yet to be created). We specify this with <code>entry</code>. <code>entry</code> can also be an array of files, but at this point, we just need a single entry point.</p>
+
+<p>It will only add files that <code>index.js</code> <code>require</code>s to the bundle. Each time it encounters a new file, it check its loaders to determine how to handle it. More specifically, it will match file names against the regular expression in each loader&#39;s <code>test</code> property. We want the Babel loader to run on files that end with <code>.js</code> or <code>.jsx</code>, so we use a regex that will match any file with those endings. (If you want to play around with regexs, I recommend <a href="http://regex101.com/">this site</a>.)</p>
+
+<p>For the Babel loader, we specify that it should not be applied to <code>.js</code> files found in the <code>node_modules</code> directory and that it should use the <code>es2015</code> and <code>react</code> presets.</p>
+
+<p>Later on, we&#39;ll add loaders for <code>scss</code> files, and you can also add loaders for images or many other file types.</p>
+
+<p>Once it has processed all the files required by the <code>index.js</code>, it will decide where to output the bundle by looking at the <code>output</code> property. In this case, we tell it to put the bundle in <code>build/bundle.js</code>.</p>
+
+<div class="fp">webpack.config.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">const path = require(&#39;path&#39;);
+
+module.exports = {
+    entry: &quot;./app/index.js&quot;,
+    output: {
+        path: path.join(__dirname, &#39;build&#39;),
+        filename: &quot;bundle.js&quot;
+    },
+    module: {
+        loaders: [
+            {
+                test: /\.jsx?$/,
+                loader: &#39;babel-loader?presets[]=es2015,presets[]=react&#39;,
+                exclude: /node_modules/
+            }
+        ]
+    },
+};
+</code></pre>
+
+<h3>A First Build</h3>
+
+<p>Let&#39;s do the first build of our application. We&#39;re going to need a few more directories and files.</p>
+
+<p>First, let&#39;s make an HTML file that will serve our application. This file only needs two things: a <code>div</code> that will contain our React components, and a <code>&lt;script&gt;</code> tag that will add the <code>bundle.js</code> created by Webpack to the page.</p>
+
+<pre data-line="" class="line-numbers"><code class="language-html">&lt;!-- build/index.html --&gt;
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+    &lt;head&gt;
+        &lt;title&gt;React Blackjack&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div id=&quot;app&quot;&gt;&lt;/div&gt;
+
+        &lt;script src=&quot;./bundle.js&quot;&gt;&lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>Now, let&#39;s make a JavaScript file that inserts a component (which we&#39;ll create next) into the <code>&lt;div&gt;</code> component:</p>
+
+<div class="fp">app/index.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">import React from &#39;react&#39;;
+import ReactDOM from &#39;react-dom&#39;;
+
+import App from &#39;./components/app.js&#39;;
+
+ReactDOM.render(
+    &lt;App /&gt;,
+    document.getElementById(&#39;app&#39;)
+);
+</code></pre>
+
+<p>Finally, we need the code for our component:</p>
+
+<div class="fp">app/components/app.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">import React from &#39;react&#39;;
+
+export default class App extends React.Component {
+    render() {
+        return (
+            &lt;h1&gt;Hello, world!&lt;/h1&gt;
+        );
+    }
+};
+</code></pre>
+
+<p>Now if we run <code>node_modules/.bin/webpack</code>, we should see a <code>bundle.js</code> file created in the <code>build/</code> directory. If we view the <code>build/index.html</code> page in a browser, we should see a large &quot;Hello, world!&quot;.</p>
+
+<p>Instead of typing out <code>node_modules/.bin/webpack</code> each time we want to build the bundle, we can create a script for npm to run in <code>package.json</code>. To do so, let&#39;s add the following to <code>package.json</code>. Be sure to include it inside the <code>{}</code>s wrapping the document:</p>
+
+<div class="fp">package.json</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">{
+    //...
+    &quot;scripts&quot;: {
+        &quot;webpack&quot;: &quot;node_modules/.bin/webpack&quot;,
+        &quot;webpack:watch&quot;: &quot;npm run webpack -- --watch&quot;
+    }
+}
+</code></pre>
+
+<p>Now we can create <code>bundle.js</code> by running <code>npm run webpack</code> and if we ant <code>webpack</code> to update <code>bundle.js</code> each time we save a file, we can run <code>npm run webpack:watch</code></p>
+
+<h4>Talking Through the First Build</h4>
+
+<p>The <code>index.html</code> file is a pretty typical HTML file. It does not contain any <code>script</code> tags in the header, but it does have a <code>script</code> tag in the <code>body</code>. The <code>body</code> also has a single <code>&lt;div&gt;</code>. The <code>div</code> is empty to start with, but it is where <code>bundle.js</code> will load its components. The <code>bundle.js</code> script is the result of the Webpack compilation of our programs and all of their dependencies. This means we don&#39;t need to include separate <code>script</code> tags for each of our dependencies (react, react-dom, etc.).</p>
+
+<p>The <code>index.js</code> file finds the <code>div</code> with an <code>id</code> of <code>app</code> and renders <code>&lt;App /&gt;</code> into in using the <code>ReactDOM.render</code> method. This is the first time we&#39;re seeing JSX in action. JSX is an extenion to JavaScript that allows us to use things that look like HTML or XML elements in code without turning them into strings or functions. Under the hood, there is a JSX preprocessor that converts tags like <code>&lt;App /&gt;</code> into normal JavaScript functions that eventually return strings of HTML that get output into the browser. In our application, the Babel React preset is handling this conversion for us.</p>
+
+<p>The <code>app.js</code> file defines what JavaScript should render when we say <code>&lt;App /&gt;</code>. We call this the <code>App</code> component. For now, our component is very simple -- it just renders a header, but components can get very complicated. Components can be composed of other components, and they can change what they display based on the state of the application passed to the component as &quot;props&quot;.</p>
+
+<p>There is no hard rule that individual components must be kept in individual files (such as <code>app.js</code>). As long as <code>index.js</code> imports the correct modules, everything will work fine. However, it is a good practice to keep your components separate from each other to organize your code and emphasize that components are meant to be interchangeable and independent.</p>
+
+<h2><code>Map</code>ping out State</h2>
+
+<p>We will be using a package called Redux to manage our application&#39;s state. Redux requires us to use a single variable to contain all state data. For this application, we&#39;ll be using a <code>Map</code> from the <code>ImmutableJS</code> package. A <code>Map</code> is analgous to a <code>Hash</code> in Ruby or an object in JavaScript except it is immutable. That means that change made to a <code>Map</code> will actually be made to a copy of it, and the original <code>Map</code> will be left alone.</p>
+
+<p style="background-color:lightblue; margin-bottom: 20px; padding: 20px;">
+
+It's perfectly fine to use a JavaScript object or any other data structure as a way to keep track of the application's state as long as you are careful not to mutate the state object. We eliminate this concern by using an immutable Map.
+
+</p>
+
+<p>We want our state <code>Map</code> to keep track of the following variables:</p>
+
+<ul>
+<li>Player&#39;s win count</li>
+<li>Player&#39;s loss count</li>
+<li>Player&#39;s hand</li>
+<li>Dealer&#39;s hand</li>
+<li>Cards remaining in deck</li>
+<li>Current status of game -- we&#39;ll use a boolean variable called hasStood. If hasStood is true, then the player has chosen to stand and it is the dealer&#39;s turn to draw.</li>
+</ul>
+
+<p>It can be useful to set up the state of the application so that you have some data to work with while you&#39;re working on the components. Let&#39;s do that now.</p>
+
+<h3>Cards and deck</h3>
+
+<p>We need to write some helper functions to set up our state. To keep our code organized, let&#39;s do so in a new file in a new directory. Create a new folder inside <code>app/</code> called <code>lib/</code>. Inside <code>lib/</code> create a file called <code>cards.js</code>.</p>
+
+<p>Let&#39;s create a <code>shuffle</code> method and a method that will create a new deck. I shamelessly stole the <code>shuffle</code> method from a Stack Overflow answer <a href="http://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array-in-javascript">here</a>. We&#39;ll also need a <code>newDeck</code> method that will add a new card to the deck for each rank and suit.</p>
+
+<p>Let&#39;s install ImmutableJS so that we can store the deck we create as an immutable <code>List</code> and the cards inside it as immutable <code>Map</code>s.</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">npm install --save immutable
+</code></pre>
+
+<p>ImmutableJS provides us with a <code>fromJS</code> method that allows us to convert nested JavaScript objects and arrays into immutable <code>Map</code>s and <code>List</code>s. We&#39;ll use this method here:</p>
+
+<div class="fp">app/lib/cards.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">import { fromJS } from &#39;immutable&#39;;
+
+export const shuffle = (array) =&gt; {
+    let j, x, i;
+    for (i = array.length; i; i -= 1) {
+        j = Math.floor(Math.random() * i);
+        x = array[i - 1];
+        array[i - 1] = array[j];
+        array[j] = x;
+    }
+};
+
+export const newDeck = () =&gt; {
+    const ranks = [&#39;A&#39;, 2, 3, 4, 5, 6, 7, 8, 9, 10, &#39;J&#39;, &#39;Q&#39;, &#39;K&#39;];
+    const suits = [&#39;S&#39;, &#39;C&#39;, &#39;H&#39;, &#39;D&#39;];
+
+    const deck = [];
+
+    ranks.forEach( (r) =&gt; {
+        suits.forEach( (s) =&gt; {
+            deck.push({ &quot;rank&quot;: r, &quot;suit&quot;: s});
+        });
+    });
+
+    shuffle(deck);
+
+    return fromJS(deck);
+};
+</code></pre>
+
+<p>In the newDeck method, we refer to <code>deck</code> as a <code>const</code> because it is a constant reference to an array. This means that the array itself may change, but the reference to the array that we are storing in <code>deck</code> is not allowed to change. We could describe <code>deck</code> as a constant reference to a mutable array. Here&#39;s a quick example of what&#39;s okay and what&#39;s not okay:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">const arr = [];
+arr.push(1); // This is fine because it mutates an existing array
+arr = [1, 2, 3]; // This will break because it replaces the array with a new reference
+</code></pre>
+
+<p>Now we&#39;ll import the <code>newDeck</code> method into our <code>index.js</code> file, and create a new deck.</p>
+
+<div class="fp">app/index.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">import React from &#39;react&#39;;
+import ReactDOM from &#39;react-dom&#39;;
+
+import App from &#39;./components/app.js&#39;;
+
+import { newDeck } from &#39;./lib/cards.js&#39;;
+
+const deck = newDeck();
+console.log(deck);
+
+ReactDOM.render(
+    &lt;App /&gt;,
+    document.getElementById(&#39;app&#39;)
+);
+</code></pre>
+
+<p>If you open the page in your browser and open the JavaScript console (<code>ctrl</code> + <code>shift</code> + <code>j</code> on Windows), you should see a <code>List</code>. Since we&#39;re dealing with ImmutableJS objects rather than native JavaScript objects and arrays, it&#39;s hard to view them in the console. To fix that, I installed a <a href="https://chrome.google.com/webstore/detail/immutablejs-object-format/hgldghadipiblonfkkicmgcbbijnpeog">chrome extension</a> that gives a custom formatter for ImmutableJS objects. After you install it, you may need to close the developer tools console and refresh the page (or close the tab and open a new one). You will also need to enable custom formatters in the developer tools options (access this by pressing <code>F1</code> after clicking somewhere in the developer tools console).</p>
+
+<p>You should see a <code>List</code> containing <code>Map</code>s for each card.</p>
+
+<h3>Player and Dealer Hands</h3>
+
+<p>The hands for the player and dealer will also be immutable <code>List</code>s. We are going to use the <code>takeLast</code> and <code>skipLast</code> methods from <code>List</code> to deal cards. We will also have to change <code>const deck</code> to <code>let deck</code> as the <code>deck</code> variable will be pointing to new immutable <code>List</code>s rather than pointing to a single array that mutates.</p>
+
+<p>Your code should look something like this:</p>
+
+<div class="fp">app/index.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+let deck = newDeck();
+console.log(&quot;start deck:&quot;);
+console.log(deck);
+
+let playerHand = deck.takeLast(2);
+deck = deck.skipLast(2);
+let dealerHand = deck.takeLast(2);
+deck = deck.skipLast(2);
+
+console.log(&quot;end deck:&quot;);
+console.log(deck);
+console.log(&quot;playerHand:&quot;);
+console.log(playerHand);
+console.log(&quot;dealerHand:&quot;);
+console.log(dealerHand);
+
+// ...
+</code></pre>
+
+<p>Now if you refresh the page and look at the console, you should see that the player and the dealer each have two cards and the deck starts with 52 cards and ends up with 48 cards.</p>
+
+<p>Since we&#39;ll be dealing cards from the deck often, let&#39;s write a function that deals cards for us. It&#39;s annoying and dangerous to make sure our code works by printing out all of our results to the console. Let&#39;s set up our testing environment and write the tests for our <code>deal</code> function before we implement the method.</p>
+
+<p>We&#39;re going to use Mocha as our test framework and Chai as our assertion library. Let&#39;s install those packages now:</p>
+
+<pre data-line="" class=""><code class="language-text">npm install --save-dev mocha chai
+</code></pre>
+
+<p>To run the tests, we&#39;ll use the command</p>
+
+<pre data-line="" class=""><code class="language-text">mocha --compilers js:babel-core/register --recursive
+</code></pre>
+
+<p>This tells <code>mocha</code> to use <code>Babel</code> to transfrom our code correctly and to search through our project recursively to find any tests to run.</p>
+
+<p>We don&#39;t want to type this out each time we want to run our tests, so we can add this to our <code>package.json</code>.</p>
+
+<div class="fp">package.json</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">{
+    // ...
+    &quot;scripts&quot;: {
+        &quot;webpack&quot;: &quot;node_modules/.bin/webpack&quot;,
+        &quot;webpack:watch&quot;: &quot;npm run webpack -- --watch&quot;,
+        &quot;test&quot;: &quot;mocha --compilers js:babel-core/register&quot;
+    }
+    // ...
+}
+</code></pre>
+
+<p>Now we can run our tests with:</p>
+
+<pre data-line="" class=""><code class="language-text">npm run test
+</code></pre>
+
+<p>We also want to set up our tests to run each time we save a file (similar to using Guard in Ruby). To do that, Mocha provides us with a <code>--watch</code> option. Let&#39;s add another script to <code>package.json</code>:</p>
+
+<div class="fp">package.json</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">{
+    // ...
+    &quot;scripts&quot;: {
+        &quot;webpack&quot;: &quot;node_modules/.bin/webpack&quot;,
+        &quot;webpack:watch&quot;: &quot;npm run webpack -- --watch&quot;,
+        &quot;test&quot;: &quot;mocha --compilers js:babel-core/register&quot;,
+        &quot;test:watch&quot;: &quot;npm run test -- --watch&quot;
+    }
+    // ...
+}
+</code></pre>
+
+<p>To keep our test code DRY, we are going to want a test helper file that requires all the libraries we will need for testing. Create a folder for tests <code>test/</code> and create a <code>test_helper.js</code> file inside.</p>
+
+<p>We are going to import <code>chai</code> and a library called <code>chai-immutable</code> that makes it easy for us to test ImmutableJS objects by providing us with some new assertions. First, we&#39;ll get the package from NPM:</p>
+
+<pre data-line="" class=""><code class="language-text">npm install --save-dev chai-immutable
+</code></pre>
+
+<p>Now we&#39;ll add it to our <code>test_helper.js</code>:</p>
+
+<div class="fp">test/test_helper.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">import chai from &#39;chai&#39;;
+import chaiImmutable from &#39;chai-immutable&#39;;
+
+chai.use(chaiImmutable);
+</code></pre>
+
+<p>To tell <code>mocha</code> to load this helper file, we&#39;ll add the <code>--require ./test/test_helper.js</code> option to our <code>test</code> script in <code>package.json</code>:</p>
+
+<div class="fp">package.json</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">{
+    // ...
+    &quot;scripts&quot;: {
+        &quot;webpack&quot;: &quot;node_modules/.bin/webpack&quot;,
+        &quot;webpack:watch&quot;: &quot;npm run webpack -- --watch&quot;,
+        &quot;test&quot;: &quot;mocha --compilers js:babel-core/register --require ./test/test_helper.js&quot;,
+        &quot;test:watch&quot;: &quot;npm run test -- --watch&quot;
+    }
+    // ...
+}
+</code></pre>
+
+<p>Now let&#39;s write some tests for the <code>cards.js</code> file that we had previously been testing with <code>console.log</code>. We&#39;ll try to mirror our <code>app/</code> directory with our <code>test/</code> directory, so we&#39;ll put this test in <code>test/lib/cards_spec.js</code>.</p>
+
+<div class="fp">test/lib/cards_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">import { expect } from &#39;chai&#39;;
+import { List } from &#39;immutable&#39;;
+
+import { newDeck } from &#39;../../app/lib/cards&#39;;
+
+describe(&#39;cards.js&#39;, () =&gt; {
+    describe(&#39;newDeck&#39;, () =&gt; {
+        it(&#39;returns an immutable list&#39;, () =&gt; {
+            expect(newDeck()).to.be.instanceOf(List);
+        });
+        it(&#39;has 52 elements&#39;, () =&gt; {
+            expect(newDeck().size).to.eq(52);
+        });
+    });
+});
+</code></pre>
+
+<p>This is how you write tests using Mocha and Chai. The code looks a lot like the Rails testing library <code>rspec</code>. First, we import the necessary modules from external libraries. For these tests, we need to import the <code>expect</code> function from Chai. We also need to import the <code>List</code> object from ImmutableJS. Then we import the modules from our code we are testing. In this case, we import <code>newDeck</code> and <code>deal</code> from the <code>cards.js</code> file.</p>
+
+<p>Then we set up a couple of <code>describe</code> blocks. These help us organize our tests, and each nested <code>describe</code> will show up indented one level in the tests. The first argument passed to <code>describe</code> is the name of the thing we are testing. Nothing magical happens with the name string, so feel free to type whatever you want. The second argument is a function that contains more <code>describe</code> blocks or tests.</p>
+
+<p>Each <code>it</code> block corresponds to one test. Each test should check for one thing and should be mostly independent on other tests. Like the describe blocks, the <code>it</code> blocks take a string as the first argument. You should choose a string that reads like a grammatical sentence. The second argument to an <code>it</code> block is a function that contains the actual code for our test. This should also sound natural if you say it aloud.</p>
+
+<p>You can read our tests like this:</p>
+
+<ul>
+<li>Look at <code>cards.js</code>.
+
+<ul>
+<li>Look at the <code>newDeck</code> function.</li>
+<li>It returns an immutable list
+
+<ul>
+<li>Specifically, we expect the result of <code>newDeck()</code> to be an instance of <code>List</code></li>
+</ul></li>
+<li>It has 52 elements
+
+<ul>
+<li>Specifically, we expect the size of <code>newDeck()</code> to equal 52</li>
+</ul></li>
+</ul></li>
+</ul>
+
+<p>If you save the file and run the tests, they should pass because we&#39;ve already added the <code>newDeck</code> mehod to <code>cards.js</code>.</p>
+
+<p>Before we write the <code>deal</code> method, we want to write some tests for the <code>deal</code> method:</p>
+
+<div class="fp">test/lib/cards_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+import { newDeck<mark>, deal</mark> } from &#39;../../app/lib/cards&#39;;
+
+// ...
+
+describe(&#39;cards.js&#39;, () =&gt; {
+   // ...
+   describe(&#39;deal()&#39;, () =&gt; {
+        const deck = newDeck();
+        const n = 5;
+        const [new_deck, new_hand] = deal(deck, n);
+
+        it(&#39;returns smaller deck&#39;, () =&gt; {
+            expect(new_deck.size).to.eq(52 - n);
+        });
+
+        it(&#39;returns hand of n cards&#39;, () =&gt; {
+            expect(new_hand.size).to.eq(n);
+        });
+
+        it(&#39;puts correct cards in hand&#39;, () =&gt; {
+            for(let i = n-1; i &gt;= 0; i--) {
+                expect(new_hand.get(i)).to.eq(deck.get(51-(n-1)+i));
+            }
+        });
+    });
+});
+</code></pre>
+
+<p>One thing to note about these tests is that we only run the <code>newDeck</code> function once inside the <code>deal()</code> <code>describe</code> block. This makes our code more DRY and prevents unnecessary runs of code. We can access variables and constants declared outside of an <code>it</code> block as long as they are declared inside the same <code>describe</code> as the <code>it</code>.</p>
+
+<p>These tests won&#39;t pass yet because we haven&#39;t written the <code>deal</code> method. Let&#39;s write it now:</p>
+
+<div class="fp">app/lib/cards.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+// deal n cards from the end of List deck
+export const deal = (deck, n) =&gt; {
+    let dealt_cards = deck.takeLast(2);
+    let newDeck = deck.skipLast(2);
+    return [newDeck, dealt_cards];
+};
+</code></pre>
+
+<p>Now try running the tests. One of them should pass, but there is a small error in the function. Try fixing it. You will know if you fixed it if all the tests pass.</p>
+
+<p>We can now simplify <code>app/index.js</code>:</p>
+
+<div class="fp">app/index.js</div>
+
+<pre data-line="7-11" class="line-numbers"><code class="language-jsx">import React from &#39;react&#39;;
+import ReactDOM from &#39;react-dom&#39;;
+import App from &#39;./components/app.js&#39;;
+
+import { newDeck, deal } from &#39;./lib/cards.js&#39;;
+
+let deck = newDeck();
+let playerHand, dealerHand;
+
+[deck, playerHand] = deal(deck, 2);
+[deck, dealerHand] = deal(deck, 2);
+
+ReactDOM.render(
+    &lt;App /&gt;,
+    document.getElementById(&#39;app&#39;)
+);
+</code></pre>
+
+<p>The only parts of our application state that we still need to add are the win and loss counts and <code>hasStood</code>. Since these are primitive types (integers and booleans), we can just add them to the state <code>Map</code> when its created.</p>
+
+<p>Let&#39;s now create our state <code>Map</code>:</p>
+
+<div class="fp">app/index.js</div>
+
+<pre data-line="4,14-22" class="line-numbers"><code class="language-js">// ...
+
+import App from &#39;./components/app.js&#39;;
+import { fromJS } from &#39;immutable&#39;;
+
+import { newDeck, deal } from &#39;./lib/cards.js&#39;;
+
+let deck = newDeck();
+let playerHand, dealerHand;
+
+[deck, playerHand] = deal(deck, 2);
+[deck, dealerHand] = deal(deck, 2);
+
+const state = fromJS({
+    deck,
+    playerHand,
+    dealerHand,
+    &quot;winCount&quot;: 0,
+    &quot;lossCount&quot;: 0,
+    hasStood: false
+});
+
+console.log(state);
+
+// ...
+</code></pre>
+
+<p>Now when we build the bundle with <code>npm run webpack</code> and refresh the browser page, we will see the state <code>Map</code> logged to the console.</p>
+
+<p>The next step is to let our components know about <code>state</code>. We do this by passing <code>state</code> into our <code>&lt;App /&gt;</code> component as a &quot;prop&quot;. <code>&lt;App /&gt;</code> looks like an HTML tag, and we can pass it props the same way we give HTML tags attributes:</p>
+
+<div class="fp">app/index.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">// ...
+
+ReactDOM.render(
+    &lt;App <mark>state={state}</mark> /&gt;,
+    document.getElementById(&#39;app&#39;)
+);
+</code></pre>
+
+<p>We use the curly braces around <code>{state}</code> to indicate to React that it should substitute a variable called <code>state</code> for <code>{state}</code>.</p>
+
+<h2>A First Pass at Components</h2>
+
+<p>Now that we are passing our components some data, we can start thinking about what our components should look like.</p>
+
+<h3>Component Design</h3>
+
+<p>One way to design a React front-end is to start with a basic sketch of the entire view, and try to break it down into components. This process can be more of an art than a science, and there is not always a correct way to do this. Generally if you see the same type of element repeated multiple times, that element should be a component.</p>
+
+<p>For our application, we will have an <code>App</code> component that contains everything else. The <code>App</code> component will contain an <code>Info</code> component at the top that displays the player&#39;s record and buttons that allow the player to &quot;hit&quot; (draw another card) or &quot;stand&quot; (stop drawing cards). The <code>App</code> component will also contain two <code>Hand</code> components that show several <code>Card</code> components. One of these will represent the player&#39;s hand and the other will represent the dealer&#39;s hand.</p>
+
+<h3>The <code>App</code> Component</h3>
+
+<p>The App component is very simple. It is only responsible for rendering the <code>Info</code> and <code>Hand</code> components as described above.</p>
+
+<p>We&#39;re going to use the Enzyme testing utility to test our React components. Enzyme provides us with some helper functions that make rendering and manipulating React objects easier than trying to use the default tools provided by React.</p>
+
+<p>First, let&#39;s install React&#39;s test utilities and Enzyme:</p>
+
+<pre data-line="" class=""><code class="language-text">npm install --save-dev react-addons-test-utils enzyme chai-enzyme
+</code></pre>
+
+<p>Next, let&#39;s add Enzyme&#39;s Chai assertions to our <code>test_helper.js</code>:</p>
+
+<div class="fp">test/test_helper.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">import chai from &#39;chai&#39;;
+import chaiImmutable from &#39;chai-immutable&#39;;
+import chaiEnzyme from &#39;chai-enzyme&#39;;
+
+chai.use(chaiImmutable);
+chai.use(chaiEnzyme());
+</code></pre>
+
+<p>We can use Enzyme&#39;s <code>shallow</code> function to do a shallow render of our component. Shallow rendering will not render any child components. This allows us to keep our test one component at a time. If we are testing the <code>App</code> component, we want it to render an <code>Info</code> component. If something is wrong with the <code>Info</code> component, but it&#39;s still being rendered properly, the <code>App</code> component test should pass. Keeping our tests independent allows us to identify the source of a bug more quickly.</p>
+
+<p>Shallow rendering can also boost performance as rendering all children and ancestor components can take a relatively long time in a big application.</p>
+
+<p>The <code>shallow</code> function returns a &quot;wrapper&quot; object that has some useful functions. In this test, we will use the <code>find</code> function to search for other elements inside the shallow wrapper using CSS selectors (<code>element</code>, <code>#id</code>, <code>.class</code>).</p>
+
+<p>Our first task for the <code>App</code> component is to make it render one <code>Info</code> component:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">import React from &#39;react&#39;;
+import { expect } from &#39;chai&#39;;
+import { shallow } from &#39;enzyme&#39;;
+
+import App from &#39;../../app/components/app&#39;;
+
+describe(&#39;&lt;App /&gt;&#39;, () =&gt; {
+    const rendered = shallow(&lt;App /&gt;);
+
+    it(&#39;renders &lt;Info /&gt; component&#39;, () =&gt; {
+        expect(rendered.find(&#39;Info&#39;)).to.have.length(1);
+    });
+});
+</code></pre>
+
+<p>We did the <code>shallow</code> render outside of the <code>it</code> block because we will be using <code>rendered</code> for multiple tests.</p>
+
+<p>To make the test pass, we need to add the <code>Info</code> component to the <code>render</code> function in our <code>App</code> component:</p>
+
+<div class="fp">app/components/app.js</div>
+
+<pre data-line="7,9,10" class="line-numbers"><code class="language-jsx">import React from &#39;react&#39;;
+import Info from &#39;./info&#39;;
+
+export default class App extends React.Component {
+    render() {
+        return (
+            &lt;div className=&quot;app&quot;&gt;
+                &lt;h1&gt;React Blackjack&lt;/h1&gt;
+                &lt;Info /&gt;
+            &lt;/div&gt;
+        );
+    }
+};
+</code></pre>
+
+<p>Note that we also kept the <code>h1</code>. We had to wrap the entire thing in a <code>div</code> because a React component can only have one root HTML element. Without the <code>div</code>, we would have <code>h1</code> and <code>Info</code> on the same level, so we would have two root elements.</p>
+
+<p>Another thing to note is that when we give an element a CSS class in <code>JSX</code>, we use <code>className=</code> rather than <code>class=</code> (the normal way to do it in HTML). This is because <code>JSX</code> is still JavaScript, and <code>class</code> is a reserved word in JavaScript used when declaring a new class.</p>
+
+<p>We&#39;ll also need an <code>Info</code> component, so we have something to import and render from the <code>App</code> component. Make a new file and slap this inside for now:</p>
+
+<div class="fp">app/components/info.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">import React from &#39;react&#39;;
+
+export default class Info extends React.Component {
+    render() {
+        return (
+            &lt;p&gt;This is the info component&lt;/p&gt;
+        );
+    }
+};
+</code></pre>
+
+<p>Now our test for the <code>App</code> component should pass. You should also be able to see the dummy <code>Info</code> component in the browser.</p>
+
+<p>Next, we want our <code>App</code> component to pass some state variables to the <code>Info</code> component as props. Specifically, the <code>Info</code> component is going to need to know <code>winCount</code>, <code>lossCount</code>, and <code>hasStood</code>. Our test for this looks like:</p>
+
+<div class="fp">test/components/app_spec.js</div>
+
+<pre data-line="2,6,8-21,28-36" class="line-numbers"><code class="language-jsx">// ...
+import { fromJS } from &#39;immutable&#39;;
+
+// ...
+
+import { newDeck, deal } from &#39;../../app/lib/cards.js&#39;;
+
+let deck = newDeck();
+let playerHand, dealerHand;
+
+[deck, playerHand] = deal(deck, 2);
+[deck, dealerHand] = deal(deck, 2);
+
+const state = fromJS({
+    deck,
+    playerHand,
+    dealerHand,
+    &quot;winCount&quot;: 0,
+    &quot;lossCount&quot;: 0,
+    hasStood: false
+});
+
+describe(&#39;&lt;App /&gt;&#39;, () =&gt; {
+    const rendered = shallow(&lt;App <mark>state={state}</mark> /&gt;);
+
+    // ...
+
+    it(&#39;passes props to &lt;Info /&gt;&#39;, () =&gt; {
+        const info = rendered.find(&#39;Info&#39;).first();
+        expect(info).to.have.prop(&#39;winCount&#39;,
+            state.get(&#39;winCount&#39;));
+        expect(info).to.have.prop(&#39;lossCount&#39;,
+            state.get(&#39;lossCount&#39;));
+        expect(info).to.have.prop(&#39;hasStood&#39;,
+            state.get(&#39;hasStood&#39;));
+    });
+});
+</code></pre>
+
+<p>To write this test, we needed to create a state <code>Map</code>, just like we did in <code>index.js</code>. This is a bit repetitive, but it is okay for now. Once we start using Redux to handle state, we&#39;ll DRY this up.</p>
+
+<p>We also want our <code>App</code> component to render two <code>Hand</code> components -- one for the player&#39;s hand and one for the dealer&#39;s hand. Let&#39;s make a test for this:</p>
+
+<div class="fp">test/components/app_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">// ...
+
+describe(&#39;&lt;App /&gt;&#39;, () =&gt; {
+
+    // ...
+
+    it(&#39;renders two &lt;Hand /&gt; component&#39;, () =&gt; {
+        expect(rendered.find(&#39;Hand&#39;)).to.have.length(2);
+    });
+});
+</code></pre>
+
+<p>Let&#39;s make a dummy <code>Hand</code> component:</p>
+
+<div class="fp">app/components/hand.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">import React from &#39;react&#39;;
+
+export default class Hand extends React.Component {
+    render() {
+        return (
+            &lt;p&gt;This is a hand component&lt;/p&gt;
+        );
+    }
+};
+</code></pre>
+
+<p>Now the test will pass if we render two <code>Hand</code>s in the <code>App</code> component:</p>
+
+<div class="fp">app/components/app.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">import React from &#39;react&#39;;
+import Info from &#39;./info&#39;;
+import Hand from &#39;./hand&#39;;
+
+export default class App extends React.Component {
+    render() {
+        console.log(this.props);
+        return (
+            &lt;div className=&quot;app&quot;&gt;
+                &lt;h1&gt;React Blackjack&lt;/h1&gt;
+                &lt;Info winCount={this.props.state.get(&#39;winCount&#39;)}
+                      lossCount={this.props.state.get(&#39;lossCount&#39;)}
+                      hasStood={this.props.state.get(&#39;hasStood&#39;)} /&gt;
+
+                &lt;Hand /&gt;
+                &lt;Hand /&gt;
+            &lt;/div&gt;
+        );
+    }
+};
+</code></pre>
+
+<p>We also want the <code>App</code> component to pass the cards for each <code>Hand</code> as a prop:</p>
+
+<div class="fp">test/components/app_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">// ...
+
+describe(&#39;&lt;App /&gt;&#39;, () =&gt; {
+
+    // ...
+
+    it(&#39;passes props to &lt;Hand /&gt;s&#39;, () =&gt; {
+        expect(rendered.find(&#39;Hand&#39;).first()).to.have.prop(&#39;cards&#39;, state.get(&quot;playerHand&quot;));
+        expect(rendered.find(&#39;Hand&#39;).last()).to.have.prop(&#39;cards&#39;, state.get(&quot;dealerHand&quot;));
+    });
+});
+</code></pre>
+
+<p>Adding the appropriate props to the rendered <code>Hand</code> components inside <code>App</code> will pass the test:</p>
+
+<div class="fp">app/components/app.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">// ...
+
+export default class App extends React.Component {
+    render() {
+        return (
+            &lt;div className=&quot;app&quot;&gt;
+
+                // ...
+
+                &lt;strong&gt;Player&#39;s hand:&lt;/strong&gt;
+                &lt;Hand cards={this.props.state.get(&#39;playerHand&#39;)} /&gt;
+                &lt;strong&gt;Dealer&#39;s hand:&lt;/strong&gt;
+                &lt;Hand cards={this.props.state.get(&#39;dealerHand&#39;)} /&gt;
+            &lt;/div&gt;
+        );
+    }
+};
+</code></pre>
+
+<p>Now our app component is doing everything it needs to do. Let&#39;s start working on the other components.</p>
+
+<h3>The <code>Info</code> Component</h3>
+
+<p>As stated above, the <code>Info</code> component is responsible for a couple things: displaying the win/loss record of the player and some buttons that allow the player to choose to &quot;hit&quot; or &quot;stand&quot;.</p>
+
+<p>Let&#39;s first write a test to check if the player&#39;s record is displayed correctly:</p>
+
+<div class="fp">test/components/info_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">import React from &#39;react&#39;;
+import { expect } from &#39;chai&#39;;
+import { shallow } from &#39;enzyme&#39;;
+
+import Info from &#39;../../app/components/info&#39;;
+
+describe(&#39;&lt;Info /&gt;&#39;, () =&gt; {
+    const rendered = shallow(&lt;Info winCount={1} lossCount={2} hasStood={false} /&gt;);
+
+    it(&#39;displays record&#39;, () =&gt; {
+        expect(rendered).to.include.text(&quot;Wins: 1&quot;);
+        expect(rendered).to.include.text(&quot;Losses: 2&quot;);
+    });
+});
+</code></pre>
+
+<p>To make the test pass, this is what our <code>Info</code> component should look like:</p>
+
+<div class="fp">app/components/info.js</div>
+
+<pre data-line="7-9" class="line-numbers"><code class="language-jsx">import React from &#39;react&#39;;
+
+export default class Info extends React.Component {
+    render() {
+        return (
+            &lt;div id=&quot;info_bar&quot;&gt;
+                &lt;span id=&quot;player_record&quot;&gt;
+                    Wins: {this.props.winCount} Losses: {this.props.lossCount}
+                &lt;/span&gt;
+            &lt;/div&gt;
+        );
+    }
+};
+</code></pre>
+
+<p>Next, we want to display two buttons -- one with the text &quot;Hit&quot; and one with the text &quot;Stand&quot;:</p>
+
+<div class="fp">test/components/info_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+describe(&#39;&lt;Info /&gt;&#39;, () =&gt; {
+    // ...
+
+    it(&#39;shows hit and stand buttons&#39;, () =&gt; {
+        const buttons = rendered.find(&#39;button&#39;);
+        expect(buttons).to.have.length(2);
+        expect(buttons.first()).to.have.text(&#39;Hit&#39;);
+        expect(buttons.last()).to.have.text(&#39;Stand&#39;);
+    });
+});
+</code></pre>
+
+<p>Now, we&#39;ll add the buttons to our component:</p>
+
+<div class="fp">app/components/info.js</div>
+
+<pre data-line="8-11" class="line-numbers"><code class="language-jsx">// ...
+
+export default class Info extends React.Component {
+    render() {
+        return (
+            &lt;div id=&quot;info_bar&quot;&gt;
+                // ...
+                &lt;span id=&quot;buttons&quot;&gt;
+                    &lt;button&gt;Hit&lt;/button&gt;
+                    &lt;button&gt;Stand&lt;/button&gt;
+                &lt;/span&gt;
+            &lt;/div&gt;
+        );
+    }
+};
+</code></pre>
+
+<p>We want one more behavior from the <code>Info</code> component. When <code>hasStood</code> is true, the hit and stand buttons should be disabled. Let&#39;s refactor our test to account for the two different possible contexts:</p>
+
+<div class="fp">test/components/info_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">//...
+
+describe(&#39;&lt;Info /&gt;&#39;, () =&gt; {
+    describe(&#39;when hasStood is false&#39;, () =&gt; {
+        const rendered = shallow(&lt;Info winCount={1} lossCount={2} hasStood={false} /&gt;);
+
+        it(&#39;displays record&#39;, () =&gt; {
+            expect(rendered).to.include.text(&quot;Wins: 1&quot;);
+            expect(rendered).to.include.text(&quot;Losses: 2&quot;);
+        });
+
+        const buttons = rendered.find(&#39;button&#39;);
+        it(&#39;shows hit and stand buttons&#39;, () =&gt; {
+            expect(buttons).to.have.length(2);
+            expect(buttons.first()).to.have.text(&#39;Hit&#39;);
+            expect(buttons.last()).to.have.text(&#39;Stand&#39;);
+        });
+
+        it(&#39;enables hit and stand buttons&#39;, () =&gt; {
+            buttons.forEach((b) =&gt; {
+                expect(b).to.not.have.attr(&#39;disabled&#39;);
+            });
+        });
+    });
+
+    describe(&#39;when hasStood is true&#39;, () =&gt; {
+        const rendered = shallow(&lt;Info winCount={1} lossCount={2} hasStood={true} /&gt;);
+
+        it(&#39;disables hit and stand buttons&#39;, () =&gt; {
+            const buttons = rendered.find(&#39;button&#39;);
+            buttons.forEach((b) =&gt; {
+                expect(b).to.have.attr(&#39;disabled&#39;);
+            });
+        });
+    });
+
+});
+</code></pre>
+
+<p>That&#39;s all we need for our <code>Info</code> component for now. We&#39;ll make the buttons actually do something after we set up the <code>Hand</code> component.</p>
+
+<h3>The <code>Hand</code> and <code>Card</code> Components</h3>
+
+<p>The <code>Hand</code> component has a <code>List</code> of cards as a property and is responsible for displaying the cards in that list. We&#39;re going to create a Card component, so the first thing we want <code>Hand</code> to do is display the correct number of cards and give each one the correct props:</p>
+
+<div class="fp">test/components/hand_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">import React from &#39;react&#39;;
+import { expect } from &#39;chai&#39;;
+import { shallow } from &#39;enzyme&#39;;
+
+import Hand from &#39;../../app/components/hand&#39;;
+
+import { newDeck, deal } from &#39;../../app/lib/cards.js&#39;;
+
+let deck = newDeck();
+let hand;
+
+const n = 2;
+[deck, hand] = deal(deck, n);
+
+describe(&#39;&lt;Hand /&gt;&#39;, () =&gt; {
+    const rendered = shallow(&lt;Hand cards={hand} /&gt;);
+
+    it(&#39;renders correct number of cards&#39;, () =&gt; {
+        expect(rendered.find(&#39;Card&#39;)).to.have.length(n);
+    });
+
+    it(&#39;gives each card the correct props&#39;, () =&gt; {
+        hand.forEach((card, i) =&gt; {
+            expect(cards.at(i)).to.have.prop(&#39;suit&#39;, card.get(&#39;suit&#39;));
+            expect(cards.at(i)).to.have.prop(&#39;rank&#39;, card.get(&#39;rank&#39;));
+        });
+    });
+});
+</code></pre>
+
+<p>Now let&#39;s make a dummy <code>Card</code> class:</p>
+
+<div class="fp">app/components/card.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">import React from &#39;react&#39;;
+
+export default class Card extends React.Component {
+    render() {
+        return (
+            &lt;div className=&quot;card&quot;&gt;
+                Card
+            &lt;/div&gt;
+        );
+    }
+}
+</code></pre>
+
+<p>Then we&#39;ll render these cards from our <code>Hand</code> component.</p>
+
+<div class="fp">app/components/hand.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">import React from &#39;react&#39;;
+import Card from &#39;./card&#39;;
+
+export default class Hand extends React.Component {
+    render() {
+        return (
+            &lt;div className=&quot;hand&quot;&gt;
+                {this.props.cards.map((card, i) =&gt;
+                    &lt;Card suit={card.get(&#39;suit&#39;)}
+                          rank={card.get(&#39;rank&#39;)}
+                          key={i} /&gt;
+                )}
+            &lt;/div&gt;
+        );
+    }
+};
+</code></pre>
+
+<p>This render method is a little more complicated than our previous ones, so let&#39;s break it down. <code>this.props.cards</code> is a <code>List</code> object that contains a <code>Map</code> for each card. We want to render a <code>Card</code> element for each of those <code>Maps</code>. To do this, we invoke the <code>map()</code> method on <code>this.props.cards</code>. The <code>map()</code> method returns an <code>List</code> that is the result of applying the function passed to <code>map()</code> to each element in the <code>List</code>. In this case, we get a <code>List</code> of <code>&lt;Card&gt;</code>s with a <code>card</code> prop that corresponds to the respective element in the original array.</p>
+
+<p>We need to give each element a unique <code>key</code> attribute that React will use to track the elements in case some are added or removed at some point in the future. For now, we can just use the position of the element in the <code>List</code> (<code>i</code>).</p>
+
+<!-- [comment]: <> (Above paragraphs could use some work) -->
+
+<p>Now it&#39;s time to flesh out our <code>Card</code> component. We want each <code>Card</code> to display its <code>suit</code> and <code>rank</code>. We also want the <code>Card</code>&#39;s <code>div</code> element to have the card&#39;s suit as a class so that we can style the card appropriately. These tests are straightforward:</p>
+
+<div class="fp">test/components/card_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">import React from &#39;react&#39;;
+import { expect } from &#39;chai&#39;;
+import { shallow } from &#39;enzyme&#39;;
+import { fromJS } from &#39;immutable&#39;;
+
+import Card from &#39;../../app/components/card&#39;;
+
+const suit = &#39;C&#39;;
+const rank = 2;
+
+describe(&#39;&lt;Card /&gt;&#39;, () =&gt; {
+    const rendered = shallow(&lt;Card suit={suit} rank={rank}/&gt;);
+
+    it(&#39;shows suit and rank&#39;, () =&gt; {
+        expect(rendered).to.include.text(suit);
+        expect(rendered).to.include.text(rank);
+    });
+
+    it(&#39;adds a css class for the suit&#39;, () =&gt; {
+        expect(rendered.find(`.card.${suit}`)).to.have.length(1);
+    });
+});
+</code></pre>
+
+<p>Now let&#39;s change our <code>Card</code> component so that the test will pass:</p>
+
+<div class="fp">app/components/card.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">import React from &#39;react&#39;;
+
+export default class Card extends React.Component {
+    render() {
+        return (
+            &lt;div className={`card ${this.props.suit}`}&gt;
+                &lt;div className=&quot;top-rank&quot;&gt;
+                    {this.props.rank}
+                &lt;/div&gt;
+                &lt;div className=&quot;suit&quot;&gt;
+                    {this.props.suit}
+                &lt;/div&gt;
+                &lt;div className=&quot;bottom-rank&quot;&gt;
+                    {this.props.rank}
+                &lt;/div&gt;
+            &lt;/div&gt;
+        );
+    }
+}
+</code></pre>
+
+<p>Our tests pass, but if we look at our application in the browser, it is not very user friendly. Let&#39;s use SASS to create some css to make our cards look more like cards.</p>
+
+<h3>Setting up SASS and Hot Reload</h3>
+
+<h4>SASS</h4>
+
+<p>First we need to configure <code>webpack</code> to compile our <code>.scss</code> files to <code>.sass</code>. Previously, we set up <code>babel</code> to transform our ES6 <code>.js</code> files. We are going to do something similar for our (not yet created) <code>.scss</code> files. First let&#39;s install <code>sass-loader</code> and <code>node-sass</code>:</p>
+
+<pre data-line="" class=""><code class="language-text">npm install --save-dev style-loader css-loader sass-loader node-sass
+</code></pre>
+
+<p>We&#39;ll use <code>sass-loader</code> in our <code>webpack.config.js</code> file, but <code>node-sass</code> will actually do the compilation work.</p>
+
+<p>Next, we need to put this loader into our configuration file:</p>
+
+<div class="fp">webpack.config.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+module.exports = {
+    // ...
+    devtool: &quot;source-map&quot;,
+    &quot;module&quot;: {
+        &quot;loaders&quot;: [
+            {
+                &quot;test&quot;: /.js?$/,
+                &quot;loader&quot;: &#39;babel-loader&#39;,
+                &quot;exclude&quot;: /node_modules/
+            },
+            {
+                &quot;test&quot;: /\.scss$/,
+                &quot;loaders&quot;: [&quot;style&quot;, &quot;css?sourceMap&quot;, &quot;sass?sourceMap&quot;]
+            }
+        ]
+    }
+};
+</code></pre>
+
+<p>Now, <code>webpack</code> will build our <code>.scss</code> files. We&#39;ve also turned on &quot;source maps&quot;, which tell the inspect tool on our browsers which <code>.scss</code> file each style comes from. Source maps can slow down build times if you have a large application, but they make debugging much easier.</p>
+
+<p>Now we can start making stylesheet files. We&#39;ll have a <code>main.scss</code> file that is only responsible for importing all of the other <code>.scss</code> files in our application.</p>
+
+<pre data-line="" class="line-numbers"><code class="language-scss">/* app/css/main.scss */
+
+@import &#39;components/all&#39;;
+</code></pre>
+
+<p>Next we&#39;ll make a directory called <code>components/</code> for our component styles inside our <code>css/</code> directory. It is a good practice to keep each component&#39;s stylesheet in its own file in order to make your components more modular. If we wanted to make another card game application, we could very easily re-use our card component by copying the <code>components/card.js</code> file and the <code>css/components/card.js</code> file to a new project.</p>
+
+<p>The <code>components/</code> directory will have a file called <code>_all.scss</code> that imports each component. It&#39;s important to remember to add an import statement to this file each time you create a new <code>.scss</code> file.</p>
+
+<p>The <code>_all.scss</code> file looks like this:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-scss">/* app/css/components/_all.scss */
+
+@import &#39;card&#39;;
+</code></pre>
+
+<p>And now we can create a <code>card.scss</code> file:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-scss">/* app/css/components/card.scss */
+
+.card {
+    background-color: blanchedalmond;
+    /* Yes -- blanchedalmond is a real color name */
+}
+</code></pre>
+
+<p>Finally, we need to import our css file into <code>index.js</code> so that Webpack can find it and include it in our bundle:</p>
+
+<div class="fp">app/index.js</div>
+
+<pre data-line="5" class="line-numbers"><code class="language-js">// ...
+
+import { newDeck, deal } from &#39;./lib/cards.js&#39;;
+
+require(&#39;./css/main.scss&#39;);
+
+let deck = newDeck();
+// ...
+</code></pre>
+
+<p>Now if you open <code>build/index.html</code> in the browser, you should see the a nice blanched almond color behind your cards! You may have to restart your <code>webpack:watch</code> process because we changed its configuration.</p>
+
+<p>In Chrome, if you right click on a card and hit &quot;inspect&quot;, you&#39;ll see the DOM tree appear. If you select one of the <code>&lt;div class=&quot;hand&quot;&gt;</code> lines, you should see a list of styles applied to the element. It will tell you that it&#39;s getting it&#39;s <code>blanchedalmond</code> <code>backround-color</code> from <code>card.scss</code>. This is the source map at work!</p>
+
+<h4>Hot Reloading/Hot Module Replacement</h4>
+
+<p>Another thing worth setting up at this point is &quot;hot reloading&quot;. Hot reloading will automatically update the page we&#39;re working on in the browser without making us manually refresh. This speeds up the process of checking how changes we make in the code change what the browser renders.</p>
+
+<p>Hot module replacement (HMR) is a is very useful form of hot reloading because, unlike refreshing, it keeps the state of the application intact. This means that if we are working on the message that our application displays when the user wins a game, we don&#39;t have to play an entire game of blackjack (and win) each time we make a change to the message. HMR will change the message without resetting the state of the game.</p>
+
+<p>First, we need to get the react-hot-loader package:</p>
+
+<pre data-line="" class=""><code class="language-text">npm install --save-dev react-hot-loader
+</code></pre>
+
+<p>Then, we need to make some changes to our <code>webpack.config.js</code> file:</p>
+
+<div class="fp">webpack.config.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">var webpack = require(&#39;webpack&#39;);
+
+const path = require(&#39;path&#39;);
+
+module.exports = {
+    &quot;entry&quot;: [
+        &#39;webpack-dev-server/client?https://0.0.0.0:8080&#39;,
+        &#39;webpack/hot/only-dev-server&#39;,
+        &#39;./app/index.js&#39;
+    ],
+    &quot;output&quot;: {
+        &quot;path&quot;: path.join(__dirname, &#39;build&#39;),
+        &quot;filename&quot;: &quot;bundle.js&quot;
+    },
+    devtool: &quot;source-map&quot;,
+    &quot;module&quot;: {
+        &quot;loaders&quot;: [
+            {
+                &quot;test&quot;: /.js?$/,
+                &quot;loader&quot;: &#39;react-hot!babel-loader&#39;,
+                &quot;exclude&quot;: /node_modules/
+            },
+            {
+                &quot;test&quot;: /\.scss$/,
+                &quot;loaders&quot;: [&quot;style&quot;, &quot;css?sourceMap&quot;, &quot;sass?sourceMap&quot;]
+            }
+        ]
+    },
+    devServer: {
+        contentBase: &#39;./build&#39;,
+        hot: true
+    },
+    plugins: [
+        new webpack.HotModuleReplacementPlugin()
+    ]
+};
+</code></pre>
+
+<p>This configuration file works on a Cloud9 instance. If you are not on Cloud9, you may have to replace <code>&#39;webpack-dev-server/client?https://0.0.0.0:8080&#39;</code> with <code>&#39;webpack-dev-server/client?http://localhost:8080&#39;</code> on line 9.</p>
+
+<p>To run our application, we will use <code>webpack-dev-server</code> instead of just opening <code>index.html</code> in the browser. To install <code>webpack-dev-server</code>:</p>
+
+<pre data-line="" class=""><code class="language-text">npm install --save-dev webpack-dev-server
+</code></pre>
+
+<p>To run <code>webpack-dev-server</code>, you can type:</p>
+
+<pre data-line="" class=""><code class="language-text">node_modules/.bin/webpack-dev-server --host $IP --port $PORT
+</code></pre>
+
+<p>If you are not on Cloud9, you don&#39;t need the <code>--host $IP --port $PORT</code> part.</p>
+
+<p>To save ourselves some typing, let&#39;s add this to <code>package.json</code>. Remember to omit the <code>--host $IP --port $PORT</code> part if you are not on Cloud9.</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">{
+  // ...
+
+  &quot;scripts&quot;: {
+    &quot;webpack&quot;: &quot;node_modules/.bin/webpack&quot;,
+    &quot;webpack:watch&quot;: &quot;npm run webpack -- --watch&quot;,
+    &quot;test&quot;: &quot;mocha --compilers js:babel-core/register --require ./test/test_helper.js --recursive&quot;,
+    &quot;test:watch&quot;: &quot;npm run test -- --watch&quot;,
+    &quot;webpack-dev-server&quot;: &quot;node_modules/.bin/webpack-dev-server --host 0.0.0.0 --port 8080&quot;
+  },
+
+  // ...
+}
+</code></pre>
+
+<p>Now run the following command in bash:</p>
+
+<pre data-line="" class=""><code class="language-text">npm run webpack-dev-server
+</code></pre>
+
+<p>If you&#39;re on Cloud9, a link should appear to your application. If you&#39;re running this locally, you should be able to visit the page by navigating to <code>localhost:8080</code> in your browser.</p>
+
+<p>Once you see the application, try changing the <code>background-color</code> in <code>app/css/components/card.scss</code> (I&#39;d suggest a nice <code>rosybrown</code>). When you switch to the browser tab with the application, it should automatically change the background color without requiring you to hit refresh.</p>
+
+<h3>Card Styles</h3>
+
+<p>We&#39;re not going to go into much depth with SASS. Feel free to use my stylesheet or tweak it however you want. Here&#39;s mine:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-scss">/* app/css/components/card.scss */
+
+.card {
+    display: inline-block;
+    border: 1px solid black;
+    height: 150px;
+    width: 100px;
+    margin: 10px;
+    position: relative;
+    background-color: ivory;
+
+    .rank {
+        padding: 5px;
+        font-size: 20px;
+    }
+
+    .top-rank {
+        @extend .rank;
+
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+
+    .bottom-rank {
+        @extend .rank;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+    }
+
+    .suit {
+        display: none;
+    }
+
+    &amp;.H, &amp;.D {
+        color: red;
+        border-color: red;
+    }
+
+    &amp;:after {
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%,-50%);
+        font-size: 40px;
+    }
+
+    &amp;.H:after {
+        content: &#39;\2665&#39;;
+    }
+
+    &amp;.D:after {
+        content: &#39;\2666&#39;;
+    }
+
+    &amp;.S:after {
+        content: &#39;\2660&#39;;
+    }
+
+    &amp;.C:after {
+        content: &#39;\2663&#39;;
+    }
+}
+
+</code></pre>
+
+<p>Notice that as you change this file, your browser reloads the stylesheet without changing the cards. This is hot module replacement at work.</p>
+
+<p>Let&#39;s also put a little bit of styling on the <code>Info</code> component. First, we need to change <code>components/_all.scss</code>:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-scss">/* app/css/components/_all.scss */
+
+@import &#39;card&#39;;
+@import &#39;info&#39;;
+</code></pre>
+
+<p>Then we can create an <code>info.scss</code> file and give it some styles. I&#39;m just going to space things out a little bit.</p>
+
+<pre data-line="" class="line-numbers"><code class="language-scss">/* app/css/components/info.scss */
+
+#info {
+    margin-bottom: 10px;
+
+    span {
+        margin: 10px;
+    }
+    button {
+        margin: 0 5px;
+    }
+}
+</code></pre>
+
+<p>Now that our application is looking beautiful (well that might be a stretch unless you did some custom styling), we can move on to implementing some of the game logic.</p>
+
+<p>This is the end of Part 1 of this guide. In the next part, we will start thinking about the logic for the game and work on connecting our components to the application state!</p>
+
+                    
+                        <hr />
+                        <p>Eloquently is a recruiting firm. We also host workshops that teach web development and career skills. If you are looking for a job or are interested in joining our web development workshops, please <a href="/index#contact">contact us</a>!</p>
+
+<p>We put together some <a href="/guides/index">guides</a> for participants in our workshops. Feel free to use them. If you see any errors, please submit an issue on our <a href="https://github.com/eloquently/eloquently.github.io">github repository</a>.</p>
+
+<p>These guides are a work in progress. If you see any errors or have a suggestion for a better way to do something, please <a href="/index#contact">let us know</a>.</p>
+
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="push"></div>
+    </div>
+
+    <section id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                &copy; 2016 Eloquently LLC
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- jQuery -->
+<script src="/js/jquery.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Plugin JavaScript -->
+<script src="/js/jquery.easing.min.js"></script>
+<script src="/js/jquery.fittext.js"></script>
+<script src="/js/wow.min.js"></script>
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73351128-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    <script async src="//genius.codes"></script>
+</body>
+
+</html>

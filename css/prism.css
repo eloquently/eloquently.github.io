@@ -124,7 +124,8 @@ pre[data-line] {
   white-space: pre; }
 
 mark {
-  background-color: rgba(255, 255, 255, 0.3); }
+  background-color: rgba(255, 255, 255, 0.3);
+  color: inherit; }
 
 .line-highlight:before,
 .line-highlight[data-end]:after {
