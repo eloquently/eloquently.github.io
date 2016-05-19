@@ -176,7 +176,7 @@ Other tutorials and guides may install Webpack globally using the `-g` flag. Thi
 <pre data-line="" class=""><code class="language-text">npm install --save-dev babel-core babel-loader babel-preset-es2015 babel-preset-react
 </code></pre>
 
-<p>Now let&#39;s create a config file to tell Webpack which files to read and write. Our config file will also tell Webpack to use Babel when it encounters files that end with <code>.js</code> or <code>.jsx</code>.</p>
+<p>Now let&#39;s create a config file to tell Webpack which files to read and write. Our config file will also tell Webpack to use Babel when it encounters files that end with <code>.js</code> or <code>.jsx</code>. The config file will be called <code>webpack.config.js</code> and it will be in the root directory of your project (the <code>react_blackjack/</code> in my setup).</p>
 
 <p>When Webpack compiles the application, it will start with the file: <code>./app/index.js</code> (yet to be created). We specify this with <code>entry</code>. <code>entry</code> can also be an array of files, but at this point, we just need a single entry point.</p>
 
