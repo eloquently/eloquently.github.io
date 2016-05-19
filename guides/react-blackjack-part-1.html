@@ -1208,15 +1208,15 @@ export default class Card extends React.Component {
 
 <div class="fp">webpack.config.js</div>
 
-<pre data-line="" class="line-numbers"><code class="language-js">// ...
+<pre data-line="5,13-16" class="line-numbers"><code class="language-js">// ...
 
 module.exports = {
     // ...
-    devtool: &quot;source-map&quot;,
+    &quot;devtool&quot;: &quot;source-map&quot;,
     &quot;module&quot;: {
         &quot;loaders&quot;: [
             {
-                &quot;test&quot;: /.js?$/,
+                &quot;test&quot;: /\.jsx?$/,
                 &quot;loader&quot;: &#39;babel-loader&#39;,
                 &quot;exclude&quot;: /node_modules/
             },
@@ -1292,7 +1292,7 @@ let deck = newDeck();
 
 <div class="fp">webpack.config.js</div>
 
-<pre data-line="" class="line-numbers"><code class="language-js">var webpack = require(&#39;webpack&#39;);
+<pre data-line="7,8,29-35" class="line-numbers"><code class="language-js">var webpack = require(&#39;webpack&#39;);
 
 const path = require(&#39;path&#39;);
 
@@ -1306,12 +1306,12 @@ module.exports = {
         &quot;path&quot;: path.join(__dirname, &#39;build&#39;),
         &quot;filename&quot;: &quot;bundle.js&quot;
     },
-    devtool: &quot;source-map&quot;,
+    &quot;devtool&quot;: &quot;source-map&quot;,
     &quot;module&quot;: {
         &quot;loaders&quot;: [
             {
-                &quot;test&quot;: /.js?$/,
-                &quot;loader&quot;: &#39;react-hot!babel-loader&#39;,
+                &quot;test&quot;: /\.jsx?$/,
+                &quot;loader&quot;: &#39;<mark>react-hot!</mark>babel-loader&#39;,
                 &quot;exclude&quot;: /node_modules/
             },
             {
@@ -1320,11 +1320,11 @@ module.exports = {
             }
         ]
     },
-    devServer: {
+    &quot;devServer&quot;: {
         contentBase: &#39;./build&#39;,
         hot: true
     },
-    plugins: [
+    &quot;plugins&quot;: [
         new webpack.HotModuleReplacementPlugin()
     ]
 };
@@ -1468,7 +1468,7 @@ module.exports = {
 
 <p>Now that our application is looking beautiful (well that might be a stretch unless you did some custom styling), we can move on to implementing some of the game logic.</p>
 
-<p>This is the end of Part 1 of this guide. In the next part, we will start thinking about the logic for the game and work on connecting our components to the application state!</p>
+<p>This is the end of Part 1 of this guide. In the <a href="/guides/react-blackjack-part-2">next part</a>, we will start thinking about the logic for the game and work on connecting our components to the application state!</p>
 
                     
                         <hr />
