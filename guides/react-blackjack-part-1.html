@@ -276,7 +276,7 @@ export default class App extends React.Component {
 }
 </code></pre>
 
-<p>Now we can create <code>bundle.js</code> by running <code>npm run webpack</code> and if we ant <code>webpack</code> to update <code>bundle.js</code> each time we save a file, we can run <code>npm run webpack:watch</code></p>
+<p>Now we can create <code>bundle.js</code> by running <code>npm run webpack</code> and if we want Webpack to update <code>bundle.js</code> each time we save a file, we can run <code>npm run webpack:watch</code></p>
 
 <h4>Talking Through the First Build</h4>
 
@@ -1182,7 +1182,7 @@ export default class Card extends React.Component {
 
 <h4>SASS</h4>
 
-<p>First we need to configure <code>webpack</code> to compile our <code>.scss</code> files to <code>.sass</code>. Previously, we set up <code>babel</code> to transform our ES6 <code>.js</code> files. We are going to do something similar for our (not yet created) <code>.scss</code> files. First let&#39;s install <code>sass-loader</code> and <code>node-sass</code>:</p>
+<p>First we need to configure Webpack to compile our <code>.scss</code> files to <code>.sass</code>. Previously, we set up <code>babel</code> to transform our ES6 <code>.js</code> files. We are going to do something similar for our (not yet created) <code>.scss</code> files. First let&#39;s install <code>sass-loader</code> and <code>node-sass</code>:</p>
 
 <pre data-line="" class=""><code class="language-text">npm install --save-dev style-loader css-loader sass-loader node-sass
 </code></pre>
@@ -1214,13 +1214,13 @@ module.exports = {
 };
 </code></pre>
 
-<p>Now, <code>webpack</code> will build our <code>.scss</code> files. We&#39;ve also turned on &quot;source maps&quot;, which tell the inspect tool on our browsers which <code>.scss</code> file each style comes from. Source maps can slow down build times if you have a large application, but they make debugging much easier.</p>
+<p>Now, Webpack will build our <code>.scss</code> files. We&#39;ve also turned on &quot;source maps&quot;, which tell the inspect tool on our browsers which <code>.scss</code> file each style comes from. Source maps can slow down build times if you have a large application, but they make debugging much easier.</p>
 
 <p>Now we can start making stylesheet files. We&#39;ll have a <code>main.scss</code> file that is only responsible for importing all of the other <code>.scss</code> files in our application.</p>
 
-<pre data-line="" class="line-numbers"><code class="language-scss">/* app/css/main.scss */
+<div class="fp">app/css/main.scss</div>
 
-@import &#39;components/all&#39;;
+<pre data-line="" class="line-numbers"><code class="language-scss">@import &#39;components/all&#39;;
 </code></pre>
 
 <p>Next we&#39;ll make a directory called <code>components/</code> for our component styles inside our <code>css/</code> directory. It is a good practice to keep each component&#39;s stylesheet in its own file in order to make your components more modular. If we wanted to make another card game application, we could very easily re-use our card component by copying the <code>components/card.js</code> file and the <code>css/components/card.js</code> file to a new project.</p>
@@ -1229,16 +1229,16 @@ module.exports = {
 
 <p>The <code>_all.scss</code> file looks like this:</p>
 
-<pre data-line="" class="line-numbers"><code class="language-scss">/* app/css/components/_all.scss */
+<div class="fp">app/css/components/_all.scss</div>
 
-@import &#39;card&#39;;
+<pre data-line="" class="line-numbers"><code class="language-scss">@import &#39;card&#39;;
 </code></pre>
 
 <p>And now we can create a <code>card.scss</code> file:</p>
 
-<pre data-line="" class="line-numbers"><code class="language-scss">/* app/css/components/card.scss */
+<div class="fp">app/css/components/card.scss</div>
 
-.card {
+<pre data-line="" class="line-numbers"><code class="language-scss">.card {
     background-color: blanchedalmond;
     /* Yes -- blanchedalmond is a real color name */
 }
@@ -1359,9 +1359,9 @@ module.exports = {
 
 <p>We&#39;re not going to go into much depth with SASS. Feel free to use my stylesheet or tweak it however you want. Here&#39;s mine:</p>
 
-<pre data-line="" class="line-numbers"><code class="language-scss">/* app/css/components/card.scss */
+<div class="fp">app/css/components/card.scss</div>
 
-.card {
+<pre data-line="" class="line-numbers"><code class="language-scss">.card {
     display: inline-block;
     border: 1px solid black;
     height: 150px;
@@ -1429,17 +1429,17 @@ module.exports = {
 
 <p>Let&#39;s also put a little bit of styling on the <code>Info</code> component. First, we need to change <code>components/_all.scss</code>:</p>
 
-<pre data-line="" class="line-numbers"><code class="language-scss">/* app/css/components/_all.scss */
+<div class="fp">app/css/components/_all.scss</div>
 
-@import &#39;card&#39;;
+<pre data-line="" class="line-numbers"><code class="language-scss">@import &#39;card&#39;;
 @import &#39;info&#39;;
 </code></pre>
 
 <p>Then we can create an <code>info.scss</code> file and give it some styles. I&#39;m just going to space things out a little bit.</p>
 
-<pre data-line="" class="line-numbers"><code class="language-scss">/* app/css/components/info.scss */
+<div class="fp">app/css/components/info.scss</div>
 
-#info {
+<pre data-line="" class="line-numbers"><code class="language-scss">#info {
     margin-bottom: 10px;
 
     span {
