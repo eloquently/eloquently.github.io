@@ -393,13 +393,19 @@ export default function(currentState=new Map(), action) {
 }
 </code></pre>
 
+<p>Remember to restart your <code>npm run test:watch</code> process after creating new files.</p>
+
 <p>To keep our code organized, we will have <code>reducer()</code> call other functions that actually do the work. This keeps our code more modular. Eventually if you have many different actions, you can break these functions out into different files to keep things even more organized and allow multiple people to work on different parts of your program at the same time.</p>
 
 <p>To fill in <code>setupGame()</code>, we&#39;ll copy over the code from <code>index.js</code>:</p>
 
 <div class="fp">app/reducer.js</div>
 
-<pre data-line="" class="line-numbers"><code class="language-js">const setupGame = () =&gt; {
+<pre data-line="" class="line-numbers"><code class="language-js">import { Map } from &#39;immutable&#39;;
+
+import { newDeck, deal } from &#39;./lib/cards.js&#39;;
+
+const setupGame = () =&gt; {
    let deck = newDeck();
    let playerHand, dealerHand;
 
@@ -620,7 +626,7 @@ store.dispatch(setRecord(0, 0));
 // ...
 </code></pre>
 
-<p>Now we need to share the <code>store</code> with our React components. React-Redux provides us with a component called <code>Provider</code> that takes care of that for us. We just need to wrap the <code>App</code> component with <code>Provider</code> and pass <code>Provider</code> our <code>store</code> as a prop. We&#39;ll also change the <code>state</code> prop from <code>App</code> to get the state from <code>store</code>.</p>
+<p>Now we need to share the <code>store</code> with our React components. React-Redux provides us with a component called <code>Provider</code> that takes care of that for us. We just need to wrap the <code>App</code> component with <code>Provider</code> and pass <code>Provider</code> our <code>store</code> as a prop. We&#39;ll also change the <code>state</code> prop passed to <code>&lt;App /&gt;</code> to get the state from <code>store</code>.</p>
 
 <div class="file-path">app/index.js</div>
 
@@ -642,7 +648,7 @@ store.dispatch(setRecord(0, 0));
 
 ReactDOM.render(
    &lt;Provider store={store}&gt;
-       &lt;App /&gt;
+       &lt;App state={store.getState()} /&gt;
    &lt;/Provider&gt;,
    document.getElementById(&#39;app&#39;)
 );
