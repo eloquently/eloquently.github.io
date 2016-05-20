@@ -315,12 +315,18 @@ export default function(currentState=new Map(), action) {
 }
 ```
 
+Remember to restart your `npm run test:watch` process after creating new files.
+
 To keep our code organized, we will have `reducer()` call other functions that actually do the work. This keeps our code more modular. Eventually if you have many different actions, you can break these functions out into different files to keep things even more organized and allow multiple people to work on different parts of your program at the same time.
 
 To fill in `setupGame()`, we'll copy over the code from `index.js`:
 
 <div class="fp">app/reducer.js</div>
 ```js
+import { Map } from 'immutable';
+
+import { newDeck, deal } from './lib/cards.js';
+
 const setupGame = () => {
    let deck = newDeck();
    let playerHand, dealerHand;
@@ -330,7 +336,9 @@ const setupGame = () => {
 
    dealerHand = dealerHand.push(new Map());
 
-   const newState = new Map({ deck, playerHand, dealerHand });
+   const hasStood = false;
+
+   const newState = new Map({ deck, playerHand, dealerHand, hasStood });
 
    return newState;
 };
@@ -469,7 +477,7 @@ These functions are very simple, so there is no need to write tests for them. Th
 ```js
 export function setupGame() {
    return { "type": "SETUP_GAME" }
-}
+};
 
 export function setRecord(wins, losses) {
    return {
@@ -477,7 +485,7 @@ export function setRecord(wins, losses) {
        wins,
        losses
    };
-}
+};
 ```
 
 Now in our `reducer()` tests, we can import and call these functions to create our actions:
@@ -542,7 +550,7 @@ store.dispatch(setRecord(0, 0));
 // ...
 ```
 
-Now we need to share the `store` with our React components. React-Redux provides us with a component called `Provider` that takes care of that for us. We just need to wrap the `App` component with `Provider` and pass `Provider` our `store` as a prop. We'll also change the `state` prop from `App` to get the state from `store`.
+Now we need to share the `store` with our React components. React-Redux provides us with a component called `Provider` that takes care of that for us. We just need to wrap the `App` component with `Provider` and pass `Provider` our `store` as a prop. We'll also change the `state` prop passed to `<App />` to get the state from `store`.
 
 <div class="file-path">app/index.js</div>
 ```jsx
@@ -564,7 +572,7 @@ store.dispatch(setRecord(0, 0));
 
 ReactDOM.render(
    <Provider store={store}>
-       <App />
+       <App state={store.getState()} />
    </Provider>,
    document.getElementById('app')
 );
@@ -884,7 +892,7 @@ Now we'll need to change the `SETUP_GAME` action to use this pure version of `de
 ```js
 export function setupGame(seed=new Date().getTime()) {
    return { "type": "SETUP_GAME", seed };
-}
+};
 
 // ...
 ```
@@ -1168,7 +1176,7 @@ First, add a `STAND` action:
 
 export function stand() {
    return { "type": "STAND" };
-}
+};
 ```
 
 We want the stand action to change the `hasStood` state variable to false. Here's what the `reducer()` test looks like:

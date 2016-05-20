@@ -978,7 +978,34 @@ describe('<Info />', () => {
 });
 ```
 
-That's all we need for our `Info` component for now. We'll make the buttons actually do something after we set up the `Hand` component.
+Let's make these tests pass:
+
+<div class="fp">app/components/info.js</div>
+```jsx
+// ...
+
+export class Info extends React.Component {
+    render() {
+        return (
+            <div id="info">
+                <span id="player_record">
+                    Wins: {this.props.winCount} Losses: {this.props.lossCount}
+                </span>
+                <span id="buttons">
+                    <button<mark> disabled={this.props.hasStood}</mark>>
+                        Hit
+                    </button>
+                    <button<mark> disabled={this.props.hasStood}</mark>>
+                        Stand
+                    </button>
+                </span>
+            </div>
+        );
+    }
+}
+```
+
+That's all we need for our `Info` component for now. We'll make the buttons actually do something when they're clicked after we set up the `Hand` component.
 
 ### The `Hand` and `Card` Components
 
