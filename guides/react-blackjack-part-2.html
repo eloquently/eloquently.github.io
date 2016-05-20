@@ -724,14 +724,16 @@ losses: 0
 }
 </code></pre>
 
-<p>The React-Redux package gives us a function called <code>connect</code> that takes a <code>mapStateToProps</code> function as an argument and returns another function that takes a React component as an argument and returns a &quot;smart&quot; component that will automatically update when state changes. A Redux convention is to refer to the &quot;smart&quot; version of a component as a container, so the &quot;smart&quot; version of the <code>Info</code> component is the <code>InfoContainer</code>. Let&#39;s add <code>mapStateToProps()</code> to our <code>info.js</code> file and create <code>InfoContainer</code>:</p>
+<p>The React-Redux package gives us a function called <code>connect</code> that takes a <code>mapStateToProps</code> function as an argument and returns another function that takes a React component as an argument and returns a &quot;smart&quot; component that will automatically update when state changes. A Redux convention is to refer to the &quot;smart&quot; version of a component as a container, so the &quot;smart&quot; version of the <code>Info</code> component is the <code>InfoContainer</code>. Let&#39;s add <code>mapStateToProps()</code> to our <code>info.js</code> file and create <code>InfoContainer</code>.</p>
+
+<p>We are also going to remove <code>default</code> from <code>export dfault class Info</code>. When you import a <code>default</code> export, you use a command like <code>import Info from &#39;./info&#39;;</code>. If you remove <code>default</code> from your export, you now have a &quot;named&quot; export, and you need to import it using a command like <code>import { Info } from &#39;./info&#39;;</code>. I typically prefer not to use default exports if I export more than one thing from the same file, but this is a personal preference.</p>
 
 <div class="file-path">app/components/info.js</div>
 
 <pre data-line="" class="line-numbers"><code class="language-jsx">import React from &#39;react&#39;;
 import { connect } from &#39;react-redux&#39;;
 
-export class Info extends React.Component {
+<mark>export class</mark> Info extends React.Component {
    // ...
 };
 
@@ -754,7 +756,7 @@ export const InfoContainer = connect(mapStateToProps)(Info);
 import { expect } from &#39;chai&#39;;
 import { shallow } from &#39;enzyme&#39;;
 
-import { Info } from &#39;../../app/components/info&#39;;
+import <mark>{ Info }</mark> from &#39;../../app/components/info&#39;;
 </code></pre>
 
 <p>Now, we should change our <code>App</code> component to render <code>&lt;InfoContainer&gt;</code> rather than <code>&lt;Info&gt;</code>. We also no longer need to pass any props because now <code>&lt;InfoContainer&gt;</code> is getting them straight from the <code>store</code>! Let&#39;s change our <code>App</code> component tests to reflect these changes we want to make:</p>
@@ -789,6 +791,8 @@ describe(&#39;&lt;App /&gt;&#39;, () =&gt; {
 <div class="file-path">app/components/app.js</div>
 
 <pre data-line="" class="line-numbers"><code class="language-jsx">// ...
+import <mark>{ InfoContainer }</mark> from &#39;./info&#39;;
+// ...
 
 export class App extends React.Component {
    render() {
@@ -1223,7 +1227,8 @@ export class Info extends React.Component {
 
 <div class="file-path">app/components/info.js</div>
 
-<pre data-line="" class="line-numbers"><code class="language-js">// ...
+<pre data-line="2" class="line-numbers"><code class="language-js">// ...
+import { dealToPlayer } from &#39;../../app/action_creators&#39;;
 
 function mapStateToProps(state) {
  // ...
@@ -1325,7 +1330,7 @@ describe(&#39;&lt;Info /&gt;&#39;, () =&gt; {
                                       /&gt;);
        // ...
 
-       it(&#39;invokes prop function when Hit is clicked&#39;, () =&gt; {
+       it(&#39;invokes prop function when Stand is clicked&#39;, () =&gt; {
            buttons.last().simulate(&#39;click&#39;);
            expect(onClickStandSpy.calledOnce).to.eq(true);
        });
