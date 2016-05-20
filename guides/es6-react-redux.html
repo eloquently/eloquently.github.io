@@ -637,7 +637,7 @@ export class App extends React.Component {
 
 <div class="fp">src/components/item.js</div>
 
-<pre data-line="8" class="line-numbers"><code class="language-jsx">import React from &#39;react&#39;;
+<pre data-line="7" class="line-numbers"><code class="language-jsx">import React from &#39;react&#39;;
 
 export class Item extends React.Component {
     render() {
@@ -679,6 +679,8 @@ export const ItemContainer = connect(undefined, mapDispatchToProps)(Item);
 <p><code>connect()</code>&#39;s first parameter here is undefined becasue we do not need to <code>mapStateToProps</code> for this function -- all of the props are provided by the parent <code>&lt;ItemList /&gt;</code>.</p>
 
 <p>The final step is to render the connected <code>&lt;ItemContainer /&gt;</code>s rather than <code>&lt;Item /&gt;</code>s in the <code>&lt;ItemList /&gt;</code> component. First, let&#39;s change the test. In this case, we are still passing the same props, we just want to change the name of the component we are rendering from <code>Item</code> to <code>Connect(Item)</code>:</p>
+
+<div class="fp">test/components/item_list_spec.js</div>
 
 <pre data-line="6,7,9" class="line-numbers"><code class="language-js">// ...
 
