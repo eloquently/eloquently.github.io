@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Eloquently - Learning and Recruiting</title>
+
+    <!-- Custom Fonts -->
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css" type="text/css">
+
+    <!-- Plugin CSS -->
+    <link rel="stylesheet" href="/css/animate.min.css" type="text/css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css" type="text/css">
+    <link rel="stylesheet" href="/css/prism.css" type="text/css">
+
+    <script src="/js/prism.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+
+</head>
+
+
+<body>
+    <div class="wrapper">
+        <!-- Navigation -->
+        <nav id="mainNav" class="nav navbar navbar-default full-color">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand page-scroll" href="/index">ELOQUENTLY</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a class="page-scroll" href="/index">Home</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="/workshops">Workshops</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="/guides/index">Guides</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+
+        <div class="container post">
+            <div class="row">
+                <!--<div class="post-options pull-right">
+                    <div class="show">
+                        <a href="#postOptions" data-toggle="collapse" class="pull-right btn btn-default btn-sm">Display Options</a>
+                    </div>
+                    <div class="options collapse" id="postOptions">
+                        <input type="checkbox" checked data-toggle="toggle" data-on="Annotations On" data-off="Annotations Off" data-onstyle="primary-light" data-width="175">
+                        <br />
+                        <input type="checkbox" checked data-toggle="toggle" data-on="Line Numbers On" data-off="Line Numbers Off" data-onstyle="primary-light" data-width="175">
+                    </div>
+                </div>-->
+                <div class="post-content">
+                    <h2>React Blackjack Part 3</h2>
+
+<p><hr /></p>
+
+<p>This is the third part of the guide. See the previous part <a href="/guides/react-blackjack-part-2">here</a>. At this point, our application has some basic functionality. We can deal cards to the player with by clicking &quot;Deal&quot; and disable the buttons by clicking &quot;Stand&quot;, but it&#39;s still a stretch to call this a blackjack game.</p>
+
+<p>Let&#39;s fix that.</p>
+
+<h3>Winning and Losing</h3>
+
+<p>In our blackjack game, the player should not be allowed to take cards indefinitely. Instead, they should lose the game if they draw a card and their score is higher than 21 and win the game if their score is exactly 21.</p>
+
+<p>How can we change our code to accommodate this rule? The <code>reducer</code> function is the natural place for logic like this, as it is responsible for determining the next state of the application given the current state and an action.</p>
+
+<p>Before we change our reducer logic, let&#39;s first write a function that will take a <code>List</code> of cards and return their score as a blackjack hand.</p>
+
+<p>We&#39;ll first need to write a test for this. We&#39;ll add this function to our <code>cards.js</code> file, so the test will be in <code>cards_spec.js</code></p>
+
+<div class="fp">test/lib/cards_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">import { expect } from &#39;chai&#39;;
+import { List<mark>, fromJS</mark> } from &#39;immutable&#39;;
+
+import { newDeck, deal<mark>, score</mark> } from &#39;../../app/lib/cards&#39;;
+
+describe(&#39;cards.js&#39;, () =&gt; {
+    // ...
+
+    describe(&#39;score()&#39;, () =&gt; {
+        it(&#39;calculates correct score&#39;, () =&gt; {
+            let hand = fromJS([{rank: 3}, {rank: 5}]);
+            expect(score(hand)).to.eq(8);
+            hand = fromJS([{rank: 2}, {rank: 9}]);
+            expect(score(hand)).to.eq(11);
+        });
+    });
+});
+</code></pre>
+
+<p>Let&#39;s write the code to make this pass. We are going to use the <code>reduce</code> function to caclulate the sum. In this case, <code>reduce()</code> will take two parameters: a function, which we&#39;ll describe in a second, and an initial value.</p>
+
+<p>The first parameter function (let&#39;s call it <code>f</code>) itself takes two parameters. <code>reduce()</code> works by, for each element of the array, passing the result of the last <code>f</code> call (or the initial value for the first one) to <code>f</code> along with the current element. Then it evaluates <code>f</code> for those parameters, and passes the result <code>f</code> along with the next element.</p>
+
+<p>In this case, we want to add each card&#39;s rank, and we&#39;ll keep track of the result in a variable called <code>sum</code>:</p>
+
+<div class="fp">app/lib/cards_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+export const score = (cards) =&gt; {
+    return cards.reduce( (sum, card) =&gt; {
+        return sum + card.get(&#39;rank&#39;);
+    }, 0);
+};
+</code></pre>
+
+<p>Now the tests should pass, but our function will only work in a very limited case: when the ranks are numbers.</p>
+
+<p>Let&#39;s write the tests for when the ranks are face cards:</p>
+
+<div class="fp">test/lib/cards_spec.js</div>
+
+<pre data-line="7,14,15-22" class="line-numbers"><code class="language-js">// test/lib/cards_spec.js
+
+describe(&#39;cards.js&#39;, () =&gt; {
+    // ...
+
+    describe(&#39;score()&#39;, () =&gt; {
+        describe(&#39;with numberic ranks&#39;, () =&gt; {
+            it(&#39;calculates correct score&#39;, () =&gt; {
+                let hand = fromJS([{rank: 3}, {rank: 5}]);
+                expect(score(hand)).to.eq(8);
+                hand = fromJS([{rank: 2}, {rank: 9}]);
+                expect(score(hand)).to.eq(11);
+            });
+        });
+        describe(&#39;with face cards&#39;, () =&gt; {
+            it(&#39;calculates correct score&#39;, () =&gt; {
+                let hand = fromJS([{rank: 3}, {rank: &#39;K&#39;}]);
+                expect(score(hand)).to.eq(13);
+                hand = fromJS([{rank: &#39;Q&#39;}, {rank: &#39;J&#39;}]);
+                expect(score(hand)).to.eq(20);
+            });
+        });
+    });
+});
+</code></pre>
+
+<p>To pass the test, we will have to convert kings to 12, queens to 11, and jacks to 10. We&#39;ll write a helper method called <code>rankAsNum</code> to do that for us.</p>
+
+<div class="fp">app/lib/cards_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+import { <mark>Map, </mark>List, fromJS } from &#39;immutable&#39;;
+
+// ...
+
+export const rankAsNum = (rank) =&gt; {
+    if(rank == &#39;K&#39; || rank == &#39;Q&#39; || rank == &#39;J&#39;) {
+        return 10;
+    } else {
+        return rank;
+    }
+};
+
+export const score = (cards) =&gt; {
+    return cards.reduce( (sum, card) =&gt; {
+        return sum + <mark>/* What goes here? */</mark>;
+    }, 0);
+};
+</code></pre>
+
+<p>Once you get the test to pass, the next step is to consider is what happens with aces. In blackjack, the ace can be worth either 1 point or 11 points. For this application, we want the ace to count as 11 unless total of the hand is greater than 21.</p>
+
+<p>Let&#39;s clarify what we want with some test cases:</p>
+
+<div class="fp">test/lib/cards_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">describe(&#39;cards.js&#39;, () =&gt; {
+    // ...
+
+    describe(&#39;score()&#39;, () =&gt; {
+        // ...
+
+        describe(&#39;with aces&#39;, () =&gt; {
+            it(&#39;counts aces as 11 for hands less than 21&#39;, () =&gt; {
+                const hand = fromJS([{rank: 3}, {rank: &#39;A&#39;}]);
+                expect(score(hand)).to.eq(14);
+            });
+
+            it(&#39;counts aces as 11 for hands equal to 21&#39;, () =&gt; {
+                let hand = fromJS([{rank: 10}, {rank: &#39;A&#39;}]);
+                expect(score(hand)).to.eq(21);
+                hand = fromJS([{rank: &#39;A&#39;}, {rank: &#39;K&#39;}]);
+                expect(score(hand)).to.eq(21);
+            });
+
+            it(&#39;counts aces as 1 for hands greater than 21&#39;, () =&gt; {
+                let hand = fromJS([{rank: 3}, {rank: &#39;A&#39;}, {rank: 9}]);
+                expect(score(hand)).to.eq(13);
+                hand = fromJS([{rank: &#39;K&#39;}, {rank: &#39;K&#39;}, {rank: &#39;A&#39;}]);
+                expect(score(hand)).to.eq(21);
+            });
+
+            it(&#39;works with multiple aces&#39;, () =&gt; {
+                let hand = fromJS([{rank: &#39;A&#39;}]);
+                expect(score(hand)).to.eq(11);
+                hand = hand.push(new Map({rank: &#39;A&#39;}));
+                expect(score(hand)).to.eq(12);
+                hand = hand.push(new Map({rank: &#39;A&#39;}));
+                expect(score(hand)).to.eq(13);
+                hand = hand.push(new Map({rank: &#39;A&#39;}));
+                expect(score(hand)).to.eq(14);
+                hand = fromJS([{rank: &#39;A&#39;}, {rank: &#39;K&#39;}, {rank: &#39;A&#39;}]);
+                expect(score(hand)).to.eq(12);
+            })
+        });
+    });
+});
+</code></pre>
+
+<p>Modifying the <code>score</code> function to pass these tests is a great way to practice for interview questions. Try to pass the tests yourself before looking at our solution below.</p>
+
+<p>If you&#39;re getting stuck, here is an English description of how to solve the problem:</p>
+
+<ul>
+<li>Count how many aces there are in the hand (<code>acesCount</code>)</li>
+<li>Calculate the score of the rest of the hand and add 1 for each ace that was removed. Store this in a variable called <code>score</code>.</li>
+<li>Add 10 if <code>score</code> is less than or equal to 11</li>
+</ul>
+
+<p>Before moving on to the code, think about this and write out by hand a few examples of how this algorithm would be applied (maybe one per each of the four test cases above). Why does this work? Why do we only have to add ten once at the end? Does that part still work if there are multiple aces?</p>
+
+<p>Once you feel like you&#39;ve figured out how this algorithm works, try to code it yourself before looking at our code.</p>
+
+<div class="fp">app/lib/cards.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+export const score = (cards) =&gt; {
+    const aces = cards.filter((card) =&gt; card.get(&#39;rank&#39;) == &#39;A&#39;);
+    const nonAces = cards.filter((card) =&gt; card.get(&#39;rank&#39;) != &#39;A&#39;);
+
+    if(nonAces.size == 0 &amp;&amp; aces.size == 0) {
+        return 0;
+    } else if(aces.size == 0) {
+        return cards.reduce( (sum, card) =&gt; {
+            return sum + rankAsNum(card.get(&#39;rank&#39;));
+        }, 0);
+    } else {
+        let acesAllOneScore = score(nonAces) + aces.size;
+        if(acesAllOneScore &lt;= 11) {
+            acesAllOneScore += 10;
+        }
+        return acesAllOneScore;
+    }
+};
+</code></pre>
+
+<p>Now that we can calculate a score, we can check the player&#39;s score after they have received a card. If their score is higher than 21, we should increase the loss count. If the score is exactly 21, we should increase the win count. We will do this in the <code>reducer</code> helper function <code>dealToPlayer()</code>. Let&#39;s write the test first:</p>
+
+<div class="fp">test/reducer_spec.js</div>
+
+<pre data-line="10-12,24-35" class="line-numbers"><code class="language-js">// ...
+import { Map, List<mark>, fromJS</mark> } from &#39;immutable&#39;;
+
+// ...
+
+describe(&#39;reducer&#39;, () =&gt; {
+    // ...
+
+    describe(&quot;DEAL_TO_PLAYER&quot;, () =&gt; {
+        const action = dealToPlayer();
+
+        const initialState = new Map({&quot;playerHand&quot;: new List(), &quot;deck&quot;: newDeck()});
+        const nextState = reducer(initialState, action);
+
+        it(&#39;adds one card to player hand&#39;, () =&gt; {
+            expect(nextState.get(&#39;playerHand&#39;).size).to.eq(initialState.get(&#39;playerHand&#39;).size + 1);
+        });
+
+        it(&#39;removes one card from deck&#39;, () =&gt; {
+            expect(nextState.get(&#39;deck&#39;).size).to.eq(initialState.get(&#39;deck&#39;).size - 1);
+        });
+
+
+        describe(&quot;when player gets more than 21 points&quot;, () =&gt; {
+            const initialState = fromJS({
+                &quot;playerHand&quot;: [{rank: &#39;K&#39;}, {rank: &#39;Q&#39;}],
+                &quot;deck&quot;: fromJS([{rank: &#39;J&#39;}]),
+                &quot;lossCount&quot;: 0
+            });
+            const nextState = reducer(initialState, action);
+
+            it(&#39;increases loss count by 1&#39;, () =&gt; {
+                expect(nextState.get(&#39;lossCount&#39;)).to.eq(initialState.get(&#39;lossCount&#39;) + 1);
+            });
+        });
+
+        describe(&quot;when player gets exactly 21 points&quot;, () =&gt; {
+            const initialState = fromJS({
+                &quot;playerHand&quot;: [{rank: &#39;K&#39;}, {rank: 2}],
+                &quot;deck&quot;: fromJS([{rank: 9}]),
+                &quot;winCount&quot;: 0
+            });
+            const nextState = reducer(initialState, action);
+
+            it(&#39;increases win count by 1&#39;, () =&gt; {
+                expect(nextState.get(&#39;winCount&#39;)).to.eq(initialState.get(&#39;winCount&#39;) + 1);
+            });
+        });
+
+    // ...
+});
+</code></pre>
+
+<p>In these tests, we cheat a little bit to make the player draw the right card for the scenario we want to test by only putting one card in the deck. Our tests here are not exactly &quot;unit&quot; tests becuase they have a lot of dependencies on other parts of the program. Specifically, if something goes wrong with the <code>score</code> function (or the <code>draw</code> function), this test won&#39;t work any more. This is not ideal, and we could use stubs from Sinon to make our tests more independent. This is a bit outside the scope of this guide for now.</p>
+
+<p>And then add some logic to the reducer:</p>
+
+<div class="fp">app/reducer.js</div>
+
+<pre data-line="12-22" class="line-numbers"><code class="language-js">// ...
+
+import { newDeck, deal<mark>, score</mark> } from &#39;./lib/cards.js&#39;;
+
+// ...
+
+const dealToPlayer = (currentState, seed) =&gt; {
+    const [deck, newCard] = deal(currentState.get(&#39;deck&#39;), 1, seed);
+
+    const playerHand = currentState.get(&#39;playerHand&#39;).push(newCard.get(0));
+
+    let newState = new Map({ deck, playerHand });
+
+    const newScore = score(playerHand);
+
+    if(newScore &gt; 21) {
+        const lossCount = currentState.get(&#39;lossCount&#39;) + 1;
+        newState = newState.set(&#39;lossCount&#39;, lossCount);
+    } else if(newScore == 21) {
+        const winCount = currentState.get(&#39;winCount&#39;) + 1;
+        newState = newState.set(&#39;winCount&#39;, winCount);
+    }
+
+    return currentState.merge(newState);
+};
+
+// ...
+</code></pre>
+
+<p>Now try playing a game in your browser. Keep clicking &quot;hit&quot; until your score is above 21. You should see your loss count increase (unless you were lucky enough to hit 21 exactly). Note that if you continue to click &quot;hit&quot;, you continue drawing cards and your loss count continues to rise.</p>
+
+<p>Let&#39;s think about what should happen after each game ends. It would be nice to show a message to the player saying whether the game ended with a win or a loss. It would also be nice to show the cards at the end of the game before immediately resetting the game (otherwise the player would never know the last card drawn) and displaying a button the player can click when ready to start the next game.</p>
+
+<p>We&#39;ll need a new component for the game over message that will contain a string like &quot;You win!&quot; and a &quot;New Game&quot; button. This component is going to take two props. One will determine whether it should show a win message or a loss message, the other will contain the callback function for when the user hits the &quot;New Game&quot; button.</p>
+
+<p>Let&#39;s write some tests for the component. First we want to give the component a different message depending on the value of the <code>win</code> prop.</p>
+
+<div class="fp">test/components/game_over_message_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">import React from &#39;react&#39;;
+import { expect } from &#39;chai&#39;;
+import { shallow } from &#39;enzyme&#39;;
+
+import { GameOverMessage } from &#39;../../app/components/game_over_message&#39;;
+
+describe(&#39;&lt;GameOverMessage /&gt;&#39; , () =&gt; {
+    describe(&#39;for win&#39;, () =&gt; {
+        const rendered = shallow(&lt;GameOverMessage win={true} /&gt;);
+
+        it(&#39;displays message&#39;, () =&gt; {
+            expect(rendered).to.include.text(&#39;You win!&#39;);
+        });
+    });
+
+    describe(&#39;for loss&#39;, () =&gt; {
+        const rendered = shallow(&lt;GameOverMessage /* What goes here */ /&gt;);
+
+        it(&#39;displays message&#39;, () =&gt; {
+            expect(rendered).to.include.text(&#39;You lose :(&#39;);
+        });
+    });
+});
+</code></pre>
+
+<p>Next, we&#39;ll write the tests for the button. We&#39;ll use a sinon spy again to make sure that the callback prop is executed when the &quot;Next Game&quot; button is clicked.</p>
+
+<div class="fp">test/components/game_over_message_spec.js</div>
+
+<pre data-line="3,10-18" class="line-numbers"><code class="language-js">// ...
+import { shallow<mark>, simulate</mark> } from &#39;enzyme&#39;;
+import sinon from &#39;sinon&#39;;
+
+// ...
+
+describe(&#39;&lt;GameOverMessage /&gt;&#39; , () =&gt; {
+    // ...
+
+    describe(&#39;next game button&#39;, () =&gt; {
+        it(&#39;triggers callback when button is pressed&#39;, () =&gt; {
+            const nextGameSpy = sinon.spy();
+            const rendered = shallow(&lt;GameOverMessage nextGame={nextGameSpy} /&gt;);
+
+            rendered.find(&#39;button&#39;).simulate(&#39;click&#39;);
+            expect(nextGameSpy.calledOnce).to.eq(true);
+        });
+    });
+});
+</code></pre>
+
+<p>First we&#39;ll get the message tests to pass:</p>
+
+<div class="fp">app/components/game_over_message.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">import React from &#39;react&#39;;
+
+export class GameOverMessage extends React.Component {
+    render() {
+        return (
+            &lt;div id=&quot;game_over_message&quot;&gt;
+                { this.props.win ? &#39;You win!&#39; : &#39;You lose :(&#39; }
+            &lt;/div&gt;
+        );
+    }
+}
+</code></pre>
+
+<p>Next, we need to add a button, and give the button an <code>onClick</code> prop:</p>
+
+<div class="fp">app/components/game_over_message.js</div>
+
+<pre data-line="8" class="line-numbers"><code class="language-jsx">import React from &#39;react&#39;;
+
+export default class GameOverMessage extends React.Component {
+    render() {
+        return (
+            &lt;div id=&quot;game_over_message&quot;&gt;
+                { this.props.win ? &#39;You win!&#39; : &#39;You lose :(&#39; }
+                &lt;button onClick={this.props.nextGame}&gt;Next Game&lt;/button&gt;
+            &lt;/div&gt;
+        );
+    }
+}
+</code></pre>
+
+<p>Now all three tests should pass. Next, we need to have the <code>App</code> comopnent render the message when the game is over. To determine if the game is over, we will need another state variable: <code>gameOver</code>. Since we also will need to know if the player won or lost in order to display the correct message, we will need another state variable: <code>playerWon</code>. Both of these variables will be booleans.</p>
+
+<p>At the start of the game and each time the game is reset, we&#39;ll want <code>gameOver</code> to be <code>false</code>. The best way to initialize this variable is to do so in the <code>SETUP_GAME</code> action that is called at the start of the application and each time the game needs to be reset. We&#39;ll also want to initialize <code>playerWon</code> to <code>undefined</code> when we <code>SETUP_GAME</code>. <code>playerWon</code> only needs a value if <code>gameOver</code> is <code>true</code>.</p>
+
+<p>Let&#39;s add a test for this in the <code>SETUP_GAME</code> action&#39;s reducer test:</p>
+
+<div class="fp">test/reducer_spec.js</div>
+
+<pre data-line="10-16" class="line-numbers"><code class="language-js">// ...
+
+describe(&#39;reducer&#39;, () =&gt; {
+    describe(&quot;SETUP_GAME&quot;, () =&gt; {
+        const action = setupGame();
+
+        describe(&quot;with empty initial state&quot;, () =&gt; {
+            // ...
+
+            it(&#39;sets up gameOver&#39;, () =&gt; {
+                expect(nextState.get(&#39;gameOver&#39;)).to.eq(false);
+            });
+
+            it(&#39;sets up playerWon&#39;, () =&gt; {
+                expect(nextState.get(&#39;playerWon&#39;)).to.eq(undefined);
+            });
+        });
+
+        describe(&quot;with existing initial state&quot;, () =&gt; {
+            // ...
+
+            it(&#39;adds new variables&#39;, () =&gt; {
+                expect(Array.from(nextState.keys())).to.include(
+                    &#39;deck&#39;, &#39;playerHand&#39;, &#39;dealerHand&#39;,
+                    &#39;hasStood&#39;<mark>, &#39;gameOver&#39;, &#39;playerWon&#39;</mark>
+                );
+            });
+
+            // ...
+        });
+    });
+
+    // ...
+});
+</code></pre>
+
+<p>We&#39;ll need to add a few lines to the <code>reducer.js</code> file to initialize these variables:</p>
+
+<div class="fp"></div>
+
+<pre data-line="12,13" class="line-numbers"><code class="language-js">const setupGame = (currentState, seed) =&gt; {
+    let deck = newDeck(seed);
+    let playerHand, dealerHand;
+
+    [deck, playerHand] = deal(deck, 2, seed);
+    [deck, dealerHand] = deal(deck, 1, seed + 1);
+
+    dealerHand = dealerHand.push(new Map());
+
+    const hasStood = false;
+
+    const gameOver = false;
+    const playerWon = undefined;
+
+    const newState = new Map({
+        deck, playerHand,
+        dealerHand, hasStood,
+        <mark>gameOver, playerWon</mark>
+    });
+
+    return currentState.merge(newState);
+};
+</code></pre>
+
+<p>The tests should now pass. Now, we change our App component to render the message when appropriate. First the tests:</p>
+
+<div class="fp">test/components/app_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">// test/components/app_spec.js
+
+// ...
+
+describe(&#39;&lt;App /&gt;&#39;, () =&gt; {
+    // ...
+
+    describe(&#39;when gameOver&#39;, () =&gt; {
+        const rendered = shallow(&lt;App gameOver={true} /&gt;);
+
+        it(&#39;renders &lt;GameOverMessage /&gt;&#39;, () =&gt; {
+            expect(rendered.find(&#39;GameOverMessage&#39;)).to.have.length(1);
+        });
+
+        describe(&#39;player won&#39;, () =&gt; {
+            const rendered = shallow(&lt;App gameOver={true} playerWon={true} /&gt;);
+            it(&#39;gives &lt;GameOverMessage /&gt; correct prop&#39;, () =&gt; {
+                expect(rendered.find(&#39;GameOverMessage&#39;)).to.have.prop(&#39;win&#39;, true);
+            });
+        });
+
+        describe(&#39;player lost&#39;, () =&gt; {
+            const rendered = shallow(&lt;App gameOver={true} playerWon={false} /&gt;);
+            it(&#39;gives &lt;GameOverMessage /&gt; correct prop&#39;, () =&gt; {
+                expect(rendered.find(&#39;GameOverMessage&#39;)).to.have.prop(&#39;win&#39;, false);
+            });
+        });
+    });
+});
+</code></pre>
+
+<p>Now let&#39;s add the message to our App component. One of the limitations of JSX is that you cannot put multi-line JavaScript expresssions (like an <code>if</code>-<code>else</code>) in the JSX (see <a href="https://facebook.github.io/react/tips/if-else-in-JSX.html">this page</a> for an explanation). So far, we have been getting around this limitation by using ternary statements. In this case though, let&#39;s use an <code>if</code> statement to keep our render function cleaner and show how it can be done.</p>
+
+<div class="fp">app/components/app.js</div>
+
+<pre data-line="2,6-9,15" class="line-numbers"><code class="language-jsx">// ...
+import { GameOverMessage } from &#39;./game_over_message&#39;;
+
+export class App extends React.Component {
+    render() {
+        let messageComponent;
+        if(this.props.gameOver) {
+            messageComponent = &lt;GameOverMessage win={this.props.playerWon} /&gt;;
+        }
+
+        return (
+            &lt;div className=&quot;app&quot;&gt;
+                &lt;h1&gt;React Blackjack&lt;/h1&gt;
+                &lt;InfoContainer /&gt;
+                { messageComponent }
+                &lt;strong&gt;Player hand:&lt;/strong&gt;
+                &lt;Hand cards={this.props.playerHand } /&gt;
+                &lt;strong&gt;Dealer hand:&lt;/strong&gt;
+                &lt;Hand cards={this.props.dealerHand } /&gt;
+            &lt;/div&gt;
+        );
+    }
+}
+
+// ...
+</code></pre>
+
+<p>If <code>gameOver</code> is false, the <code>messageComponent</code> will be undefined. When we try to render <code>undefined</code>, React will just output nothing, which is what we want in this case.</p>
+
+<p>Let&#39;s also change the <code>mapStateToProps</code> function so that the connected <code>App</code> will update when the reducer changes <code>gameOver</code> and <code>playerWon</code>.</p>
+
+<div class="fp">app/components/app.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+function mapStateToProps(state) {
+    return {
+        playerHand: state.get(&#39;playerHand&#39;),
+        dealerHand: state.get(&#39;dealerHand&#39;),
+        gameOver: state.get(&#39;gameOver&#39;),
+        playerWon: state.get(&#39;playerWon&#39;)
+    };
+}
+</code></pre>
+
+<p>Now, we need to make the reducer for <code>DEAL_TO_PLAYER</code> use the <code>gameOver</code> and <code>playerWon</code> variables to tell the <code>App</code> component to show the message. Let&#39;s add these requirements to the tests:</p>
+
+<div class="fp">test/reducer_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+describe(&#39;reducer&#39;, () =&gt; {
+    // ...
+
+    describe(&quot;DEAL_TO_PLAYER&quot;, () =&gt; {
+        // ...
+
+        describe(&quot;when player gets more than 21 points&quot;, () =&gt; {
+            // ...
+
+            it(&#39;toggles gameOver and sets playerWon&#39;, () =&gt; {
+                expect(nextState.get(&#39;gameOver&#39;)).to.eq(true);
+                expect(nextState.get(&#39;playerWon&#39;)).to.eq(false);
+            });
+        });
+
+        describe(&quot;when player gets exactly 21 points&quot;, () =&gt; {
+            // ...
+
+            it(&#39;toggles gameOver and sets playerWon&#39;, () =&gt; {
+                expect(nextState.get(&#39;gameOver&#39;)).to.eq(true);
+                expect(nextState.get(&#39;playerWon&#39;)).to.eq(true);
+            });
+        });
+    });
+
+    // ...
+});
+</code></pre>
+
+<p>Now let&#39;s change the reducer function so that these tests pass:</p>
+
+<div class="fp">app/reducer.js</div>
+
+<pre data-line="7-10,12" class="line-numbers"><code class="language-js">// ...
+
+const dealToPlayer = (currentState, seed) =&gt; {
+    // ...
+
+    if(newScore &gt; 21) {
+        const lossCount = currentState.get(&#39;lossCount&#39;) + 1;
+        const gameOver = true;
+        const playerWon = false;
+        newState = newState.merge({lossCount, gameOver, playerWon});
+    } else if(newScore == 21) {
+        /* Your code here */
+    }
+
+    return currentState.merge(newState);
+};
+
+// ...
+</code></pre>
+
+<p>Now try playing a game in the browser. The correct message should be shown if you go over 21 or get 21 exactly. The message is a little hard to see, so we should clean it up with some CSS:</p>
+
+<p>Create a <code>game_over_message.scss</code> file in your <code>app/css/components</code>, and then import in <code>components/_all.scss</code>:</p>
+
+<div class="fp">app/css/components/_all.scss</div>
+
+<pre data-line="" class="line-numbers"><code class="language-scss">@import &#39;card&#39;;
+@import &#39;info&#39;;
+@import &#39;game_over_message&#39;;
+</code></pre>
+
+<p>Then you can add my style for <code>#game_over_message</code> or modify it to look nicer.</p>
+
+<div class="fp">app/css/components/game_over_message.scss</div>
+
+<pre data-line="" class="line-numbers"><code class="language-scss">#game_over_message {
+    border: 1px solid #999;
+    width: 300px;
+    padding: 20px;
+    margin-bottom: 10px;
+
+    button {
+        float: right;
+    }
+}
+</code></pre>
+
+<p>For extra practice with React components, try to give <code>&lt;GameOverMessage /&gt;</code> a different CSS class so the message can look different depending on whether the player won or lost.</p>
+
+<p>Now that everything is looking nice, let&#39;s make that &quot;Next Game&quot; button do something when clicked. To do this, we&#39;ll create a <code>mapDispatchToProps</code> function on the <code>GameOverMessage</code> component and create a connected version of the component:</p>
+
+<div class="fp">app/components/game_over_message.js</div>
+
+<pre data-line="2-3,9-15" class="line-numbers"><code class="language-js">import React from &#39;react&#39;;
+import { connect } from &#39;react-redux&#39;;
+import { setupGame } from &#39;../action_creators&#39;;
+
+export class GameOverMessage extends React.Component {
+    // ...
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        nextGame: () =&gt; dispatch(setupGame())
+    };
+}
+
+export const GameOverMessageContainer = connect(undefined, mapDispatchToProps)(GameOverMessage);
+</code></pre>
+
+<p>Now we want <code>App</code> to render the connected <code>GameOverMessageContainer</code> component rather than the &quot;dumb&quot; <code>GameOverMessage</code> component. Let&#39;s change the tests first.</p>
+
+<div class="fp">test/components/app_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">// ...
+
+describe(&#39;&lt;App /&gt;&#39;, () =&gt; {
+    // ...
+
+    describe(&#39;when gameOver&#39;, () =&gt; {
+        const rendered = shallow(&lt;App gameOver={true} /&gt;);
+
+        it(&#39;renders &lt;GameOverMessage<mark>Container</mark> /&gt;&#39;, () =&gt; {
+            expect(rendered.find(&#39;<mark>Connect(GameOverMessage)</mark>&#39;)).to.have.length(1);
+        });
+
+        describe(&#39;player won&#39;, () =&gt; {
+            const rendered = shallow(&lt;App gameOver={true} playerWon={true} /&gt;);
+            it(&#39;gives &lt;GameOverMessage<mark>Container</mark> /&gt; correct prop&#39;, () =&gt; {
+                expect(rendered.find(&#39;<mark>Connect(GameOverMessage)</mark>&#39;)).to.have.prop(&#39;win&#39;, true);
+            });
+        });
+
+        describe(&#39;player lost&#39;, () =&gt; {
+            const rendered = shallow(&lt;App gameOver={true} playerWon={false} /&gt;);
+            it(&#39;gives &lt;GameOverMessage<mark>Container</mark> /&gt; correct prop&#39;, () =&gt; {
+                expect(rendered.find(&#39;<mark>Connect(GameOverMessage)</mark>&#39;)).to.have.prop(&#39;win&#39;, false);
+            });
+        });
+    });
+});
+</code></pre>
+
+<p>To finish up, we just need to change the component that is rendered in our <code>App</code> component:</p>
+
+<div class="fp">app/components/app.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">// ...
+
+export class App extends React.Component {
+    render() {
+        let messageComponent;
+        if(this.props.gameOver) {
+            messageComponent = &lt;GameOverMessage<mark>Container</mark> win={this.props.playerWon} /&gt;;
+        }
+        // ...
+    }
+}
+// ..
+</code></pre>
+
+<p>One problem that still needs to be fixed: the player can draw cards even if the game is over. Let&#39;s prevent this by disabling the &quot;Hit&quot; and &quot;Stand&quot; buttons.</p>
+
+<p>Before we figure out how to implement this behavior, let&#39;s write a test for it.</p>
+
+<p>We already disable the buttons when <code>hasStood</code> is true, and now we want to do the same thing when <code>gameOver</code> is true. We already have a test for <code>hasStood</code>, and this test will look very similar. Try writing the test yourself before looking at our code below.</p>
+
+<p>Your test should fail and give you output that looks like:</p>
+
+<pre data-line="" class=""><code class="language-text">AssertionError: expected the node in &lt;Info /&gt; to have a &#39;disabled&#39; attribute
+
+HTML:
+
+&lt;button&gt;Hit&lt;/button&gt;
+</code></pre>
+
+<p>Here is our test:</p>
+
+<div class="fp">test/components/info_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">// ...
+
+describe(&#39;&lt;Info /&gt;&#39;, () =&gt; {
+    // ...
+
+    describe(&#39;when gameOver is true&#39;, () =&gt; {
+        const rendered = shallow(&lt;Info gameOver={true} /&gt;);
+
+        it(&#39;disables hit and stand buttons&#39;, () =&gt; {
+            const buttons = rendered.find(&#39;button&#39;);
+            buttons.forEach((b) =&gt; {
+                expect(b).to.have.attr(&#39;disabled&#39;);
+            });
+        });
+    });
+});
+</code></pre>
+
+<p>To make our <code>Info</code> component code more DRY and the render function less complicated, let&#39;s calculate whether the buttons should be disabled before the return statement:</p>
+
+<div class="fp">app/components/info.jsx</div>
+
+<pre data-line="5-8" class="line-numbers"><code class="language-jsx">// ...
+
+export class Info extends React.Component {
+    render() {
+        let disableButtons = false;
+        if(this.props.hasStood || this.props.gameOver) {
+            disableButtons = true;
+        }
+        return (
+            &lt;div id=&quot;info&quot;&gt;
+                &lt;span id=&quot;player_record&quot;&gt;
+                    Wins: {this.props.winCount} Losses: {this.props.lossCount}
+                &lt;/span&gt;
+                &lt;span id=&quot;buttons&quot;&gt;
+                    &lt;button disabled={<mark>disableButtons</mark>}
+                            onClick={this.props.onClickHit}&gt;
+                        Hit
+                    &lt;/button&gt;
+                    &lt;button disabled={<mark>disableButtons</mark>}
+                            onClick={this.props.onClickStand}&gt;
+                        Stand
+                    &lt;/button&gt;
+                &lt;/span&gt;
+            &lt;/div&gt;
+        );
+    }
+}
+</code></pre>
+
+<p>Now we need to add <code>gameOver</code> to <code>mapDispatchToProps()</code> so that we get <code>gameOver</code> from the store:</p>
+
+<div class="fp">app/components/info.js</div>
+
+<pre data-line="8" class="line-numbers"><code class="language-js">// ...
+
+const mapStateToProps = (state) =&gt; {
+    return {
+        winCount: state.get(&#39;winCount&#39;),
+        lossCount: state.get(&#39;lossCount&#39;),
+        hasStood: state.get(&#39;hasStood&#39;)<mark>,</mark>
+        gameOver: state.get(&#39;gameOver&#39;)
+    };
+};
+
+// ...
+</code></pre>
+
+<h3>Blackjack!</h3>
+
+<p>It&#39;s also possible for the user to get 21 on their initial deal by getting an ace and a card worth 10 points.</p>
+
+<p>We should account for this possibility in the <code>SETUP_GAME</code> action&#39;s reducer function.</p>
+
+<p>First let&#39;s write the test:</p>
+
+<p>-- Incomplete -- Work in progress.</p>
+
+                    
+                        <hr />
+                        <p>Eloquently is a recruiting firm. We also host workshops that teach web development and career skills. If you are looking for a job or are interested in joining our web development workshops, please <a href="/index#contact">contact us</a>!</p>
+
+<p>We put together some <a href="/guides/index">guides</a> for participants in our workshops. Feel free to use them. If you see any errors, please submit an issue on our <a href="https://github.com/eloquently/eloquently.github.io">github repository</a>.</p>
+
+<p>These guides are a work in progress. If you see any errors or have a suggestion for a better way to do something, please <a href="/index#contact">let us know</a>.</p>
+
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="push"></div>
+    </div>
+
+    <section id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                &copy; 2016 Eloquently LLC
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- jQuery -->
+<script src="/js/jquery.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Plugin JavaScript -->
+<script src="/js/jquery.easing.min.js"></script>
+<script src="/js/jquery.fittext.js"></script>
+<script src="/js/wow.min.js"></script>
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73351128-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    <script async src="//genius.codes"></script>
+</body>
+
+</html>
