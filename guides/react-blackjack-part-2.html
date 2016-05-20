@@ -179,7 +179,8 @@ export const deal = (deck, n) =&gt; {
 
 describe(&#39;&lt;Hand /&gt;&#39;, () =&gt; {
    describe(&#39;without dummy cards&#39;, () =&gt; {
-
+       const rendered = shallow(&lt;Hand cards={hand} /&gt;);
+       const cards = rendered.find(&#39;Card&#39;);
        // ...
 
        it(&#39;gives each card the correct props&#39;, () =&gt; {
@@ -1177,7 +1178,7 @@ describe(&#39;&lt;Info /&gt;&#39;, () =&gt; {
        const rendered = shallow(&lt;Info winCount={1}
                                       lossCount={2}
                                       hasStood={false}
-                                      dealToPlayer={onClickHitSpy}
+                                      onClickHit={onClickHitSpy}
                                       /&gt;);
 
        // ...
