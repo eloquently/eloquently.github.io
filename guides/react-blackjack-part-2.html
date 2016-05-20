@@ -555,8 +555,8 @@ export default function(currentState=new Map(), action) {
 <div class="fp">app/action_creators.js</div>
 
 <pre data-line="" class="line-numbers"><code class="language-js">export function setupGame() {
-   return { &quot;type&quot;: &quot;SETUP_GAME&quot; }
-};
+   return { &quot;type&quot;: &quot;SETUP_GAME&quot; };
+}
 
 export function setRecord(wins, losses) {
    return {
@@ -564,7 +564,7 @@ export function setRecord(wins, losses) {
        wins,
        losses
    };
-};
+}
 </code></pre>
 
 <p>Now in our <code>reducer()</code> tests, we can import and call these functions to create our actions:</p>
@@ -639,7 +639,7 @@ import App from &#39;./components/app.js&#39;;
 import {createStore} from &#39;redux&#39;;
 import { Provider } from &#39;react-redux&#39;;
 
-import { reducer } from &#39;./reducer&#39;;
+import reducer from &#39;./reducer&#39;;
 import { setupGame, setRecord } from &#39;../app/action_creators&#39;;
 
 require(&#39;./css/main.scss&#39;);
