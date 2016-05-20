@@ -414,7 +414,9 @@ const setupGame = () =&gt; {
 
    dealerHand = dealerHand.push(new Map());
 
-   const newState = new Map({ deck, playerHand, dealerHand });
+   const hasStood = false;
+
+   const newState = new Map({ deck, playerHand, dealerHand, hasStood });
 
    return newState;
 };
@@ -553,7 +555,7 @@ export default function(currentState=new Map(), action) {
 
 <pre data-line="" class="line-numbers"><code class="language-js">export function setupGame() {
    return { &quot;type&quot;: &quot;SETUP_GAME&quot; }
-}
+};
 
 export function setRecord(wins, losses) {
    return {
@@ -561,7 +563,7 @@ export function setRecord(wins, losses) {
        wins,
        losses
    };
-}
+};
 </code></pre>
 
 <p>Now in our <code>reducer()</code> tests, we can import and call these functions to create our actions:</p>
@@ -967,7 +969,7 @@ export const deal = (deck, n, seed) =&gt; {
 
 <pre data-line="" class="line-numbers"><code class="language-js">export function setupGame(seed=new Date().getTime()) {
    return { &quot;type&quot;: &quot;SETUP_GAME&quot;, seed };
-}
+};
 
 // ...
 </code></pre>
@@ -1250,7 +1252,7 @@ export const InfoContainer = connect(mapStateToProps, mapDispatchToProps)(Info);
 
 export function stand() {
    return { &quot;type&quot;: &quot;STAND&quot; };
-}
+};
 </code></pre>
 
 <p>We want the stand action to change the <code>hasStood</code> state variable to false. Here&#39;s what the <code>reducer()</code> test looks like:</p>
