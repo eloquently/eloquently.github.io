@@ -597,12 +597,12 @@ describe(&#39;reducer&#39;, () =&gt; {
 
 <div class="file-path">app/index.js</div>
 
-<pre data-line="" class="line-numbers"><code class="language-js">import React from &#39;react&#39;;
+<pre data-line="4,10" class="line-numbers"><code class="language-js">import React from &#39;react&#39;;
 import ReactDOM from &#39;react-dom&#39;;
 import App from &#39;./components/app.js&#39;;
 import {createStore} from &#39;redux&#39;;
 
-import { reducer } from &#39;./reducer&#39;;
+import reducer from &#39;./reducer&#39;;
 
 require(&#39;./css/main.scss&#39;);
 
@@ -615,8 +615,8 @@ let store = createStore(reducer);
 
 <div class="file-path">app/index.js</div>
 
-<pre data-line="" class="line-numbers"><code class="language-js">// ...
-import { reducer } from &#39;./reducer&#39;;
+<pre data-line="3,9-10" class="line-numbers"><code class="language-js">// ...
+import reducer from &#39;./reducer&#39;;
 import { setupGame, setRecord } from &#39;../app/action_creators&#39;;
 
 require(&#39;./css/main.scss&#39;);
