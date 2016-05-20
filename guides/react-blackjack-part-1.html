@@ -1302,7 +1302,7 @@ let deck = newDeck();
 
 <p>Now if you open <code>build/index.html</code> in the browser, you should see the a nice blanched almond color behind your cards! You may have to restart your <code>webpack:watch</code> process because we changed its configuration.</p>
 
-<p>In Chrome, if you right click on a card and hit &quot;inspect&quot;, you&#39;ll see the DOM tree appear. If you select one of the <code>&lt;div class=&quot;hand&quot;&gt;</code> lines, you should see a list of styles applied to the element. It will tell you that it&#39;s getting it&#39;s <code>blanchedalmond</code> <code>backround-color</code> from <code>card.scss</code>. This is the source map at work!</p>
+<p>In Chrome, if you right click on a card and hit &quot;inspect&quot;, you&#39;ll see the DOM tree appear. If you select one of the <code>&lt;div class=&quot;card&quot;&gt;</code> lines, you should see a list of styles applied to the element. It will tell you that it&#39;s getting it&#39;s <code>blanchedalmond</code> <code>backround-color</code> from <code>card.scss</code>. This is the source map at work!</p>
 
 <h4>Hot Reloading/Hot Module Replacement</h4>
 
