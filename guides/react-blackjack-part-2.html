@@ -794,7 +794,7 @@ describe(&#39;&lt;App /&gt;&#39;, () =&gt; {
 import <mark>{ InfoContainer }</mark> from &#39;./info&#39;;
 // ...
 
-export class App extends React.Component {
+export default class App extends React.Component {
    render() {
        return (
            &lt;div className=&quot;app&quot;&gt;
@@ -812,7 +812,7 @@ export class App extends React.Component {
 
 <h4>Connecting <code>&lt;App&gt;</code></h4>
 
-<p>Now that we have <code>&lt;Info&gt;</code> connected, let&#39;s write a <code>mapStateToProps</code> function for <code>&lt;App&gt;</code> and create the <code>AppContainer</code> class;</p>
+<p>Now that we have <code>&lt;Info&gt;</code> connected, let&#39;s write a <code>mapStateToProps</code> function for <code>&lt;App&gt;</code> and create the <code>AppContainer</code> class. We&#39;re also going to remove the default export on the <code>App</code> class. This means we&#39;ll have to change the <code>app_spec.js</code> file to <code>import { App }</code> instead of <code>import App</code>.</p>
 
 <div class="file-path">app/components/app.js</div>
 
@@ -820,7 +820,7 @@ export class App extends React.Component {
 
 import { connect } from &#39;react-redux&#39;;
 
-export class App extends React.Component {
+<mark>export class</mark> App extends React.Component {
    // ...
 };
 
@@ -873,10 +873,12 @@ describe(&#39;&lt;App /&gt;&#39;, () =&gt; {
 <div class="file-path">app/index.js</div>
 
 <pre data-line="" class="line-numbers"><code class="language-jsx">// ...
+import <mark>{ AppContainer }</mark> from &#39;./components/app&#39;;
+// ...
 
 ReactDOM.render(
    &lt;Provider store={store}&gt;
-       &lt;AppContainer /&gt;
+       &lt;App<mark>Container</mark> /&gt;
    &lt;/Provider&gt;,
    document.getElementById(&#39;app&#39;)
 );
