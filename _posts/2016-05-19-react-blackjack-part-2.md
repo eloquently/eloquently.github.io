@@ -718,7 +718,7 @@ Now let's make the test pass by changing `<App>`'s `render` function:
 import <mark>{ InfoContainer }</mark> from './info';
 // ...
 
-export class App extends React.Component {
+export default class App extends React.Component {
    render() {
        return (
            <div className="app">
@@ -736,7 +736,7 @@ Great! Now let's look at the application in the browser. Try dispatching some `S
 
 #### Connecting `<App>`
 
-Now that we have `<Info>` connected, let's write a `mapStateToProps` function for `<App>` and create the `AppContainer` class;
+Now that we have `<Info>` connected, let's write a `mapStateToProps` function for `<App>` and create the `AppContainer` class. We're also going to remove the default export on the `App` class. This means we'll have to change the `app_spec.js` file to `import { App }` instead of `import App`.
 
 <div class="file-path">app/components/app.js</div>
 ```jsx
@@ -744,7 +744,7 @@ Now that we have `<Info>` connected, let's write a `mapStateToProps` function fo
 
 import { connect } from 'react-redux';
 
-export class App extends React.Component {
+<mark>export class</mark> App extends React.Component {
    // ...
 };
 
@@ -797,10 +797,12 @@ The only thing left to do is to change the component that we're rendering in `in
 <div class="file-path">app/index.js</div>
 ```jsx
 // ...
+import <mark>{ AppContainer }</mark> from './components/app';
+// ...
 
 ReactDOM.render(
    <Provider store={store}>
-       <AppContainer />
+       <App<mark>Container</mark> />
    </Provider>,
    document.getElementById('app')
 );
