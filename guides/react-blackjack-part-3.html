@@ -128,7 +128,7 @@ describe(&#39;cards.js&#39;, () =&gt; {
 
 <p>In this case, we want to add each card&#39;s rank, and we&#39;ll keep track of the result in a variable called <code>sum</code>:</p>
 
-<div class="fp">app/lib/cards_spec.js</div>
+<div class="fp">app/lib/cards.js</div>
 
 <pre data-line="" class="line-numbers"><code class="language-js">// ...
 
@@ -151,7 +151,7 @@ describe(&#39;cards.js&#39;, () =&gt; {
     // ...
 
     describe(&#39;score()&#39;, () =&gt; {
-        describe(&#39;with numberic ranks&#39;, () =&gt; {
+        describe(&#39;with numeric ranks&#39;, () =&gt; {
             it(&#39;calculates correct score&#39;, () =&gt; {
                 let hand = fromJS([{rank: 3}, {rank: 5}]);
                 expect(score(hand)).to.eq(8);
@@ -173,7 +173,7 @@ describe(&#39;cards.js&#39;, () =&gt; {
 
 <p>To pass the test, we will have to convert kings to 12, queens to 11, and jacks to 10. We&#39;ll write a helper method called <code>rankAsNum</code> to do that for us.</p>
 
-<div class="fp">app/lib/cards_spec.js</div>
+<div class="fp">app/lib/cards.js</div>
 
 <pre data-line="" class="line-numbers"><code class="language-js">// ...
 
@@ -340,7 +340,7 @@ describe(&#39;reducer&#39;, () =&gt; {
 });
 </code></pre>
 
-<p>In these tests, we cheat a little bit to make the player draw the right card for the scenario we want to test by only putting one card in the deck. Our tests here are not exactly &quot;unit&quot; tests becuase they have a lot of dependencies on other parts of the program. Specifically, if something goes wrong with the <code>score</code> function (or the <code>draw</code> function), this test won&#39;t work any more. This is not ideal, and we could use stubs from Sinon to make our tests more independent. This is a bit outside the scope of this guide for now.</p>
+<p>In these tests, we cheat a little bit to make the player draw the right card for the scenario we want to test by only putting one card in the deck. Our tests here are not exactly &quot;unit&quot; tests because they have a lot of dependencies on other parts of the program. Specifically, if something goes wrong with the <code>score</code> function (or the <code>draw</code> function), this test won&#39;t work any more. This is not ideal, and we could use stubs from Sinon to make our tests more independent. We will see how this works in a little bit.</p>
 
 <p>And then add some logic to the reducer:</p>
 
@@ -879,7 +879,188 @@ const mapStateToProps = (state) =&gt; {
 
 <p>We should account for this possibility in the <code>SETUP_GAME</code> action&#39;s reducer function.</p>
 
-<p>First let&#39;s write the test:</p>
+<p>We won&#39;t be able to use on the trick of stacking the deck to control which cards are dealt for these tests because <code>SETUP_GAME</code> creates a whole new deck. This means that we will have to overwrite (&quot;stub&quot;) the deal method.</p>
+
+<p>To do this, we are going to use a new package called Proxyquire. Let&#39;s first install Proxyquire:</p>
+
+<pre data-line="" class=""><code class="language-text">npm install --save-dev proxyquire
+</code></pre>
+
+<p>Proxyquire allows us to require another file and replace the things that that file requires with stubs (or anything we want). In this case, we are going to require a special reducer that uses a stubbed <code>deal</code> function -- one that only deals aces and jacks. The reducer gets its <code>deal</code> function from <code>./lib/cards.js</code>, so we want to use Proxyquire to replace to <code>deal</code> function in that file with our special function.</p>
+
+<p>Proxyquire provides us with a function, <code>proxyquire()</code>, that takes two arguments: the file that we are importing from and an object with keys that tell it which modules we want to replace (these should line up with the <code>from &quot;...&quot;</code> lines in the file we&#39;re requiring). The values of the object in the second parameter are more objects that have keys that are the names of the functions (or classes or anything else that is exported) that we want to replace and the values are their replacements. If something that we import isn&#39;t overridden, it will just use the original &quot;thing&quot; (function, class, etc.). Here&#39;s an example to make it more concrete:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">const action = setupGame();
+const initialState = undefined;
+
+const cardUtils = { }; // we&#39;ll put the overrides in here
+
+/* require reducer.js but override the functions
+   imported from &#39;./lib/cards.js&#39; with the functions
+   in cardUtils (if there are any).
+   we have the .default at the end because the reducer
+   function is the default export from the reducer.js
+   file */
+const stubbedReducer = proxyquire(
+    &#39;../app/reducer.js&#39;,
+    {&#39;./lib/cards.js&#39;: cardUtils}
+).default;
+
+/* this is the function we want to replace deal with
+   proxyquire will tell the reducer to use this function
+   instead of the usual deal function because we put it
+   in cardUtils. We&#39;ll just return an empty List for the
+   deck and an ace and a jack for the cards dealt */
+cardUtils.deal = () =&gt; {
+    return [
+        new List(),
+        fromJS([
+            {suit: &#39;S&#39;, rank: &#39;A&#39;},
+            {suit: &#39;S&#39;, rank: &#39;J&#39;}
+        ])
+    ];
+}
+
+
+const nextState = stubbedReducer(initialState, action);
+
+/* now every time we try to deal in the reducer
+   we will end up dealing out an ace and jack */
+</code></pre>
+
+<p>In this case, we just wrote our own override function for <code>deal()</code> but we also could have used a Sinon stub if we wanted something more flexible.</p>
+
+<p>Let&#39;s add this to our reducer test:</p>
+
+<div class="fp">test/reducer_spec.js</div>
+
+<pre data-line="2" class="line-numbers"><code class="language-js">// ...
+import proxyquire from &#39;proxyquire&#39;;
+
+import reducer from &#39;../app/reducer&#39;;
+
+describe(&#39;reducer&#39;, () =&gt; {
+    describe(&quot;SETUP_GAME&quot;, () =&gt; {
+        const action = setupGame();
+
+        // ...
+
+        describe(&quot;when dealt winning hand&quot;, () =&gt; {
+            const cardUtils = { };
+            const stubbedReducer = proxyquire(&#39;../app/reducer.js&#39;, {&#39;./lib/cards.js&#39;: cardUtils}).default;
+            cardUtils.deal = () =&gt; [new List(), fromJS([{suit: &#39;S&#39;, rank: &#39;A&#39;}, {suit: &#39;S&#39;, rank: &#39;J&#39;}])];
+
+            const initialState = undefined;
+            const nextState = stubbedReducer(initialState, action);
+
+            it(&#39;sets gameOver and playerWon&#39;, () =&gt; {
+                expect(nextState.get(&#39;gameOver&#39;)).to.eq(true);
+                expect(nextState.get(&#39;playerWon&#39;)).to.eq(true);
+            });
+        });
+    });
+
+    // ...
+});
+</code></pre>
+
+<p>Now the code for reducer to make this test pass:</p>
+
+<div class="fp">app/reducer.js</div>
+
+<pre data-line="7-10" class="line-numbers"><code class="language-js">const setupGame = (currentState, seed) =&gt; {
+    // ...
+
+    <mark>let</mark> gameOver = false;
+    <mark>let</mark> playerWon = undefined;
+
+    if(score(playerHand) == 21) {
+        gameOver = true;
+        playerWon = true;
+    }
+
+    const newState = new Map({
+        deck, playerHand,
+        dealerHand, hasStood,
+        gameOver, playerWon
+    });
+
+    return currentState.merge(newState);
+};
+</code></pre>
+
+<p>We&#39;ll also want to increase the winCount. Here&#39;s the test:</p>
+
+<div class="fp">test/reducer_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+describe(&#39;reducer&#39;, () =&gt; {
+    describe(&quot;SETUP_GAME&quot;, () =&gt; {
+        // ...
+
+        describe(&quot;when dealt winning hand&quot;, () =&gt; {
+            // ...
+
+            it(&#39;increments winCount&#39;, () =&gt; {
+                expect(nextState.get(&#39;winCount&#39;)).to.eq(initialState.get(&#39;winCount&#39;) + 1);
+            });
+        });
+    });
+});
+</code></pre>
+
+<p>In this case, the reducer code is a little trickier. It&#39;s possible to call SETUP_GAME before winCount has been set. Therefore we need to initialize <code>winCount</code> to 0 before incrementing it. We can use an <code>||</code> operator as a shortcut. We will use a line that looks like this:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">let winCount = currentState.get(&#39;winCount&#39;) || 0;
+</code></pre>
+
+<p>This is saying set <code>winCount</code> equal to <code>currentState.get(&#39;winCount&#39;)</code> unless <code>currentState.get(&#39;winCount&#39;)</code> is <code>undefined</code> (or <code>false</code>). If it&#39;s <code>undefined</code>, set it to 0.</p>
+
+<p>Here is the code for the reducer:</p>
+
+<div class="fp">app/reducer.js</div>
+
+<pre data-line="7,12" class="line-numbers"><code class="language-js">// ...
+const setupGame = (currentState, seed) =&gt; {
+    // ...
+
+    let gameOver = false;
+    let playerWon = undefined;
+    let winCount = currentState.get(&#39;winCount&#39;) || 0;
+
+    if(score(playerHand) == 21) {
+        gameOver = true;
+        playerWon = true;
+        winCount += 1;
+    }
+
+    const newState = new Map({
+        deck, playerHand,
+        dealerHand, hasStood,
+        gameOver, playerWon<mark>,</mark>
+        <mark>winCountwin</mark>
+    });
+
+    return currentState.merge(newState);
+};
+// ...
+</code></pre>
+
+<p>If you want to test it in the browser, keep playing games until you&#39;re dealt blackjack. You can also dispatch a <code>SETUP_GAME</code> event with the seed <code>1463783318510</code> in the Redux DevTools (don&#39;t ask me how long it took to get that!).</p>
+
+<h4>Debugging</h4>
+
+<p>Imagine you just deployed this code to production and you go home for the day. At 3AM, you get a call from your boss saying &quot;I keep getting user error reports! Fix the problem!!&quot; You log into the support email system and see hundreds of people with claims like this:</p>
+
+<pre data-line="" class=""><code class="language-text">I loaded your page and I got an ace and king.
+
+The page said I won, but my win count didn&#39;t go up!!!!
+
+Fix this or I&#39;ll sue you!
+</code></pre>
+
+<p>What went wrong?</p>
 
 <p>-- Incomplete -- Work in progress.</p>
 
