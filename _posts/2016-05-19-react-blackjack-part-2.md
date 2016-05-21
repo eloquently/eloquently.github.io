@@ -100,7 +100,8 @@ We'll also modify our other test to make sure that the non-dummy cards get `face
 
 describe('<Hand />', () => {
    describe('without dummy cards', () => {
-
+       const rendered = shallow(<Hand cards={hand} />);
+       const cards = rendered.find('Card');
        // ...
 
        it('gives each card the correct props', () => {
@@ -167,7 +168,7 @@ describe('<Card />', () => {
        // ...
    });
 
-   describe('non-dummy card', () => {
+   describe('dummy card', () => {
        const suit = undefined;
        const rank = undefined;
        const rendered = shallow(<Card suit={suit} rank={rank} faceDown={true} />);
@@ -322,7 +323,7 @@ To keep our code organized, we will have `reducer()` call other functions that a
 To fill in `setupGame()`, we'll copy over the code from `index.js`:
 
 <div class="fp">app/reducer.js</div>
-```js
+```js{3}
 import { Map } from 'immutable';
 
 import { newDeck, deal } from './lib/cards.js';
@@ -476,8 +477,8 @@ These functions are very simple, so there is no need to write tests for them. Th
 <div class="fp">app/action_creators.js</div>
 ```js
 export function setupGame() {
-   return { "type": "SETUP_GAME" }
-};
+   return { "type": "SETUP_GAME" };
+}
 
 export function setRecord(wins, losses) {
    return {
@@ -485,7 +486,7 @@ export function setRecord(wins, losses) {
        wins,
        losses
    };
-};
+}
 ```
 
 Now in our `reducer()` tests, we can import and call these functions to create our actions:
@@ -517,13 +518,13 @@ If we dispatch `SETUP_GAME` and `SET_RECORD` with `0` wins and `0` losses, we ge
 Let's set up a Redux `store` and dispatch some actions to it to get our intiial state in `index.js`. First, we'll create the store and link it with our reducer function:
 
 <div class="file-path">app/index.js</div>
-```js
+```js{4,10}
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/app.js';
 import {createStore} from 'redux';
 
-import { reducer } from './reducer';
+import reducer from './reducer';
 
 require('./css/main.scss');
 
@@ -535,9 +536,9 @@ let store = createStore(reducer);
 Next we'll import the action creators and dispatch the actions to set up the game.
 
 <div class="file-path">app/index.js</div>
-```js
+```js{3,9-10}
 // ...
-import { reducer } from './reducer';
+import reducer from './reducer';
 import { setupGame, setRecord } from '../app/action_creators';
 
 require('./css/main.scss');
@@ -560,7 +561,7 @@ import App from './components/app.js';
 import {createStore} from 'redux';
 import { Provider } from 'react-redux';
 
-import { reducer } from './reducer';
+import reducer from './reducer';
 import { setupGame, setRecord } from '../app/action_creators';
 
 require('./css/main.scss');
@@ -647,14 +648,16 @@ function mapStateToProps(state) {
 }
 ```
 
-The React-Redux package gives us a function called `connect` that takes a `mapStateToProps` function as an argument and returns another function that takes a React component as an argument and returns a "smart" component that will automatically update when state changes. A Redux convention is to refer to the "smart" version of a component as a container, so the "smart" version of the `Info` component is the `InfoContainer`. Let's add `mapStateToProps()` to our `info.js` file and create `InfoContainer`:
+The React-Redux package gives us a function called `connect` that takes a `mapStateToProps` function as an argument and returns another function that takes a React component as an argument and returns a "smart" component that will automatically update when state changes. A Redux convention is to refer to the "smart" version of a component as a container, so the "smart" version of the `Info` component is the `InfoContainer`. Let's add `mapStateToProps()` to our `info.js` file and create `InfoContainer`.
+
+We are also going to remove `default` from `export dfault class Info`. When you import a `default` export, you use a command like `import Info from './info';`. If you remove `default` from your export, you now have a "named" export, and you need to import it using a command like `import { Info } from './info';`. I typically prefer not to use default exports if I export more than one thing from the same file, but this is a personal preference.
 
 <div class="file-path">app/components/info.js</div>
 ```jsx
 import React from 'react';
 import { connect } from 'react-redux';
 
-export class Info extends React.Component {
+<mark>export class</mark> Info extends React.Component {
    // ...
 };
 
@@ -677,7 +680,7 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 
-import { Info } from '../../app/components/info';
+import <mark>{ Info }</mark> from '../../app/components/info';
 ```
 
 Now, we should change our `App` component to render `<InfoContainer>` rather than `<Info>`. We also no longer need to pass any props because now `<InfoContainer>` is getting them straight from the `store`! Let's change our `App` component tests to reflect these changes we want to make:
@@ -711,6 +714,8 @@ Now let's make the test pass by changing `<App>`'s `render` function:
 
 <div class="file-path">app/components/app.js</div>
 ```jsx
+// ...
+import <mark>{ InfoContainer }</mark> from './info';
 // ...
 
 export class App extends React.Component {
@@ -878,7 +883,7 @@ export const deal = (deck, n, seed) => {
    let dealtCards = new List();
    let newDeck = deck;
    for(let i = 0; i < n; i += 1) {
-       let [d, c] = deal(newDeck, 1, seed + i);
+       let [d, c] = deal(newDeck, 1<mark>, seed + i</mark>);
        dealtCards = dealtCards.push(c.first());
        newDeck = d;
    }
@@ -1101,7 +1106,7 @@ describe('<Info />', () => {
        const rendered = shallow(<Info winCount={1}
                                       lossCount={2}
                                       hasStood={false}
-                                      dealToPlayer={onClickHitSpy}
+                                      onClickHit={onClickHitSpy}
                                       />);
 
        // ...
@@ -1145,8 +1150,9 @@ Now, our pure `Info` component will call any function we pass to it as a prop. W
 We can do this with a `mapDispatchToProps` function that looks like `mapStateToProps()`:
 
 <div class="file-path">app/components/info.js</div>
-```js
+```js{2}
 // ...
+import { dealToPlayer } from '../../app/action_creators';
 
 function mapStateToProps(state) {
  // ...
@@ -1248,7 +1254,7 @@ describe('<Info />', () => {
                                       />);
        // ...
 
-       it('invokes prop function when Hit is clicked', () => {
+       it('invokes prop function when Stand is clicked', () => {
            buttons.last().simulate('click');
            expect(onClickStandSpy.calledOnce).to.eq(true);
        });

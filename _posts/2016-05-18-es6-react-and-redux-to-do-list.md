@@ -561,8 +561,8 @@ The final step here is to set up a click handler on the `Item` component so that
 
 We do this by setting the `onClick` prop of the `div` tag inside the `Item` component. We will set it to a function that gets passed to the component as a prop.
 
-<div class="fp">app/components/item.js</div>
-```jsx{8}
+<div class="fp">src/components/item.js</div>
+```jsx{7}
 import React from 'react';
 
 export class Item extends React.Component {
@@ -583,7 +583,7 @@ In the same way that we mapped state to props earlier, we are going to map actio
 
 This is how we will define the function and create the connected `Item`:
 
-<div class="fp">app/components/item.js</div>
+<div class="fp">src/components/item.js</div>
 ```js{2,4}
 import React from 'react';
 import { connect } from 'react-redux';
@@ -606,6 +606,7 @@ export const ItemContainer = connect(undefined, mapDispatchToProps)(Item);
 
 The final step is to render the connected `<ItemContainer />`s rather than `<Item />`s in the `<ItemList />` component. First, let's change the test. In this case, we are still passing the same props, we just want to change the name of the component we are rendering from `Item` to `Connect(Item)`:
 
+<div class="fp">test/components/item_list_spec.js</div>
 ```js{6,7,9}
 // ...
 

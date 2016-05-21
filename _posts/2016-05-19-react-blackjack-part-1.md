@@ -1190,7 +1190,7 @@ Now we can start making stylesheet files. We'll have a `main.scss` file that is 
 @import 'components/all';
 ```
 
-Next we'll make a directory called `components/` for our component styles inside our `css/` directory. It is a good practice to keep each component's stylesheet in its own file in order to make your components more modular. If we wanted to make another card game application, we could very easily re-use our card component by copying the `components/card.js` file and the `css/components/card.js` file to a new project.
+Next we'll make a directory called `components/` for our component styles inside our `css/` directory. It is a good practice to keep each component's stylesheet in its own file in order to make your components more modular. If we wanted to make another card game application, we could very easily re-use our card component by copying the `components/card.js` file and the `css/components/card.scss` file to a new project.
 
 The `components/` directory will have a file called `_all.scss` that imports each component. It's important to remember to add an import statement to this file each time you create a new `.scss` file.
 
@@ -1227,7 +1227,7 @@ let deck = newDeck();
 
 Now if you open `build/index.html` in the browser, you should see the a nice blanched almond color behind your cards! You may have to restart your `webpack:watch` process because we changed its configuration.
 
-In Chrome, if you right click on a card and hit "inspect", you'll see the DOM tree appear. If you select one of the `<div class="hand">` lines, you should see a list of styles applied to the element. It will tell you that it's getting it's `blanchedalmond` `backround-color` from `card.scss`. This is the source map at work!
+In Chrome, if you right click on a card and hit "inspect", you'll see the DOM tree appear. If you select one of the `<div class="card">` lines, you should see a list of styles applied to the element. It will tell you that it's getting it's `blanchedalmond` `backround-color` from `card.scss`. This is the source map at work!
 
 #### Hot Reloading/Hot Module Replacement
 
