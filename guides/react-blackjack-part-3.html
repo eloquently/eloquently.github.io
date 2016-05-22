@@ -1060,7 +1060,21 @@ The page said I won, but my win count didn&#39;t go up!!!!
 Fix this or I&#39;ll sue you!
 </code></pre>
 
-<p>What went wrong?</p>
+<p>One user helpfully submitted a screenshot of the error:</p>
+
+<p><img src="/img/react_blackjack/error_report.png" alt="bug_report"></p>
+
+<p>What went wrong? See if you can figure out what the problem is before reading on.</p>
+
+<p>Hint: The problem has to do with the way we set up the game. Walk through the code in <code>index.js</code> line by line and see if you can identify the problem. Keep track of the state object while you so.</p>
+
+<p>Here&#39;s the answer:</p>
+
+<p>In <code>index.js</code>, we create the store passing <code>undefined</code> as the parameter. Then, we dispatch a <code>SETUP_GAME</code> action. This action will deal the cards to the player and dealer and then check if the player was dealt a winning hand. If the player does win immediately, <code>winCount</code> is incremented or set to one if it was previously undefined (which is the case here). Everything good so far.</p>
+
+<p>After dispatching <code>SETUP_GAME</code>, we dispatch <code>SET_RECORD</code> with 0 wins and 0 losses. This is where the problem is, as this will set the record to 0 no matter what the previous record was. So if the player is dealt a winning hand, the <code>SETUP_GAME</code> action correctly sets <code>winCount</code> to 1, but this is immediately set back to 0 by the next action.</p>
+
+<p>There are a few ways to deal with this. We could have <code>SET_RECORD</code> only set <code>winCount</code> and <code>lossCount</code> if they are undefined in the current state. We could move the <code>SET_RECORD</code> action before the <code>SETUP_GAME</code> action.</p>
 
 <p>-- Incomplete -- Work in progress.</p>
 
