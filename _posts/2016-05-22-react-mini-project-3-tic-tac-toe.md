@@ -5,7 +5,7 @@ permalink: guides/react-tic-tac-toe
 date: 2016-05-22
 ---
 
-## {{ post.title }}
+## {{ page.title }}
 
 <hr class="left" />
 
