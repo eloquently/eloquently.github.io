@@ -83,31 +83,86 @@
                     </div>
                 </div>-->
                 <div class="post-content">
-                    <p>Eloquently is a recruiting firm. We also host workshops that teach web development and career skills. If you are looking for a job or are interested in joining our web development workshops, please <a href="/index#contact">contact us</a>!</p>
+                    <h2>React Mini-Project 1 - Shopping List</h2>
+
+<p><hr class="left" /></p>
+
+<p>The goal for these mini projects is to get you used to writing tests and designing components in React. I suggest that you go through it once implementing and testing all the components before worrying about managing the state with Redux. After completing a few of these mini-procjects, pick one of them and work on adding Redux stores and reducers to it.</p>
+
+<p>One goal for these exercises is to make you more comfortable writing React tests and code. That means that we are not going to give you the program piece by piece (as we did in the <a href="/guides/react-blacjack-part-1">blackjack guides</a>). Instead, we&#39;ll give you very general pieces of the code, and you will have to figure out where to go.</p>
+
+<p>Don&#39;t worry if you get stuck or don&#39;t know where to start -- that&#39;s very normal. Before trying to find a tutorial, spend some time thinking about what you are trying to build, and what the next steps are.</p>
+
+<p>This series of guides will hold your hand less and less as you go through them. For example, in this first guide we will tell you all the components you need and what each component should be responsible for. By the end, we&#39;ll give you just a description of the finished product and you will be responsible for figuring out how to set up all the components!</p>
+
+<p>Let&#39;s get started.</p>
+
+<h3>Shopping List State</h3>
+
+<p>This is what one state for the Shopping List Application will look like:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">const initialState = fromJS({
+    name: &#39;Groceries&#39;,
+    items: [
+        {
+            name: &#39;Carrots&#39;,
+            quantity: 2
+            purchased: true
+        },
+        {
+            name: &#39;Broccoli&#39;,
+            quantity: 1,
+            purchased: true
+        },
+        {
+            name: &#39;Milk&#39;,
+            quantity: &#39;1 gallon&#39;,
+            purchased: false
+        },
+        {
+            name: &#39;Eggs&#39;,
+            quantity: &#39;2 dozen&#39;,
+            purchased: false
+        }
+    ]
+});
+</code></pre>
+
+<p>We will use ImmutableJS&#39;s immutable <code>Map</code>s and <code>List</code>s to store the application state. In the above code-block, we use the <code>fromJS</code> function provided by ImmutableJS to convert the objects and arrays into <code>Map</code>s and <code>List</code>s.</p>
+
+<h3>Shopping List Components</h3>
+
+<p>This shopping list application will have the following components:</p>
+
+<ul>
+<li><code>&lt;App /&gt;</code>: the <code>App</code> component will be the top level component that is responsible for rendering all the other components. There is nothing special about this name -- you could call it something else if you wanted. <code>&lt;App /&gt;</code> will take the entire application state <code>Map</code> as a prop.</li>
+<li><code>&lt;ShoppingList /&gt;</code>: The <code>ShoppingList</code> component will be responsible for displaying the name of the list and rendering <code>Item</code> components for each item in the list. <code>&lt;ShoppingList /&gt;</code> will take two props: <code>name</code> for the name of the list and <code>items</code>, which will be an immutable <code>List</code>.</li>
+<li><code>&lt;Item /&gt;</code>: the <code>Item</code> component will be responsible for rendering the name of the item, the quantity to purchase, and it should be styled differently based on whether the item has been purchased already or not.</li>
+</ul>
+
+<p>Here&#39;s an example of what the final HTML for the &quot;Carrots&quot; item in the application state above will look like:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-html">&lt;div class=&quot;item purchased&quot;&gt;
+    &lt;span class=&quot;quantity&quot;&gt;2&lt;/span&gt;
+    &lt;span class=&quot;name&quot;&gt;Carrots&lt;/span&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p>Here&#39;s what the HTML for the &quot;Eggs&quot; item might look like:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-html">&lt;div class=&quot;item&quot;&gt;
+    &lt;span class=&quot;quantity&quot;&gt;2 Dozen&lt;/span&gt;
+    &lt;span class=&quot;name&quot;&gt;Eggs&lt;/span&gt;
+&lt;/div&gt;
+</code></pre>
+
+                    
+                        <hr />
+                        <p>Eloquently is a recruiting firm. We also host workshops that teach web development and career skills. If you are looking for a job or are interested in joining our web development workshops, please <a href="/index#contact">contact us</a>!</p>
 
 <p>We put together some <a href="/guides/index">guides</a> for participants in our workshops. Feel free to use them. If you see any errors, please submit an issue on our <a href="https://github.com/eloquently/eloquently.github.io">github repository</a>.</p>
 
 <p>These guides are a work in progress. If you see any errors or have a suggestion for a better way to do something, please <a href="/index#contact">let us know</a>.</p>
-
-<p>Participants in our workshops typically use Cloud9&#39;s IDE, so many of the setup guides here are written mainly for Cloud9. We try to mention what you need to do to get something set up on a non-Cloud9 environment when possible, but these sections could likely use some work.</p>
-
-<p>Here is a list of guides we&#39;ve put together so far:</p>
-
-<ul>
-<li><p><a href="/guides/index">Guide to Guides</a></p></li>
-<li><p><a href="/guides/bootstrap_rails">Bootstrap and Rails</a></p></li>
-<li><p><a href="/guides/livereload">Guard, LiveReload, and Cloud9</a></p></li>
-<li><p><a href="/guides/es6-tdd-warmup">ES6 TDD Warm-up</a></p></li>
-<li><p><a href="/guides/es6-classes-strings-state">Classes, Strings, and Mutable State with ES6</a></p></li>
-<li><p><a href="/guides/reduce-size-node-modules">Reduce Size of node_modules</a></p></li>
-<li><p><a href="/guides/es6-react-redux">ES6, React, and Redux - To Do List</a></p></li>
-<li><p><a href="/guides/react-blackjack-part-1">React Blackjack Part 1</a></p></li>
-<li><p><a href="/guides/react-blackjack-part-2">React Blackjack Part 2</a></p></li>
-<li><p><a href="/guides/react-blackjack-part-3">React Blackjack Part 3</a></p></li>
-<li><p><a href="/guides/react-shopping-list">React Mini-Project 1 - Shopping List</a></p></li>
-<li><p><a href="/guides/react-list-of-shopping-lists">React Mini-Project 2 - List of Shopping Lists</a></p></li>
-<li><p><a href="/guides/react-tic-tac-toe">React Mini-Project 3 - Tic Tac Toe</a></p></li>
-</ul>
 
                     
                 </div>

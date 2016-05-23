@@ -83,31 +83,58 @@
                     </div>
                 </div>-->
                 <div class="post-content">
-                    <p>Eloquently is a recruiting firm. We also host workshops that teach web development and career skills. If you are looking for a job or are interested in joining our web development workshops, please <a href="/index#contact">contact us</a>!</p>
+                    <p><hr class="left" /></p>
+
+<p>This application will allow users to play tic tac toe in the browser. Don&#39;t worry about the functionality for now. Just make it display a board that correctly reflects the current state.</p>
+
+<h3>Application State</h3>
+
+<p>Here&#39;s an example of what the state <code>Map</code> might look like in the middle of the game.</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">const initialState = fromJS({
+    board: [ [&#39;X&#39;, &#39;O&#39;, &#39;&#39;],
+             [&#39;X&#39;, &#39;&#39;, &#39;O&#39;],
+             [&#39;O&#39;, &#39;&#39;, &#39;X&#39;] ],
+    gameOver: false,
+    winner: undefined
+});
+</code></pre>
+
+<p>Here&#39;s what the state might look like at the end of the game.</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">const initialState = fromJS({
+    board: [ [&#39;X&#39;, &#39;O&#39;, &#39;&#39;],
+             [&#39;X&#39;, &#39;O&#39;, &#39;O&#39;],
+             [&#39;X&#39;, &#39;&#39;, &#39;X&#39;] ],
+    gameOver: true,
+    winner: &#39;X&#39;
+});
+</code></pre>
+
+<p>You can add both <code>initialState</code>s to your <code>index.js</code> and comment one of them out to switch between the two.</p>
+
+<h3>Components</h3>
+
+<p>Here is a suggested list of components for your Tic Tac Toe game:</p>
+
+<ul>
+<li><code>&lt;App /&gt;</code>: render all the other components</li>
+<li><code>&lt;Board /&gt;</code>: render the 3x3 board. Hint: use a <code>collect()</code> inside of a <code>collect()</code> to render all the components. <code>&lt;Board /&gt;</code> will take one prop: the 2D array with the</li>
+<li><code>&lt;Cell /&gt;</code>: render one individual cell. <code>&lt;Board /&gt;</code> will render 9 cells</li>
+<li><code>&lt;Message /&gt;</code>: render a message saying who won the game. Message only needs one prop: whether the winner was X or O. <code>&lt;Message /&gt;</code> will also be responsible for displaying a button the user can press to restart the game.</li>
+</ul>
+
+<p>Don&#39;t worry about making the buttons work or actually being able to place pieces by clicking. You can add this functionality after designing the components. For now, you can test out different scenarios in your browser by manipulating the state <code>Map</code> that is passed to <code>&lt;App /&gt;</code>.</p>
+
+<p>Your primary means of testing everything should be automated Chai tests!</p>
+
+                    
+                        <hr />
+                        <p>Eloquently is a recruiting firm. We also host workshops that teach web development and career skills. If you are looking for a job or are interested in joining our web development workshops, please <a href="/index#contact">contact us</a>!</p>
 
 <p>We put together some <a href="/guides/index">guides</a> for participants in our workshops. Feel free to use them. If you see any errors, please submit an issue on our <a href="https://github.com/eloquently/eloquently.github.io">github repository</a>.</p>
 
 <p>These guides are a work in progress. If you see any errors or have a suggestion for a better way to do something, please <a href="/index#contact">let us know</a>.</p>
-
-<p>Participants in our workshops typically use Cloud9&#39;s IDE, so many of the setup guides here are written mainly for Cloud9. We try to mention what you need to do to get something set up on a non-Cloud9 environment when possible, but these sections could likely use some work.</p>
-
-<p>Here is a list of guides we&#39;ve put together so far:</p>
-
-<ul>
-<li><p><a href="/guides/index">Guide to Guides</a></p></li>
-<li><p><a href="/guides/bootstrap_rails">Bootstrap and Rails</a></p></li>
-<li><p><a href="/guides/livereload">Guard, LiveReload, and Cloud9</a></p></li>
-<li><p><a href="/guides/es6-tdd-warmup">ES6 TDD Warm-up</a></p></li>
-<li><p><a href="/guides/es6-classes-strings-state">Classes, Strings, and Mutable State with ES6</a></p></li>
-<li><p><a href="/guides/reduce-size-node-modules">Reduce Size of node_modules</a></p></li>
-<li><p><a href="/guides/es6-react-redux">ES6, React, and Redux - To Do List</a></p></li>
-<li><p><a href="/guides/react-blackjack-part-1">React Blackjack Part 1</a></p></li>
-<li><p><a href="/guides/react-blackjack-part-2">React Blackjack Part 2</a></p></li>
-<li><p><a href="/guides/react-blackjack-part-3">React Blackjack Part 3</a></p></li>
-<li><p><a href="/guides/react-shopping-list">React Mini-Project 1 - Shopping List</a></p></li>
-<li><p><a href="/guides/react-list-of-shopping-lists">React Mini-Project 2 - List of Shopping Lists</a></p></li>
-<li><p><a href="/guides/react-tic-tac-toe">React Mini-Project 3 - Tic Tac Toe</a></p></li>
-</ul>
 
                     
                 </div>

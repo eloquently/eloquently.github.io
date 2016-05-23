@@ -83,31 +83,37 @@
                     </div>
                 </div>-->
                 <div class="post-content">
-                    <p>Eloquently is a recruiting firm. We also host workshops that teach web development and career skills. If you are looking for a job or are interested in joining our web development workshops, please <a href="/index#contact">contact us</a>!</p>
+                    <h2>React Mini-Project 2 - List of Shopping Lists</h2>
+
+<p><hr class="left" /></p>
+
+<p>One of the goals when designing and implementing components in React is that they should be modular. This means that they should be able to re-use them in multiple projects. For this mini-project, we will re-use some of the components from the <a href="react-shopping-list">shopping list mini-project</a>.</p>
+
+<p>To build a modular component, it is important to make each component as indepedent of the overall application is possible. For the most part, this means that the component shouldn&#39;t be receiving any props that it doesn&#39;t need, and the component only depends on its props to decide how it should render. It shouldn&#39;t make any assumptions about what its parent component or any other component in the application looks like.</p>
+
+<p>It&#39;s worth refactoring your components from the shopping list mini project to make the more modular if any improvements come to mind.</p>
+
+<p>In this project, you&#39;ll be building an application that displays multiple shopping lists at the same time. This means that you can reuse the <code>&lt;List /&gt;</code> component and the <code>&lt;Item /&gt;</code> component that you used in the application that displays a single shopping list.</p>
+
+<p>Note: start this project in a new directory. Pretend like its a completely new project, even though your code will look pretty similar to the last part. This will give you more practice writing the code and hopefully it will be easier the second time around. Keep writing tests for everything! The more practice the better.</p>
+
+<h3>Application state</h3>
+
+<p>Use the application state from the shopping list project to make a <code>List</code> of several shopping lists. We might want this application to keep track of the office supplies and electronics we need to buy. Make a couple more shopping lists for these categories (or whatever else you might want!). You can keep using the <code>fromJS</code> function -- you&#39;ll just change it&#39;s parameter from a single list object to an array of lists.</p>
+
+<h3>Application components</h3>
+
+<p>This application will use the same components as the single shopping list. You just need to figure out how to make it display more than 1!</p>
+
+<p>One other feature you should add: Each list should tell you how many items have not been purchased yet. You can put it next to the name (such as &quot;Groceries - 3 items remaining&quot;) or somewhere else inside the <code>ShoppingList</code> component.</p>
+
+                    
+                        <hr />
+                        <p>Eloquently is a recruiting firm. We also host workshops that teach web development and career skills. If you are looking for a job or are interested in joining our web development workshops, please <a href="/index#contact">contact us</a>!</p>
 
 <p>We put together some <a href="/guides/index">guides</a> for participants in our workshops. Feel free to use them. If you see any errors, please submit an issue on our <a href="https://github.com/eloquently/eloquently.github.io">github repository</a>.</p>
 
 <p>These guides are a work in progress. If you see any errors or have a suggestion for a better way to do something, please <a href="/index#contact">let us know</a>.</p>
-
-<p>Participants in our workshops typically use Cloud9&#39;s IDE, so many of the setup guides here are written mainly for Cloud9. We try to mention what you need to do to get something set up on a non-Cloud9 environment when possible, but these sections could likely use some work.</p>
-
-<p>Here is a list of guides we&#39;ve put together so far:</p>
-
-<ul>
-<li><p><a href="/guides/index">Guide to Guides</a></p></li>
-<li><p><a href="/guides/bootstrap_rails">Bootstrap and Rails</a></p></li>
-<li><p><a href="/guides/livereload">Guard, LiveReload, and Cloud9</a></p></li>
-<li><p><a href="/guides/es6-tdd-warmup">ES6 TDD Warm-up</a></p></li>
-<li><p><a href="/guides/es6-classes-strings-state">Classes, Strings, and Mutable State with ES6</a></p></li>
-<li><p><a href="/guides/reduce-size-node-modules">Reduce Size of node_modules</a></p></li>
-<li><p><a href="/guides/es6-react-redux">ES6, React, and Redux - To Do List</a></p></li>
-<li><p><a href="/guides/react-blackjack-part-1">React Blackjack Part 1</a></p></li>
-<li><p><a href="/guides/react-blackjack-part-2">React Blackjack Part 2</a></p></li>
-<li><p><a href="/guides/react-blackjack-part-3">React Blackjack Part 3</a></p></li>
-<li><p><a href="/guides/react-shopping-list">React Mini-Project 1 - Shopping List</a></p></li>
-<li><p><a href="/guides/react-list-of-shopping-lists">React Mini-Project 2 - List of Shopping Lists</a></p></li>
-<li><p><a href="/guides/react-tic-tac-toe">React Mini-Project 3 - Tic Tac Toe</a></p></li>
-</ul>
 
                     
                 </div>
