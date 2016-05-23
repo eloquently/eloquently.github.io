@@ -83,32 +83,80 @@
                     </div>
                 </div>-->
                 <div class="post-content">
-                    <p>Eloquently is a recruiting firm. We also host workshops that teach web development and career skills. If you are looking for a job or are interested in joining our web development workshops, please <a href="/index#contact">contact us</a>!</p>
+                    <h2>React Mini-Project 4 - Minesweeper</h2>
+
+<p><hr class="left" /></p>
+
+<p>This application will allow users to play minesweeper in the browser.</p>
+
+<p>Minesweeper is a game that looks like this:</p>
+
+<p><img src="/img/guides/minesweeper.png" alt="minesweeper"></p>
+
+<p>At the beginning of the game all the tiles are hidden. Some of the tiles contain mines. If you click on one of those tiles, you immediately lose the game. If you click on a tile that does not have a mine, it tells you how many of the adjacent cells (including diagonal cells) contain mines. The number can range from 0-8.</p>
+
+<p>The user can choose to flag a tile where he/she believes there will be a mine in order to remember not to click that tile in the future.</p>
+
+<h3>Application State</h3>
+
+<p>For the first crack at this application, the state tree will contain a 10x10 grid of cells. Each cell is an object with three properties: whether the cell is <code>revealed</code>, whether the cell contains a <code>mine</code>, and whether the cell has been <code>flagged</code>. Here is a state tree that you can use for testing your application.</p>
+
+<p>To make it easier to generate different state&#39;s to test, I&#39;ve written a helper function for you that you can use like this:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">board = `
+xf*..*...*
+*xx....*..
+.x*.....*.
+......*...
+..........
+....*..*..
+.*......*.
+.....x*..x
+.*..*x.*xx
+........xx
+`
+
+initialState = strToMinesweeperBoard(board);
+</code></pre>
+
+<p>Here&#39;s the function:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">const strToMinesweeperBoard = (board) =&gt; {
+    board = board.trim();
+    board_arr = [];
+    board.split(&quot;\n&quot;).forEach((row, i) =&gt; {
+        board_arr[i] = [];
+        row.split(&#39;&#39;).forEach((cell, j) =&gt; {
+            board_arr[i][j] = {
+                revealed: cell == &#39;x&#39;,
+                flagged: cell == &#39;f&#39;,
+                mine: cell == &#39;f&#39; || cell == &#39;*&#39;
+            }
+        });
+    });
+    return { board: board_arr };
+};
+</code></pre>
+
+<p>Note, this helper function assumes that all flagged cells have mines in them. This won&#39;t always be the case. The user might flag a cell that does not contain a mine by accident!</p>
+
+<p>You can change the board string however you want to try out different state configurations.</p>
+
+<h3>Components</h3>
+
+<p>Since your state does not contain information for each cell about how many neighboring cells contain mines, you will have to do it in your components. When you render each <code>&lt;Cell /&gt;</code> from a <code>Board</code> component, you will have to pass it a prop that says how many neighbors contain mines. This computation is not trivial, so spend some time thinking about how to do it and write out test cases for different scenarios (literally corner cases).</p>
+
+<p>Other than that additional computation, the general component structure will be similar to the tic tac toe application -- just with 100 cells instead of 9!</p>
+
+<p>With some good styling and a well-written algorithm for detecting neighboring mines, this is could be a portfolio worthy project after adding Redux to handle clicks!</p>
+
+                    
+                        <hr />
+                        <p>Eloquently is a recruiting firm. We also host workshops that teach web development and career skills. If you are looking for a job or are interested in joining our web development workshops, please <a href="/index#contact">contact us</a>!</p>
 
 <p>We put together some <a href="/guides/index">guides</a> for participants in our workshops. Feel free to use them. If you see any errors, please submit an issue on our <a href="https://github.com/eloquently/eloquently.github.io">github repository</a>.</p>
 
 <p>These guides are a work in progress. If you see any errors or have a suggestion for a better way to do something, please <a href="/index#contact">let us know</a>.</p>
-
-<p>Participants in our workshops typically use Cloud9&#39;s IDE, so many of the setup guides here are written mainly for Cloud9. We try to mention what you need to do to get something set up on a non-Cloud9 environment when possible, but these sections could likely use some work.</p>
-
-<p>Here is a list of guides we&#39;ve put together so far:</p>
-
-<ul>
-<li><p><a href="/guides/index">Guide to Guides</a></p></li>
-<li><p><a href="/guides/bootstrap_rails">Bootstrap and Rails</a></p></li>
-<li><p><a href="/guides/livereload">Guard, LiveReload, and Cloud9</a></p></li>
-<li><p><a href="/guides/es6-tdd-warmup">ES6 TDD Warm-up</a></p></li>
-<li><p><a href="/guides/es6-classes-strings-state">Classes, Strings, and Mutable State with ES6</a></p></li>
-<li><p><a href="/guides/reduce-size-node-modules">Reduce Size of node_modules</a></p></li>
-<li><p><a href="/guides/es6-react-redux">ES6, React, and Redux - To Do List</a></p></li>
-<li><p><a href="/guides/react-blackjack-part-1">React Blackjack Part 1</a></p></li>
-<li><p><a href="/guides/react-blackjack-part-2">React Blackjack Part 2</a></p></li>
-<li><p><a href="/guides/react-blackjack-part-3">React Blackjack Part 3</a></p></li>
-<li><p><a href="/guides/react-shopping-list">React Mini-Project 1 - Shopping List</a></p></li>
-<li><p><a href="/guides/react-list-of-shopping-lists">React Mini-Project 2 - List of Shopping Lists</a></p></li>
-<li><p><a href="/guides/react-tic-tac-toe">React Mini-Project 3 - Tic Tac Toe</a></p></li>
-<li><p><a href="/guides/react-minesweeper">React Mini-Project 4 - Minesweeper</a></p></li>
-</ul>
 
                     
                 </div>
