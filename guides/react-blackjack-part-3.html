@@ -868,7 +868,7 @@ const mapStateToProps = (state) =&gt; {
 <pre data-line="" class=""><code class="language-text">npm install --save-dev proxyquire
 </code></pre>
 
-<p>Proxyquire allows us to require another file and replace the things that that file requires with stubs (or anything we want). In this case, we are going to require a special reducer that uses a stubbed <code>deal</code> function -- one that only deals aces and jacks. The reducer gets its <code>deal</code> function from <code>./lib/cards.js</code>, so we want to use Proxyquire to replace to <code>deal</code> function in that file with our special function.</p>
+<p>Proxyquire allows us to require another file and replace the things that that file requires with stubs (or anything we want). In this case, we are going to run our tests on a special version of the reducer that uses a stubbed <code>score</code> function -- one that thinks the score of any hand is 21. The reducer gets its <code>score</code> function from <code>./lib/cards.js</code>, so we want to use Proxyquire to replace the <code>score</code> function in that file with our special function.</p>
 
 <p>Proxyquire provides us with a function, <code>proxyquire()</code>, that takes two arguments: the file that we are importing from and an object with keys that tell it which modules we want to replace (these should line up with the <code>from &quot;...&quot;</code> lines in the file we&#39;re requiring). The values of the object in the second parameter are more objects that have keys that are the names of the functions (or classes or anything else that is exported) that we want to replace and the values are their replacements. If something that we import isn&#39;t overridden, it will just use the original &quot;thing&quot; (function, class, etc.). Here&#39;s an example to make it more concrete:</p>
 
@@ -893,24 +893,17 @@ const stubbedReducer = proxyquire(
    instead of the usual deal function because we put it
    in cardUtils. We&#39;ll just return an empty List for the
    deck and an ace and a jack for the cards dealt */
-cardUtils.deal = () =&gt; {
-    return [
-        new List(),
-        fromJS([
-            {suit: &#39;S&#39;, rank: &#39;A&#39;},
-            {suit: &#39;S&#39;, rank: &#39;J&#39;}
-        ])
-    ];
-}
+cardUtils.score = () =&gt; 21;
 
 
 const nextState = stubbedReducer(initialState, action);
 
-/* now every time we try to deal in the reducer
-   we will end up dealing out an ace and jack */
+/* now every time we try to calculate the score
+   in the stubbedReducer we will calculate the
+   score to be 21 */
 </code></pre>
 
-<p>In this case, we just wrote our own override function for <code>deal()</code> but we also could have used a Sinon stub if we wanted something more flexible.</p>
+<p>In this case, we just wrote our own override function for <code>score()</code>, but we also could have used a Sinon stub if we wanted something more flexible. We&#39;ll see how to do this in a bit.</p>
 
 <p>Let&#39;s add this to our reducer test:</p>
 
@@ -930,7 +923,7 @@ describe(&#39;reducer&#39;, () =&gt; {
         describe(&quot;when dealt winning hand&quot;, () =&gt; {
             const cardUtils = { };
             const stubbedReducer = proxyquire(&#39;../app/reducer.js&#39;, {&#39;./lib/cards.js&#39;: cardUtils}).default;
-            cardUtils.deal = () =&gt; [new List(), fromJS([{suit: &#39;S&#39;, rank: &#39;A&#39;}, {suit: &#39;S&#39;, rank: &#39;J&#39;}])];
+            cardUtils.score = () =&gt; 21;
 
             const initialState = undefined;
             const nextState = stubbedReducer(initialState, action);
@@ -992,7 +985,80 @@ describe(&#39;reducer&#39;, () =&gt; {
 });
 </code></pre>
 
-<p>In this case, the reducer code is a little trickier. It&#39;s possible to call SETUP_GAME before winCount has been set. Therefore we need to initialize <code>winCount</code> to 0 before incrementing it. We can use an <code>||</code> operator as a shortcut. We will use a line that looks like this:</p>
+<p>We will also want to change the tests we had previously written for <code>SETUP_GAME</code> so that they don&#39;t fail randomly when the player is dealt blackjack. To do this, we can use Proxyquire again to control how we calculate the score for the other tests that are written assuming the player isn&#39;t dealt blackjack.</p>
+
+<p>Here&#39;s what all the <code>SETUP_GAME</code> reducer tests look like after making these changes:</p>
+
+<div class="fp">test/reducer_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+describe(&#39;reducer&#39;, () =&gt; {
+    describe(&quot;SETUP_GAME&quot;, () =&gt; {
+        const action = setupGame();
+        const cardUtils = { };
+        const stubbedReducer = proxyquire(&#39;../app/reducer.js&#39;, {&#39;./lib/cards.js&#39;: cardUtils}).default;
+
+        describe(&quot;when not dealt winning hand&quot;, () =&gt; {
+            cardUtils.score = () =&gt; 10;
+
+            describe(&quot;with empty initial state&quot;, () =&gt; {
+                const initialState = undefined;
+                const nextState = stubbedReducer(initialState, action);
+
+                it(&#39;sets up deck&#39;, () =&gt; {
+                    expect(nextState.get(&#39;deck&#39;).size).to.eq(49);
+                });
+
+                it(&#39;sets up playerHand&#39;, () =&gt; {
+                    expect(nextState.get(&#39;playerHand&#39;).size).to.eq(2);
+                });
+
+                it(&#39;sets up dealerHand&#39;, () =&gt; {
+                    expect(nextState.get(&#39;dealerHand&#39;).size).to.eq(2);
+                    expect(nextState.get(&#39;dealerHand&#39;).last()).to.eq(new Map());
+                });
+
+                it(&#39;sets up hasStood&#39;, () =&gt; {
+                    expect(nextState.get(&#39;hasStood&#39;)).to.eq(false);
+                });
+
+                it(&#39;sets up gameOver&#39;, () =&gt; {
+                    expect(nextState.get(&#39;gameOver&#39;)).to.eq(false);
+                });
+
+                it(&#39;sets up playerWon&#39;, () =&gt; {
+                    expect(nextState.get(&#39;playerWon&#39;)).to.eq(undefined);
+                });
+            });
+
+            describe(&quot;with existing initial state&quot;, () =&gt; {
+                const initialState = new Map({&#39;winCount&#39;: 10, &#39;lossCount&#39;: 7, &#39;deck&#39;: &#39;fake deck&#39;});
+                const nextState = stubbedReducer(initialState, action);
+
+                it(&#39;adds new variables&#39;, () =&gt; {
+                    expect(Array.from(nextState.keys())).to.include(
+                        &#39;deck&#39;, &#39;playerHand&#39;, &#39;dealerHand&#39;,
+                        &#39;hasStood&#39;, &#39;gameOver&#39;, &#39;playerWon&#39;
+                    );
+                });
+
+                it(&#39;keeps old variables&#39;, () =&gt; {
+                    expect(nextState.get(&#39;winCount&#39;)).to.eq(10);
+                    expect(nextState.get(&#39;lossCount&#39;)).to.eq(7);
+                });
+
+                it(&#39;overwrites old variables&#39;, () =&gt; {
+                    expect(nextState.get(&#39;deck&#39;)).not.to.eq(&#39;fake deck&#39;);
+                });
+            });
+        });
+
+        // ...
+});
+</code></pre>
+
+<p>To get the new tests for when the player is dealt a winning hand to pass, the reducer code is a little trickier. It&#39;s possible to dispatch <code>SETUP_GAME</code> before <code>winCount</code> has been set. Therefore we need to initialize <code>winCount</code> to 0 before incrementing it. We can use an <code>||</code> operator as a shortcut. We will use a line that looks like this:</p>
 
 <pre data-line="" class="line-numbers"><code class="language-js">let winCount = currentState.get(&#39;winCount&#39;) || 0;
 </code></pre>
@@ -1084,7 +1150,72 @@ store.dispatch(setupGame());
 
 <p>After the dealer stops taking cards, the player wins if the dealer&#39;s score is higher than 21. If both the player and the dealer have scores lower than 21, the player wins if the score of the player&#39;s hand is greater than the score of the dealer&#39;s hand. The player loses if the player&#39;s hand has a lower score than the score of the dealer&#39;s hand. If both have the same score, it is a tie and the player neither wins nor loses.</p>
 
-<p>Let&#39;s start with some tests for the dealer drawing. We&#39;ll use Proxyquire again to control which cards are drawn.</p>
+<p>Let&#39;s start with some tests for the dealer drawing. We&#39;ll use Proxyquire again to control which cards are drawn so that we can test different scenarios. In this case, we&#39;ll be using Sinon stubs to give us more control over the methods and to allow us to spy on methods to verify that they were actually called.</p>
+
+<p>Since we&#39;ll be using different options on the stubs, we&#39;re going to use a new Mocha feature called <code>beforeEach()</code>. <code>beforeEach()</code> is a function that takes a function as a parameter. Before each of the <code>it</code> tests, Mocha will call the function passed to <code>beforeEach()</code>. In this case, we will use <code>beforeEach()</code> to reset the stubs so that each test will be independent of the others.</p>
+
+<p>We already have a test for the <code>STAND</code> action to check that it sets <code>hasStood</code> to true. We are going to keep this test, but modify it so that it uses a stubbed <code>score()</code> as well. For that part, we don&#39;t care about the dealer drawing cards -- we can prevent this from happening by having <code>score()</code> return 21 each time it&#39;s called. This will make the <code>hasStood</code> test more independent of the rest of the tests -- if something goes wrong with the dealer drawing cards, this test won&#39;t know about it.</p>
+
+<p>Here are first set of tests for <code>STAND</code>:</p>
+
+<div class="fp">test/reducer_spec.js</div>
+
+<pre data-line="2" class="line-numbers"><code class="language-js">// ...
+import sinon from &#39;sinon&#39;;
+
+import reducer from &#39;../app/reducer&#39;;
+
+describe(&#39;reducer&#39;, () =&gt; {
+    describe(&quot;STAND&quot;, () =&gt; {
+        const action = stand();
+
+        const cardUtils = { };
+        const stubbedReducer = proxyquire(&#39;../app/reducer.js&#39;, {&#39;./lib/cards.js&#39;: cardUtils}).default;
+
+        it(&#39;sets hasStood to true&#39;, () =&gt; {
+            const initialState = new Map({&quot;hasStood&quot;: false});
+
+            cardUtils.score = sinon.stub();
+            cardUtils.score.returns(21);
+
+            const nextState = stubbedReducer(initialState, action);
+
+            expect(nextState.get(&#39;hasStood&#39;)).to.eq(true);
+        });
+
+        describe(&#39;dealer hand&#39;, () =&gt; {
+            const initialState = new Map();
+
+            beforeEach( () =&gt; {
+                cardUtils.score = sinon.stub();
+                cardUtils.deal = sinon.stub();
+                cardUtils.deal.returns([undefined, undefined]);
+            });
+
+            it(&#39;does not draw when total is &gt; 17&#39;, () =&gt; {
+                cardUtils.score.returns(18);
+
+                stubbedReducer(initialState, action);
+
+                expect(cardUtils.deal.called).to.eq(false);
+            });
+
+            it(&#39;stops drawing when total is 17&#39;, () =&gt; {
+                cardUtils.score.onCall(0).returns(10);
+                cardUtils.score.onCall(1).returns(17);
+
+                stubbedReducer(initialState, action);
+
+                expect(cardUtils.deal.calledOnce).to.eq(true);
+            });
+        });
+    });
+});
+</code></pre>
+
+<p>Reading the &quot;does not draw when total is &gt; 17&quot; test in English: Make the score function always return 18. Dispatch the action. Expect that we never called the deal function.</p>
+
+<p>Reading the &quot;stops drawing when the total is 17&quot; in English</p>
 
 <p>-- Incomplete -- Work in progress.</p>
 

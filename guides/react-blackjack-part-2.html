@@ -709,18 +709,18 @@ losses: 0
 
 <p>Right now, our application passes the entire state tree down to the <code>App</code> component, which sends the state variables down to it&#39;s children components. This process is somewhat wasteful. The <code>App</code> component doesn&#39;t do anything with <code>winCount</code> or <code>hasStood</code> -- it just passes those variables straight to the <code>Info</code> component. The <code>App</code> component still needs to know the state variables <code>playerHand</code> and <code>dealerHand</code> because it has to pass these to the <code>Hand</code> components, but there is no reason for it to know <code>wincount</code>, <code>lossCount</code> or <code>hasStood</code>.</p>
 
-<p>We could simply our components and make them more modular by having each component read from the state tree only the variables it needs. Redux allows us to do this easily with a function called <code>mapStateToProps</code>. <code>mapStateToProps</code> is going to take the entire state tree as a parameter, and return an object where the keys are names of props for the object.</p>
+<p>We could simplify our components and make them more modular by having each component read from the state tree only the variables it needs. Redux allows us to do this easily with a function called <code>mapStateToProps</code>. <code>mapStateToProps</code> is going to take the entire state tree as a parameter, and return an object where the keys are names of props for the object.</p>
 
 <h4>Connecting <code>&lt;Info&gt;</code></h4>
 
 <p>For the <code>Info</code> component, a <code>mapStateToProps</code> function might look something like this:</p>
 
 <pre data-line="" class="line-numbers"><code class="language-js">function mapStateToProps(state) {
- return {
-   winCount: state.get(&#39;winCount&#39;),
-   lossCount: state.get(&#39;lossCount&#39;),
-   hasStood: state.get(&#39;hasStood&#39;)
- };
+    return {
+        winCount: state.get(&#39;winCount&#39;),
+        lossCount: state.get(&#39;lossCount&#39;),
+        hasStood: state.get(&#39;hasStood&#39;)
+    };
 }
 </code></pre>
 
