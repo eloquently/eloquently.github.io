@@ -335,7 +335,7 @@ describe(&#39;reducer&#39;, () =&gt; {
 
 <pre data-line="12-22" class="line-numbers"><code class="language-js">// ...
 
-import { newDeck, deal<mark>, score</mark> } from &#39;./lib/cards.js&#39;;
+import { newDeck, deal<mark>, score</mark> } from &#39;./lib/cards&#39;;
 
 // ...
 
@@ -868,7 +868,7 @@ const mapStateToProps = (state) =&gt; {
 <pre data-line="" class=""><code class="language-text">npm install --save-dev proxyquire
 </code></pre>
 
-<p>Proxyquire allows us to require another file and replace the things that that file requires with stubs (or anything we want). In this case, we are going to run our tests on a special version of the reducer that uses a stubbed <code>score</code> function -- one that thinks the score of any hand is 21. The reducer gets its <code>score</code> function from <code>./lib/cards.js</code>, so we want to use Proxyquire to replace the <code>score</code> function in that file with our special function.</p>
+<p>Proxyquire allows us to require another file and replace the things that that file requires with stubs (or anything we want). In this case, we are going to run our tests on a special version of the reducer that uses a stubbed <code>score</code> function -- one that thinks the score of any hand is 21. The reducer gets its <code>score</code> function from <code>./lib/cards</code>, so we want to use Proxyquire to replace the <code>score</code> function in that file with our special function.</p>
 
 <p>Proxyquire provides us with a function, <code>proxyquire()</code>, that takes two arguments: the file that we are importing from and an object with keys that tell it which modules we want to replace (these should line up with the <code>from &quot;...&quot;</code> lines in the file we&#39;re requiring). The values of the object in the second parameter are more objects that have keys that are the names of the functions (or classes or anything else that is exported) that we want to replace and the values are their replacements. If something that we import isn&#39;t overridden, it will just use the original &quot;thing&quot; (function, class, etc.). Here&#39;s an example to make it more concrete:</p>
 
@@ -878,14 +878,14 @@ const initialState = undefined;
 const cardUtils = { }; // we&#39;ll put the overrides in here
 
 /* require reducer.js but override the functions
-   imported from &#39;./lib/cards.js&#39; with the functions
+   imported from &#39;./lib/cards&#39; with the functions
    in cardUtils (if there are any).
    we have the .default at the end because the reducer
    function is the default export from the reducer.js
    file */
 const stubbedReducer = proxyquire(
     &#39;../app/reducer.js&#39;,
-    {&#39;./lib/cards.js&#39;: cardUtils}
+    {&#39;./lib/cards&#39;: cardUtils}
 ).default;
 
 /* this is the function we want to replace deal with
@@ -922,7 +922,7 @@ describe(&#39;reducer&#39;, () =&gt; {
 
         describe(&quot;when dealt winning hand&quot;, () =&gt; {
             const cardUtils = { };
-            const stubbedReducer = proxyquire(&#39;../app/reducer.js&#39;, {&#39;./lib/cards.js&#39;: cardUtils}).default;
+            const stubbedReducer = proxyquire(&#39;../app/reducer.js&#39;, {&#39;./lib/cards&#39;: cardUtils}).default;
             cardUtils.score = () =&gt; 21;
 
             const initialState = undefined;
@@ -997,7 +997,7 @@ describe(&#39;reducer&#39;, () =&gt; {
     describe(&quot;SETUP_GAME&quot;, () =&gt; {
         const action = setupGame();
         const cardUtils = { };
-        const stubbedReducer = proxyquire(&#39;../app/reducer.js&#39;, {&#39;./lib/cards.js&#39;: cardUtils}).default;
+        const stubbedReducer = proxyquire(&#39;../app/reducer.js&#39;, {&#39;./lib/cards&#39;: cardUtils}).default;
 
         describe(&quot;when not dealt winning hand&quot;, () =&gt; {
             cardUtils.score = () =&gt; 10;
@@ -1170,7 +1170,7 @@ describe(&#39;reducer&#39;, () =&gt; {
         const action = stand();
 
         const cardUtils = { };
-        const stubbedReducer = proxyquire(&#39;../app/reducer.js&#39;, {&#39;./lib/cards.js&#39;: cardUtils}).default;
+        const stubbedReducer = proxyquire(&#39;../app/reducer.js&#39;, {&#39;./lib/cards&#39;: cardUtils}).default;
 
         it(&#39;sets hasStood to true&#39;, () =&gt; {
             const initialState = new Map({&quot;hasStood&quot;: false});
