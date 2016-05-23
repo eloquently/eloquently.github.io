@@ -15,7 +15,7 @@ Let's fix that.
 
 ### Winning and Losing
 
-In our blackjack game, the player should not be allowed to take cards indefinitely. Instead, they should lose the game if they draw a card and their score is higher than 21 and win the game if their score is exactly 21.
+In our blackjack game, the player should not be allowed to take cards indefinitely. Instead, they should lose the game if they draw a card and their score is higher than 21.
 
 How can we change our code to accommodate this rule? The `reducer` function is the natural place for logic like this, as it is responsible for determining the next state of the application given the current state and an action.
 
@@ -203,7 +203,7 @@ export const score = (cards) => {
 };
 ```
 
-Now that we can calculate a score, we can check the player's score after they have received a card. If their score is higher than 21, we should increase the loss count. If the score is exactly 21, we should increase the win count. We will do this in the `reducer` helper function `dealToPlayer()`. Let's write the test first:
+Now that we can calculate a score, we can check the player's score after they have received a card. If the score is higher than 21, we should increase the loss count. We will do this in the `reducer` helper function `dealToPlayer()`. Let's write the test first:
 
 <div class="fp">test/reducer_spec.js</div>
 ```js{10-12,24-35}
@@ -243,19 +243,6 @@ describe('reducer', () => {
             });
         });
 
-        describe("when player gets exactly 21 points", () => {
-            const initialState = fromJS({
-                "playerHand": [{rank: 'K'}, {rank: 2}],
-                "deck": fromJS([{rank: 9}]),
-                "winCount": 0
-            });
-            const nextState = reducer(initialState, action);
-
-            it('increases win count by 1', () => {
-                expect(nextState.get('winCount')).to.eq(initialState.get('winCount') + 1);
-            });
-        });
-
     // ...
 });
 ```
@@ -284,9 +271,6 @@ const dealToPlayer = (currentState, seed) => {
     if(newScore > 21) {
         const lossCount = currentState.get('lossCount') + 1;
         newState = newState.set('lossCount', lossCount);
-    } else if(newScore == 21) {
-        const winCount = currentState.get('winCount') + 1;
-        newState = newState.set('winCount', winCount);
     }
 
     return currentState.merge(newState);
@@ -295,7 +279,7 @@ const dealToPlayer = (currentState, seed) => {
 // ...
 ```
 
-Now try playing a game in your browser. Keep clicking "hit" until your score is above 21. You should see your loss count increase (unless you were lucky enough to hit 21 exactly). Note that if you continue to click "hit", you continue drawing cards and your loss count continues to rise.
+Now try playing a game in your browser. Keep clicking "hit" until your score is above 21. You should see your loss count increase. Note that if you continue to click "hit", you continue drawing cards and your loss count continues to rise.
 
 Let's think about what should happen after each game ends. It would be nice to show a message to the player saying whether the game ended with a win or a loss. It would also be nice to show the cards at the end of the game before immediately resetting the game (otherwise the player would never know the last card drawn) and displaying a button the player can click when ready to start the next game.
 
@@ -595,8 +579,6 @@ const dealToPlayer = (currentState, seed) => {
         const gameOver = true;
         const playerWon = false;
         newState = newState.merge({lossCount, gameOver, playerWon});
-    } else if(newScore == 21) {
-        /* Your code here */
     }
 
     return currentState.merge(newState);
@@ -605,7 +587,7 @@ const dealToPlayer = (currentState, seed) => {
 // ...
 ```
 
-Now try playing a game in the browser. The correct message should be shown if you go over 21 or get 21 exactly. The message is a little hard to see, so we should clean it up with some CSS:
+Now try playing a game in the browser. The correct message should be shown when you go over 21. The message is a little hard to see, so we should clean it up with some CSS:
 
 Create a `game_over_message.scss` file in your `app/css/components`, and then import in `components/_all.scss`:
 
@@ -809,7 +791,7 @@ To do this, we are going to use a new package called Proxyquire. Let's first ins
 npm install --save-dev proxyquire
 ```
 
-Proxyquire allows us to require another file and replace the things that that file requires with stubs (or anything we want). In this case, we are going to require a special reducer that uses a stubbed `deal` function -- one that only deals aces and jacks. The reducer gets its `deal` function from `./lib/cards.js`, so we want to use Proxyquire to replace to `deal` function in that file with our special function.
+Proxyquire allows us to require another file and replace the things that that file requires with stubs (or anything we want). In this case, we are going to run our tests on a special version of the reducer that uses a stubbed `score` function -- one that thinks the score of any hand is 21. The reducer gets its `score` function from `./lib/cards.js`, so we want to use Proxyquire to replace the `score` function in that file with our special function.
 
 Proxyquire provides us with a function, `proxyquire()`, that takes two arguments: the file that we are importing from and an object with keys that tell it which modules we want to replace (these should line up with the `from "..."` lines in the file we're requiring). The values of the object in the second parameter are more objects that have keys that are the names of the functions (or classes or anything else that is exported) that we want to replace and the values are their replacements. If something that we import isn't overridden, it will just use the original "thing" (function, class, etc.). Here's an example to make it more concrete:
 
@@ -835,24 +817,17 @@ const stubbedReducer = proxyquire(
    instead of the usual deal function because we put it
    in cardUtils. We'll just return an empty List for the
    deck and an ace and a jack for the cards dealt */
-cardUtils.deal = () => {
-    return [
-        new List(),
-        fromJS([
-            {suit: 'S', rank: 'A'},
-            {suit: 'S', rank: 'J'}
-        ])
-    ];
-}
+cardUtils.score = () => 21;
 
 
 const nextState = stubbedReducer(initialState, action);
 
-/* now every time we try to deal in the reducer
-   we will end up dealing out an ace and jack */
+/* now every time we try to calculate the score
+   in the stubbedReducer we will calculate the
+   score to be 21 */
 ```
 
-In this case, we just wrote our own override function for `deal()` but we also could have used a Sinon stub if we wanted something more flexible.
+In this case, we just wrote our own override function for `score()`, but we also could have used a Sinon stub if we wanted something more flexible. We'll see how to do this in a bit.
 
 Let's add this to our reducer test:
 
@@ -872,7 +847,7 @@ describe('reducer', () => {
         describe("when dealt winning hand", () => {
             const cardUtils = { };
             const stubbedReducer = proxyquire('../app/reducer.js', {'./lib/cards.js': cardUtils}).default;
-            cardUtils.deal = () => [new List(), fromJS([{suit: 'S', rank: 'A'}, {suit: 'S', rank: 'J'}])];
+            cardUtils.score = () => 21;
 
             const initialState = undefined;
             const nextState = stubbedReducer(initialState, action);
@@ -934,7 +909,80 @@ describe('reducer', () => {
 });
 ```
 
-In this case, the reducer code is a little trickier. It's possible to call SETUP_GAME before winCount has been set. Therefore we need to initialize `winCount` to 0 before incrementing it. We can use an `||` operator as a shortcut. We will use a line that looks like this:
+We will also want to change the tests we had previously written for `SETUP_GAME` so that they don't fail randomly when the player is dealt blackjack. To do this, we can use Proxyquire again to control how we calculate the score for the other tests that are written assuming the player isn't dealt blackjack.
+
+Here's what all the `SETUP_GAME` reducer tests look like after making these changes:
+
+<div class="fp">test/reducer_spec.js</div>
+```js
+// ...
+
+describe('reducer', () => {
+    describe("SETUP_GAME", () => {
+        const action = setupGame();
+        const cardUtils = { };
+        const stubbedReducer = proxyquire('../app/reducer.js', {'./lib/cards.js': cardUtils}).default;
+
+        describe("when not dealt winning hand", () => {
+            cardUtils.score = () => 10;
+
+            describe("with empty initial state", () => {
+                const initialState = undefined;
+                const nextState = stubbedReducer(initialState, action);
+
+                it('sets up deck', () => {
+                    expect(nextState.get('deck').size).to.eq(49);
+                });
+
+                it('sets up playerHand', () => {
+                    expect(nextState.get('playerHand').size).to.eq(2);
+                });
+
+                it('sets up dealerHand', () => {
+                    expect(nextState.get('dealerHand').size).to.eq(2);
+                    expect(nextState.get('dealerHand').last()).to.eq(new Map());
+                });
+
+                it('sets up hasStood', () => {
+                    expect(nextState.get('hasStood')).to.eq(false);
+                });
+
+                it('sets up gameOver', () => {
+                    expect(nextState.get('gameOver')).to.eq(false);
+                });
+
+                it('sets up playerWon', () => {
+                    expect(nextState.get('playerWon')).to.eq(undefined);
+                });
+            });
+
+            describe("with existing initial state", () => {
+                const initialState = new Map({'winCount': 10, 'lossCount': 7, 'deck': 'fake deck'});
+                const nextState = stubbedReducer(initialState, action);
+
+                it('adds new variables', () => {
+                    expect(Array.from(nextState.keys())).to.include(
+                        'deck', 'playerHand', 'dealerHand',
+                        'hasStood', 'gameOver', 'playerWon'
+                    );
+                });
+
+                it('keeps old variables', () => {
+                    expect(nextState.get('winCount')).to.eq(10);
+                    expect(nextState.get('lossCount')).to.eq(7);
+                });
+
+                it('overwrites old variables', () => {
+                    expect(nextState.get('deck')).not.to.eq('fake deck');
+                });
+            });
+        });
+
+        // ...
+});
+```
+
+To get the new tests for when the player is dealt a winning hand to pass, the reducer code is a little trickier. It's possible to dispatch `SETUP_GAME` before `winCount` has been set. Therefore we need to initialize `winCount` to 0 before incrementing it. We can use an `||` operator as a shortcut. We will use a line that looks like this:
 
 ```js
 let winCount = currentState.get('winCount') || 0;
@@ -1000,6 +1048,40 @@ In `index.js`, we create the store passing `undefined` as the parameter. Then, w
 
 After dispatching `SETUP_GAME`, we dispatch `SET_RECORD` with 0 wins and 0 losses. This is where the problem is, as this will set the record to 0 no matter what the previous record was. So if the player is dealt a winning hand, the `SETUP_GAME` action correctly sets `winCount` to 1, but this is immediately set back to 0 by the next action.
 
-There are a few ways to deal with this. We could have `SET_RECORD` only set `winCount` and `lossCount` if they are undefined in the current state. We could move the `SET_RECORD` action before the `SETUP_GAME` action.
+There are a few ways to deal with this. We could have `SET_RECORD` only set `winCount` and `lossCount` if they are undefined in the current state. We could set up an initial state where `winCount` and `lossCount` are both set to 0 and pass this initial state to the store when we call `createStore()`. Or we could simply move the `SET_RECORD` action before the `SETUP_GAME` action.
+
+Only setting `winCount` and `lossCount` if they are undefined, which makes this action pretty useless except when initializing the state. At this point, we might as well get rid of the `SET_RECORD` action and just set up the initial state and pass it to `createStore()` without bothering with actions.
+
+Initializing `winCount` and `lossCount` without an action and passing it to `createStore()` as the initial state is perfectly valid and would be the best approach at this point in the application. However, in the next part of this guide, we are going to let users save their records to a server and load them from a server as well. The easiest way to do that will be to change the `SET_RECORD` action to get a record from the server rather than just setting the record to 0-0, so we will still want to dispatch `SET_RECORD` at the beginning of the application.
+
+For now, let's fix this bug by changing the order that we dispatch actions. We'll set the initial record and then deal the first hand and add one to `winCount` if ncecessary:
+
+<div class="fp">app/index.js</div>
+```js{5-6}
+// ...
+
+let store = createStore(reducer, undefined, window.devToolsExtension ? window.devToolsExtension() : undefined);
+
+store.dispatch(setRecord(0, 0));
+store.dispatch(setupGame());
+
+// ...
+```
+
+### Standing
+
+The final part of the game that we need to implement is the option to "stand". In blackjack, the player can choose to stop drawing cards and let the dealer draw. This is referred to as "standing."
+
+Once the player chooses to stand, the dealer starts to draw. The dealer will take cards from the deck until the score of the cards in the dealer's hand is greater than or equal to 17.
+
+After the dealer stops taking cards, the player wins if the dealer's score is higher than 21. If both the player and the dealer have scores lower than 21, the player wins if the score of the player's hand is greater than the score of the dealer's hand. The player loses if the player's hand has a lower score than the score of the dealer's hand. If both have the same score, it is a tie and the player neither wins nor loses.
+
+Let's start with some tests for the dealer drawing. We'll use Proxyquire again to control which cards are drawn so that we can test different scenarios. In this case, we'll be using Sinon stubs to give us more control over the methods and to allow us to spy on methods to verify that they were actually called.
+
+Since we'll be using different options on the stubs, we're going to use a new Mocha feature called `beforeEach()`. `beforeEach()` is a function that takes a function as a parameter. Before each of the `it` tests, Mocha will call the function passed to `beforeEach()`. In this case, we will use `beforeEach()` to reset the stubs so that each test will be independent of the others.
+
+We already have a test for the `STAND` action to check that it sets `hasStood` to true. We are going to keep this test, but modify it so that it is in
+
+
 
 -- Incomplete -- Work in progress.

@@ -28,3 +28,5 @@ Use the application state from the shopping list project to make a `List` of sev
 This application will use the same components as the single shopping list. You just need to figure out how to make it display more than 1!
 
 One other feature you should add: Each list should tell you how many items have not been purchased yet. You can put it next to the name (such as "Groceries - 3 items remaining") or somewhere else inside the `ShoppingList` component.
+
+When you're done [here's a link to the next one]({% post_url 2016-05-22-react-mini-project-3-tic-tac-toe %}).

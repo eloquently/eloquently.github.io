@@ -44,7 +44,7 @@ You can add both `initialState`s to your `index.js` and comment one of them out 
 Here is a suggested list of components for your Tic Tac Toe game:
 
 - `<App />`: render all the other components
-- `<Board />`: render the 3x3 board. Hint: use a `collect()` inside of a `collect()` to render all the components. `<Board />` will take one prop: the 2D array with the
+- `<Board />`: render the 3x3 board. Hint: use a `map()` inside of a `map()` to render all the components. `<Board />` will take one prop: the 2D array with the
 - `<Cell />`: render one individual cell. `<Board />` will render 9 cells
 - `<Message />`: render a message saying who won the game. Message only needs one prop: whether the winner was X or O. `<Message />` will also be responsible for displaying a button the user can press to restart the game.
 

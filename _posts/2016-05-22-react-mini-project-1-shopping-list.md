@@ -78,3 +78,5 @@ Here's what the HTML for the "Eggs" item might look like:
     <span class="name">Eggs</span>
 </div>
 ```
+
+When you're done [here's a link to the next one]({% post_url 2016-05-22-react-mini-project-2-list-of-shopping-lists %}).

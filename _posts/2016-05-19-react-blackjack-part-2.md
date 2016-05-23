@@ -632,7 +632,7 @@ When you hit dispatch, look at the new application state at the bottom of the ac
 
 Right now, our application passes the entire state tree down to the `App` component, which sends the state variables down to it's children components. This process is somewhat wasteful. The `App` component doesn't do anything with `winCount` or `hasStood` -- it just passes those variables straight to the `Info` component. The `App` component still needs to know the state variables `playerHand` and `dealerHand` because it has to pass these to the `Hand` components, but there is no reason for it to know `wincount`, `lossCount` or `hasStood`.
 
-We could simply our components and make them more modular by having each component read from the state tree only the variables it needs. Redux allows us to do this easily with a function called `mapStateToProps`. `mapStateToProps` is going to take the entire state tree as a parameter, and return an object where the keys are names of props for the object.
+We could simplify our components and make them more modular by having each component read from the state tree only the variables it needs. Redux allows us to do this easily with a function called `mapStateToProps`. `mapStateToProps` is going to take the entire state tree as a parameter, and return an object where the keys are names of props for the object.
 
 #### Connecting `<Info>`
 
