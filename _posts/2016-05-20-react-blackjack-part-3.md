@@ -93,7 +93,7 @@ describe('cards.js', () => {
 });
 ```
 
-To pass the test, we will have to convert kings to 12, queens to 11, and jacks to 10. We'll write a helper method called `rankAsNum` to do that for us.
+To pass the test, we will have to tell our program to count kings, queens, and jacks as 10 points. We'll write a helper method called `rankAsNum` to do that for us.
 
 <div class="fp">app/lib/cards.js</div>
 ```js
@@ -986,7 +986,20 @@ The page said I won, but my win count didn't go up!!!!
 Fix this or I'll sue you!
 ```
 
-What went wrong?
+One user helpfully submitted a screenshot of the error:
 
+![bug_report](/img/react_blackjack/error_report.png)
+
+What went wrong? See if you can figure out what the problem is before reading on.
+
+Hint: The problem has to do with the way we set up the game. Walk through the code in `index.js` line by line and see if you can identify the problem. Keep track of the state object while you so.
+
+Here's the answer:
+
+In `index.js`, we create the store passing `undefined` as the parameter. Then, we dispatch a `SETUP_GAME` action. This action will deal the cards to the player and dealer and then check if the player was dealt a winning hand. If the player does win immediately, `winCount` is incremented or set to one if it was previously undefined (which is the case here). Everything good so far.
+
+After dispatching `SETUP_GAME`, we dispatch `SET_RECORD` with 0 wins and 0 losses. This is where the problem is, as this will set the record to 0 no matter what the previous record was. So if the player is dealt a winning hand, the `SETUP_GAME` action correctly sets `winCount` to 1, but this is immediately set back to 0 by the next action.
+
+There are a few ways to deal with this. We could have `SET_RECORD` only set `winCount` and `lossCount` if they are undefined in the current state. We could move the `SET_RECORD` action before the `SETUP_GAME` action.
 
 -- Incomplete -- Work in progress.
