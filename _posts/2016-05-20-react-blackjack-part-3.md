@@ -1034,7 +1034,7 @@ const setupGame = (currentState, seed) => {
         deck, playerHand,
         dealerHand, hasStood,
         gameOver, playerWon<mark>,</mark>
-        <mark>winCountwin</mark>
+        <mark>winCount</mark>
     });
 
     return currentState.merge(newState);
