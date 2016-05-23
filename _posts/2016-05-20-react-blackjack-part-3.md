@@ -255,7 +255,7 @@ And then add some logic to the reducer:
 ```js{12-22}
 // ...
 
-import { newDeck, deal<mark>, score</mark> } from './lib/cards.js';
+import { newDeck, deal<mark>, score</mark> } from './lib/cards';
 
 // ...
 
@@ -283,9 +283,9 @@ Now try playing a game in your browser. Keep clicking "hit" until your score is 
 
 Let's think about what should happen after each game ends. It would be nice to show a message to the player saying whether the game ended with a win or a loss. It would also be nice to show the cards at the end of the game before immediately resetting the game (otherwise the player would never know the last card drawn) and displaying a button the player can click when ready to start the next game.
 
-We'll need a new component for the game over message that will contain a string like "You win!" and a "New Game" button. This component is going to take two props. One will determine whether it should show a win message or a loss message, the other will contain the callback function for when the user hits the "New Game" button.
+We'll need a new component for the game over message that will contain a string like "You win!" and a "New Game" button. This component is going to take two props. One will determine whether it should show a win message, loss message, or a draw message. The other will contain the callback function for when the user hits the "New Game" button.
 
-Let's write some tests for the component. First we want to give the component a different message depending on the value of the `win` prop.
+Let's write some tests for the component. First we want to give the component a different message depending on the value of the `win` prop. If `win` is `true` or `false`, we will show a win message or a loss message respectively. If `win` is `undefined`, we will show a "Tie game" message.
 
 <div class="fp">test/components/game_over_message_spec.js</div>
 ```js
@@ -309,6 +309,14 @@ describe('<GameOverMessage />' , () => {
 
         it('displays message', () => {
             expect(rendered).to.include.text('You lose :(');
+        });
+    });
+
+    describe('for draw', () => {
+        const rendered = shallow(<GameOverMessage win={undefined} />);
+
+        it('displays message', () => {
+            expect(rendered).to.include.text('Tie game.');
         });
     });
 });
@@ -339,7 +347,9 @@ describe('<GameOverMessage />' , () => {
 });
 ```
 
-First we'll get the message tests to pass:
+First we'll get the message tests to pass. One of the limitations of JSX is that you cannot put multi-line JavaScript expresssions (like an `if`-`else`) in the JSX (see [this page](https://facebook.github.io/react/tips/if-else-in-JSX.html) for an explanation). So far, we have been getting around this limitation by using ternary statements, but in this case we want an `if - else if - else` statement, so we would have to use nested ternary statements.
+
+The other option is to calcualte the result of the `if - else if - else` outside of the JSX portion and save it in a variable. We'll do that here:
 
 <div class="fp">app/components/game_over_message.js</div>
 ```js
@@ -347,9 +357,19 @@ import React from 'react';
 
 export class GameOverMessage extends React.Component {
     render() {
+        let message;
+
+        if(this.props.win === undefined) {
+            message = "Tie game.";
+        } else if(this.props.win === true) {
+            message = "You win!";
+        } else {
+            message = "You lose :(";
+        }
+
         return (
             <div id="game_over_message">
-                { this.props.win ? 'You win!' : 'You lose :(' }
+                { message }
             </div>
         );
     }
@@ -364,9 +384,11 @@ import React from 'react';
 
 export default class GameOverMessage extends React.Component {
     render() {
+        // ...
+
         return (
             <div id="game_over_message">
-                { this.props.win ? 'You win!' : 'You lose :(' }
+                { message }
                 <button onClick={this.props.nextGame}>Next Game</button>
             </div>
         );
@@ -481,7 +503,7 @@ describe('<App />', () => {
 });
 ```
 
-Now let's add the message to our App component. One of the limitations of JSX is that you cannot put multi-line JavaScript expresssions (like an `if`-`else`) in the JSX (see [this page](https://facebook.github.io/react/tips/if-else-in-JSX.html) for an explanation). So far, we have been getting around this limitation by using ternary statements. In this case though, let's use an `if` statement to keep our render function cleaner and show how it can be done.
+Now let's add the message to our App component.
 
 <div class="fp">app/components/app.js</div>
 ```jsx{2,6-9,15}
@@ -791,7 +813,7 @@ To do this, we are going to use a new package called Proxyquire. Let's first ins
 npm install --save-dev proxyquire
 ```
 
-Proxyquire allows us to require another file and replace the things that that file requires with stubs (or anything we want). In this case, we are going to run our tests on a special version of the reducer that uses a stubbed `score` function -- one that thinks the score of any hand is 21. The reducer gets its `score` function from `./lib/cards.js`, so we want to use Proxyquire to replace the `score` function in that file with our special function.
+Proxyquire allows us to require another file and replace the things that that file requires with stubs (or anything we want). In this case, we are going to run our tests on a special version of the reducer that uses a stubbed `score` function -- one that thinks the score of any hand is 21. The reducer gets its `score` function from `./lib/cards`, so we want to use Proxyquire to replace the `score` function in that file with our special function.
 
 Proxyquire provides us with a function, `proxyquire()`, that takes two arguments: the file that we are importing from and an object with keys that tell it which modules we want to replace (these should line up with the `from "..."` lines in the file we're requiring). The values of the object in the second parameter are more objects that have keys that are the names of the functions (or classes or anything else that is exported) that we want to replace and the values are their replacements. If something that we import isn't overridden, it will just use the original "thing" (function, class, etc.). Here's an example to make it more concrete:
 
@@ -802,14 +824,14 @@ const initialState = undefined;
 const cardUtils = { }; // we'll put the overrides in here
 
 /* require reducer.js but override the functions
-   imported from './lib/cards.js' with the functions
+   imported from './lib/cards' with the functions
    in cardUtils (if there are any).
    we have the .default at the end because the reducer
    function is the default export from the reducer.js
    file */
 const stubbedReducer = proxyquire(
     '../app/reducer.js',
-    {'./lib/cards.js': cardUtils}
+    {'./lib/cards': cardUtils}
 ).default;
 
 /* this is the function we want to replace deal with
@@ -846,7 +868,7 @@ describe('reducer', () => {
 
         describe("when dealt winning hand", () => {
             const cardUtils = { };
-            const stubbedReducer = proxyquire('../app/reducer.js', {'./lib/cards.js': cardUtils}).default;
+            const stubbedReducer = proxyquire('../app/reducer.js', {'./lib/cards': cardUtils}).default;
             cardUtils.score = () => 21;
 
             const initialState = undefined;
@@ -921,7 +943,7 @@ describe('reducer', () => {
     describe("SETUP_GAME", () => {
         const action = setupGame();
         const cardUtils = { };
-        const stubbedReducer = proxyquire('../app/reducer.js', {'./lib/cards.js': cardUtils}).default;
+        const stubbedReducer = proxyquire('../app/reducer.js', {'./lib/cards': cardUtils}).default;
 
         describe("when not dealt winning hand", () => {
             cardUtils.score = () => 10;
@@ -1080,8 +1102,282 @@ Let's start with some tests for the dealer drawing. We'll use Proxyquire again t
 
 Since we'll be using different options on the stubs, we're going to use a new Mocha feature called `beforeEach()`. `beforeEach()` is a function that takes a function as a parameter. Before each of the `it` tests, Mocha will call the function passed to `beforeEach()`. In this case, we will use `beforeEach()` to reset the stubs so that each test will be independent of the others.
 
-We already have a test for the `STAND` action to check that it sets `hasStood` to true. We are going to keep this test, but modify it so that it is in
+We already have a test for the `STAND` action to check that it sets `hasStood` to true. We are going to keep this test, but modify it so that it uses a stubbed `score()` as well. For that part, we don't care about the dealer drawing cards -- we can prevent this from happening by having `score()` return 21 each time it's called. This will make the `hasStood` test more independent of the rest of the tests -- if something goes wrong with the dealer drawing cards, this test won't know about it.
 
+Here are first set of tests for `STAND`:
 
+<div class="fp">test/reducer_spec.js</div>
+```js{2}
+// ...
+import sinon from 'sinon';
 
--- Incomplete -- Work in progress.
+import reducer from '../app/reducer';
+
+describe('reducer', () => {
+    describe("STAND", () => {
+        const action = stand();
+
+        const cardUtils = { };
+        const stubbedReducer = proxyquire('../app/reducer.js', {'./lib/cards': cardUtils}).default;
+
+        const initialState = new Map({"hasStood": false, "dealerHand": new List()});
+
+        it('sets hasStood to true', () => {
+
+            cardUtils.score = sinon.stub();
+            cardUtils.score.returns(21);
+
+            const nextState = stubbedReducer(initialState, action);
+
+            expect(nextState.get('hasStood')).to.eq(true);
+        });
+
+        describe('dealer drawing', () => {
+
+            beforeEach( () => {
+                cardUtils.score = sinon.stub();
+                cardUtils.deal = sinon.stub();
+                cardUtils.deal.returns([new List(), new List()]);
+            });
+
+            it('does not draw when total is > 17', () => {
+                cardUtils.score.returns(18);
+
+                stubbedReducer(initialState, action);
+
+                expect(cardUtils.deal.called).to.eq(false);
+            });
+
+            it('stops drawing when total is 17', () => {
+                cardUtils.score.onCall(0).returns(10);
+                cardUtils.score.onCall(1).returns(17);
+
+                stubbedReducer(initialState, action);
+
+                expect(cardUtils.deal.calledOnce).to.eq(true);
+            });
+        });
+    });
+});
+```
+
+Reading the "does not draw when total is > 17" test in English: Make the score function always return 18. Dispatch the action. Expect that we never called the deal function.
+
+Reading the "stops drawing when the total is 17" in English: Make the score function return 10 the first time it's called. Make the score function return 17 the second time it's called. Dispatch the action. Expect that we called the `deal` function once.
+
+These are more proper "unit" tests of the reducer function. When we wrote tests earlier, we controlled which cards would be dealt during the test by changing the deck object in the state. Those tests would fail if there was a problem with the `deal` helper function. If we changed the way the `deal` function worked, we might have to re-write those tests.
+
+In this case, however, the test for the reducer does not rely on any of the helper functions in `cards.js`. These methods could have bugs or even be removed from the file, but our tests would still pass as long as the reducer function is implemented correctly.
+
+A good testing suite will have a lot of unit tests and a few "end to end" or "integration" tests. The unit tests will be responsible for testing a very small specific part of the code as independently from the rest of the program as possible. The end to end tests will make sure that the entire code base is working together properly.
+
+Before we get our test to pass, we will have to change one more thing. Since our `STAND` action handler is now going to use `deal()`, it needs to have a seed.
+
+To add the seed, we can change our action creator:
+
+<div class="fp">app/action_creators.js</div>
+```js
+// ...
+
+export function stand(seed=new Date().getTime()) {
+    return { "type": "STAND", seed };
+}
+```
+
+And our main reducer `switch`:
+
+<div class="fp">app/reducer.js</div>
+```js
+export default function(currentState=new Map(), action) {
+    switch(action.type) {
+        // ...
+        case 'STAND':
+            return stand(currentState<mark>, action.seed</mark>);
+    }
+    return currentState;
+}
+```
+
+Now we're ready to add the code to deal to the dealer:
+
+<div class="fp">app/reducer.js</div>
+```js
+// ...
+
+const stand = (currentState<mark>, seed</mark>) => {
+    let newState = new Map({"hasStood": true});
+
+    let dealerHand = currentState.get('dealerHand');
+    let deck = currentState.get('deck');
+
+    while(score(dealerHand) < 17) {
+        let newCards;
+        [deck, newCards] = deal(deck, 1, 1);
+        dealerHand = dealerHand.push(newCards.get(0));
+    }
+
+    newState = newState.merge({dealerHand, deck});
+
+    return currentState.merge(newState);
+};
+
+// ...
+```
+
+Right now if you try to hit stand in the browser, you won't see new cards added to the dealer's hand. This is because of the dummy card we added to the hand. Right now, the score method will return `NaN` if one of the cards passed to it does not have a rank (which the dummy card doesn't). Let's remove the dummy card in the `STAND` action. First the test:
+
+<div class="fp">test/reducer_spec.js</div>
+```js
+// ...
+
+describe('reducer', () => {
+    // ...
+
+    describe("STAND", () => {
+        // ...
+
+        it('removes dummy card', () => {
+            const initialState = fromJS({
+                dealerHand: [{ suit: 'S', rank: 'K' }, {}]
+            });
+
+            cardUtils.score = sinon.stub();
+            cardUtils.score.returns(21);
+
+            const nextState = stubbedReducer(initialState, action);
+
+            expect(nextState.get('dealerHand').size).to.eq(1);
+        });
+
+        // ...
+    });
+});
+```
+
+For the code to remove the dummy card, we could just remove the last card from the dealerHand `List`. However, we'll write code that is a little more general in case things change at a later time:
+
+<div class="fp">app/reducer.js</div>
+```js{5}
+const stand = (currentState, seed) => {
+    // ...
+    let deck = currentState.get('deck');
+
+    dealerHand = dealerHand.filter((element) => element != new Map());
+
+    while(score(dealerHand) < 17) {
+        // ...
+    }
+
+    // ...
+};
+```
+
+Now try hitting "stand" in the browser. You should see the dealer get some cards.
+
+The last step is to decide who the winner is. We want to test four cases: the player has a higher score than the dealer, the dealer has a higher score than the player and the dealer's score is 21 or lower, the dealer has a higher score than the player and the dealer's score is higher than 21, and the dealer and player have the same score. We'll keep using stubs to create the different scenarios we want to test. Now that we have the stubbing framework set up, they will be much easier to use.
+
+<div class="fp">spec/reducer_spec.js</div>
+```js
+// ...
+
+describe('reducer', () => {
+    // ...
+
+    describe("STAND", () => {
+        // ...
+
+        describe('determining winner', () => {
+            beforeEach( () => {
+                cardUtils.score = sinon.stub();
+                cardUtils.deal = sinon.stub();
+                cardUtils.deal.returns([new List(), new List()]);
+            });
+
+            it('increments win count and sets playerWon if player wins', () => {
+                cardUtils.score.onCall(0).returns(17); // dealer drawing check
+                cardUtils.score.onCall(1).returns(20); // user score
+                cardUtils.score.onCall(2).returns(17); // dealer score
+
+                const nextState = stubbedReducer(initialState, action);
+
+                expect(nextState.get('winCount')).to.eq(initialState.get('winCount') + 1);
+                expect(nextState.get('lossCount')).to.eq(initialState.get('lossCount'));
+                expect(nextState.get('playerWon')).to.eq(true);
+            });
+
+            it('increments win count and sets playerWon if dealer busts', () => {
+                cardUtils.score.onCall(0).returns(17); // dealer drawing check
+                cardUtils.score.onCall(1).returns(20); // user score
+                cardUtils.score.onCall(2).returns(22); // dealer score
+
+                const nextState = stubbedReducer(initialState, action);
+
+                expect(nextState.get('winCount')).to.eq(initialState.get('winCount') + 1);
+                expect(nextState.get('lossCount')).to.eq(initialState.get('lossCount'));
+                expect(nextState.get('playerWon')).to.eq(true);
+            });
+
+            it('does not change counts if tie', () => {
+                cardUtils.score.onCall(0).returns(17); // dealer drawing check
+                cardUtils.score.onCall(1).returns(17); // user score
+                cardUtils.score.onCall(2).returns(17); // dealer score
+
+                const nextState = stubbedReducer(initialState, action);
+
+                expect(nextState.get('winCount')).to.eq(initialState.get('winCount'));
+                expect(nextState.get('lossCount')).to.eq(initialState.get('lossCount'));
+                expect(nextState.get('playerWon')).to.eq(undefined);
+            });
+
+            it('increments loss count and sets playerWon if dealer wins', () => {
+                /* Your code here */
+            });
+        });
+    });
+});
+```
+
+Now let's write the logic in the reducer to get the tests to pass:
+
+<div class="fp">app/reducer.js</div>
+```js
+// ...
+
+const stand = (currentState, seed) => {
+    // ...
+
+    let winCount = currentState.get('winCount');
+    let lossCount = currentState.get('lossCount');
+    const playerHand = currentState.get('playerHand');
+
+    const playerScore = score(playerHand);
+    const dealerScore = score(dealerHand);
+    let playerWon = undefined;
+
+    if(playerScore > dealerScore || dealerScore > 21) {
+        /* Your code here! */
+    } else if(dealerScore > playerScore) {
+        /* Your code here! */
+    }
+
+    const gameOver = true;
+
+    newState = newState.merge({dealerHand, deck, winCount, lossCount, gameOver, playerWon});
+
+    return currentState.merge(newState);
+};
+
+// ...
+```
+
+Why do we still need `hasStood` if we are going to set `gameOver` to true any way? In the next part of this guide we will change our application so that the dealer draws cards one-by-one in which case we will still want to disable the "hit" and "stand" buttons after the player stands.
+
+You should now be able to play blackjack in your browser with the app!
+
+Feel free to build on top of this application to get more practice. You could:
+
+- Add a counter for draws
+- Simulate playing in a casino (use multiple decks and don't reset the deck between each game)
+- Add options to bet and track winnings
+
+In the final part of this guide we will use advanced Redux features to create forms, reveal dealer's cards one at a time, and persist win/loss records to a server!

@@ -640,11 +640,11 @@ For the `Info` component, a `mapStateToProps` function might look something like
 
 ```js
 function mapStateToProps(state) {
- return {
-   winCount: state.get('winCount'),
-   lossCount: state.get('lossCount'),
-   hasStood: state.get('hasStood')
- };
+    return {
+        winCount: state.get('winCount'),
+        lossCount: state.get('lossCount'),
+        hasStood: state.get('hasStood')
+    };
 }
 ```
 
