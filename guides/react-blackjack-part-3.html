@@ -1074,7 +1074,7 @@ Fix this or I&#39;ll sue you!
 
 <p>After dispatching <code>SETUP_GAME</code>, we dispatch <code>SET_RECORD</code> with 0 wins and 0 losses. This is where the problem is, as this will set the record to 0 no matter what the previous record was. So if the player is dealt a winning hand, the <code>SETUP_GAME</code> action correctly sets <code>winCount</code> to 1, but this is immediately set back to 0 by the next action.</p>
 
-<p>There are a few ways to deal with this. We could have <code>SET_RECORD</code> only set <code>winCount</code> and <code>lossCount</code> if they are undefined in the current state. We could move the <code>SET_RECORD</code> action before the <code>SETUP_GAME</code> action.</p>
+<p>There are a few ways to deal with this. We could have <code>SET_RECORD</code> only set <code>winCount</code> and <code>lossCount</code> if they are undefined in the current state. We could set up an initial state where <code>winCount</code> and <code>lossCount</code> are both set to 0 and pass this initial state to the store when we call <code>createStore()</code>. We could move the <code>SET_RECORD</code> action before the <code>SETUP_GAME</code> action.</p>
 
 <p>-- Incomplete -- Work in progress.</p>
 
