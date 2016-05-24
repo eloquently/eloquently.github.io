@@ -924,7 +924,7 @@ describe('reducer', () => {
             // ...
 
             it('increments winCount', () => {
-                expect(nextState.get('winCount')).to.eq(initialState.get('winCount') + 1);
+                expect(nextState.get('winCount')).to.eq(1);
             });
         });
     });
