@@ -179,7 +179,7 @@ Now, let's make a JavaScript file that inserts a component (which we'll create n
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import App from './components/app.js';
+import App from './components/app';
 
 ReactDOM.render(
     <App />,
@@ -311,9 +311,9 @@ Now we'll import the `newDeck` method into our `index.js` file, and create a new
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import App from './components/app.js';
+import App from './components/app';
 
-import { newDeck } from './lib/cards.js';
+import { newDeck } from './lib/cards';
 
 const deck = newDeck();
 console.log(deck);
@@ -544,9 +544,9 @@ We can now simplify `app/index.js`:
 ```jsx{7-11}
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './components/app.js';
+import App from './components/app';
 
-import { newDeck, deal } from './lib/cards.js';
+import { newDeck, deal } from './lib/cards';
 
 let deck = newDeck();
 let playerHand, dealerHand;
@@ -568,10 +568,10 @@ Let's now create our state `Map`:
 ```js{4,14-22}
 // ...
 
-import App from './components/app.js';
+import App from './components/app';
 import { fromJS } from 'immutable';
 
-import { newDeck, deal } from './lib/cards.js';
+import { newDeck, deal } from './lib/cards';
 
 let deck = newDeck();
 let playerHand, dealerHand;
@@ -718,7 +718,7 @@ import { fromJS } from 'immutable';
 
 // ...
 
-import { newDeck, deal } from '../../app/lib/cards.js';
+import { newDeck, deal } from '../../app/lib/cards';
 
 let deck = newDeck();
 let playerHand, dealerHand;
@@ -1019,7 +1019,7 @@ import { shallow } from 'enzyme';
 
 import Hand from '../../app/components/hand';
 
-import { newDeck, deal } from '../../app/lib/cards.js';
+import { newDeck, deal } from '../../app/lib/cards';
 
 let deck = newDeck();
 let hand;
@@ -1217,7 +1217,7 @@ Finally, we need to import our css file into `index.js` so that Webpack can find
 ```js{5}
 // ...
 
-import { newDeck, deal } from './lib/cards.js';
+import { newDeck, deal } from './lib/cards';
 
 require('./css/main.scss');
 

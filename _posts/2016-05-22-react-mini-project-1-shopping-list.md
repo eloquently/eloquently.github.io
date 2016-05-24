@@ -11,7 +11,7 @@ date: 2016-05-22
 
 The goal for these mini projects is to get you used to writing tests and designing components in React. I suggest that you go through it once implementing and testing all the components before worrying about managing the state with Redux. After completing a few of these mini-procjects, pick one of them and work on adding Redux stores and reducers to it.
 
-One goal for these exercises is to make you more comfortable writing React tests and code. That means that we are not going to give you the program piece by piece (as we did in the [blackjack guides](/guides/react-blacjack-part-1)). Instead, we'll give you very general pieces of the code, and you will have to figure out where to go.
+One goal for these exercises is to make you more comfortable writing React tests and code. That means that we are not going to give you the program piece by piece (as we did in the [blackjack guides]({% post_url 2016-05-19-react-blackjack-part-1 %}). Instead, we'll give you very general pieces of the code, and you will have to figure out where to go.
 
 Don't worry if you get stuck or don't know where to start -- that's very normal. Before trying to find a tutorial, spend some time thinking about what you are trying to build, and what the next steps are.
 

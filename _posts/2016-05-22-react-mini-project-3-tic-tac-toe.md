@@ -50,4 +50,6 @@ Here is a suggested list of components for your Tic Tac Toe game:
 
 Don't worry about making the buttons work or actually being able to place pieces by clicking. You can add this functionality after designing the components. For now, you can test out different scenarios in your browser by manipulating the state `Map` that is passed to `<App />`.
 
+You can choose to write a function that checks for a winner now or later when you apply Redux to the project. Either way, you should create a new file (called something like `game_utils.js`) that has a function that takes a board `List` as a parameter and returns the winner (`'X'`, `'Y'`, or `false`/`undefined`). After you apply Redux, you can call this function from the reducer. If you want to add this functionality before you apply Redux, you can call this function in the `Board` component's render function to decide if you should show the `Message` component.
+
 Your primary means of testing everything should be automated Chai tests!

@@ -326,7 +326,7 @@ To fill in `setupGame()`, we'll copy over the code from `index.js`:
 ```js{3}
 import { Map } from 'immutable';
 
-import { newDeck, deal } from './lib/cards.js';
+import { newDeck, deal } from './lib/cards';
 
 const setupGame = () => {
    let deck = newDeck();
@@ -521,7 +521,7 @@ Let's set up a Redux `store` and dispatch some actions to it to get our intiial 
 ```js{4,10}
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './components/app.js';
+import App from './components/app';
 import {createStore} from 'redux';
 
 import reducer from './reducer';
@@ -557,7 +557,7 @@ Now we need to share the `store` with our React components. React-Redux provides
 ```jsx
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './components/app.js';
+import App from './components/app';
 import {createStore} from 'redux';
 import { Provider } from 'react-redux';
 
@@ -1029,7 +1029,7 @@ When this action is dispatched, we should add a card to `playerHand`. Let's writ
 import { Map, List } from 'immutable';
 import { expect } from 'chai';
 import { setupGame, setRecord, dealToPlayer } from '../app/action_creators';
-import { newDeck } from '../app/lib/cards.js';
+import { newDeck } from '../app/lib/cards';
 
 import reducer from '../app/reducer';
 
