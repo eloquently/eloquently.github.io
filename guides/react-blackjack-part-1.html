@@ -250,7 +250,7 @@ module.exports = {
 <pre data-line="" class="line-numbers"><code class="language-jsx">import React from &#39;react&#39;;
 import ReactDOM from &#39;react-dom&#39;;
 
-import App from &#39;./components/app.js&#39;;
+import App from &#39;./components/app&#39;;
 
 ReactDOM.render(
     &lt;App /&gt;,
@@ -382,9 +382,9 @@ arr = [1, 2, 3]; // This will break because it replaces the array with a new ref
 <pre data-line="" class="line-numbers"><code class="language-js">import React from &#39;react&#39;;
 import ReactDOM from &#39;react-dom&#39;;
 
-import App from &#39;./components/app.js&#39;;
+import App from &#39;./components/app&#39;;
 
-import { newDeck } from &#39;./lib/cards.js&#39;;
+import { newDeck } from &#39;./lib/cards&#39;;
 
 const deck = newDeck();
 console.log(deck);
@@ -622,9 +622,9 @@ export const deal = (deck, n) =&gt; {
 
 <pre data-line="7-11" class="line-numbers"><code class="language-jsx">import React from &#39;react&#39;;
 import ReactDOM from &#39;react-dom&#39;;
-import App from &#39;./components/app.js&#39;;
+import App from &#39;./components/app&#39;;
 
-import { newDeck, deal } from &#39;./lib/cards.js&#39;;
+import { newDeck, deal } from &#39;./lib/cards&#39;;
 
 let deck = newDeck();
 let playerHand, dealerHand;
@@ -646,10 +646,10 @@ ReactDOM.render(
 
 <pre data-line="4,14-22" class="line-numbers"><code class="language-js">// ...
 
-import App from &#39;./components/app.js&#39;;
+import App from &#39;./components/app&#39;;
 import { fromJS } from &#39;immutable&#39;;
 
-import { newDeck, deal } from &#39;./lib/cards.js&#39;;
+import { newDeck, deal } from &#39;./lib/cards&#39;;
 
 let deck = newDeck();
 let playerHand, dealerHand;
@@ -794,7 +794,7 @@ import { fromJS } from &#39;immutable&#39;;
 
 // ...
 
-import { newDeck, deal } from &#39;../../app/lib/cards.js&#39;;
+import { newDeck, deal } from &#39;../../app/lib/cards&#39;;
 
 let deck = newDeck();
 let playerHand, dealerHand;
@@ -1095,7 +1095,7 @@ import { shallow } from &#39;enzyme&#39;;
 
 import Hand from &#39;../../app/components/hand&#39;;
 
-import { newDeck, deal } from &#39;../../app/lib/cards.js&#39;;
+import { newDeck, deal } from &#39;../../app/lib/cards&#39;;
 
 let deck = newDeck();
 let hand;
@@ -1292,7 +1292,7 @@ module.exports = {
 
 <pre data-line="5" class="line-numbers"><code class="language-js">// ...
 
-import { newDeck, deal } from &#39;./lib/cards.js&#39;;
+import { newDeck, deal } from &#39;./lib/cards&#39;;
 
 require(&#39;./css/main.scss&#39;);
 

@@ -404,7 +404,7 @@ export default function(currentState=new Map(), action) {
 
 <pre data-line="3" class="line-numbers"><code class="language-js">import { Map } from &#39;immutable&#39;;
 
-import { newDeck, deal } from &#39;./lib/cards.js&#39;;
+import { newDeck, deal } from &#39;./lib/cards&#39;;
 
 const setupGame = () =&gt; {
    let deck = newDeck();
@@ -599,7 +599,7 @@ describe(&#39;reducer&#39;, () =&gt; {
 
 <pre data-line="4,10" class="line-numbers"><code class="language-js">import React from &#39;react&#39;;
 import ReactDOM from &#39;react-dom&#39;;
-import App from &#39;./components/app.js&#39;;
+import App from &#39;./components/app&#39;;
 import {createStore} from &#39;redux&#39;;
 
 import reducer from &#39;./reducer&#39;;
@@ -635,7 +635,7 @@ store.dispatch(setRecord(0, 0));
 
 <pre data-line="" class="line-numbers"><code class="language-jsx">import React from &#39;react&#39;;
 import ReactDOM from &#39;react-dom&#39;;
-import App from &#39;./components/app.js&#39;;
+import App from &#39;./components/app&#39;;
 import {createStore} from &#39;redux&#39;;
 import { Provider } from &#39;react-redux&#39;;
 
@@ -1106,7 +1106,7 @@ export function dealToPlayer(seed=new Date().getTime()) {
 <pre data-line="" class="line-numbers"><code class="language-js">import { Map, List } from &#39;immutable&#39;;
 import { expect } from &#39;chai&#39;;
 import { setupGame, setRecord, dealToPlayer } from &#39;../app/action_creators&#39;;
-import { newDeck } from &#39;../app/lib/cards.js&#39;;
+import { newDeck } from &#39;../app/lib/cards&#39;;
 
 import reducer from &#39;../app/reducer&#39;;
 
