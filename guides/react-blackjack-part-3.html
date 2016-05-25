@@ -1194,7 +1194,12 @@ describe(&#39;reducer&#39;, () =&gt; {
         const cardUtils = { };
         const stubbedReducer = proxyquire(&#39;../app/reducer.js&#39;, {&#39;./lib/cards&#39;: cardUtils}).default;
 
-        const initialState = new Map({&quot;hasStood&quot;: false, &quot;dealerHand&quot;: new List()});
+        const initialState = new Map({
+            hasStood: false,
+            dealerHand: new List(),
+            winCount: 0,
+            lossCount: 0
+        });
 
         it(&#39;sets hasStood to true&#39;, () =&gt; {
 
