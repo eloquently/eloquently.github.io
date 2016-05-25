@@ -99,10 +99,6 @@ To pass the test, we will have to tell our program to count kings, queens, and j
 ```js
 // ...
 
-import { <mark>Map, </mark>List, fromJS } from 'immutable';
-
-// ...
-
 export const rankAsNum = (rank) => {
     if(rank == 'K' || rank == 'Q' || rank == 'J') {
         return 10;
@@ -124,6 +120,8 @@ Let's clarify what we want with some test cases:
 
 <div class="fp">test/lib/cards_spec.js</div>
 ```js
+import { <mark>Map, </mark>List, fromJS } from 'immutable';
+
 describe('cards.js', () => {
     // ...
 
@@ -1120,7 +1118,12 @@ describe('reducer', () => {
         const cardUtils = { };
         const stubbedReducer = proxyquire('../app/reducer.js', {'./lib/cards': cardUtils}).default;
 
-        const initialState = new Map({"hasStood": false, "dealerHand": new List()});
+        const initialState = new Map({
+            hasStood: false,
+            dealerHand: new List(),
+            winCount: 0,
+            lossCount: 0
+        });
 
         it('sets hasStood to true', () => {
 
