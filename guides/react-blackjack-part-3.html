@@ -177,10 +177,6 @@ describe(&#39;cards.js&#39;, () =&gt; {
 
 <pre data-line="" class="line-numbers"><code class="language-js">// ...
 
-import { <mark>Map, </mark>List, fromJS } from &#39;immutable&#39;;
-
-// ...
-
 export const rankAsNum = (rank) =&gt; {
     if(rank == &#39;K&#39; || rank == &#39;Q&#39; || rank == &#39;J&#39;) {
         return 10;
@@ -202,7 +198,9 @@ export const score = (cards) =&gt; {
 
 <div class="fp">test/lib/cards_spec.js</div>
 
-<pre data-line="" class="line-numbers"><code class="language-js">describe(&#39;cards.js&#39;, () =&gt; {
+<pre data-line="" class="line-numbers"><code class="language-js">import { <mark>Map, </mark>List, fromJS } from &#39;immutable&#39;;
+
+describe(&#39;cards.js&#39;, () =&gt; {
     // ...
 
     describe(&#39;score()&#39;, () =&gt; {
