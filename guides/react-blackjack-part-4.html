@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Eloquently - Learning and Recruiting</title>
+
+    <!-- Custom Fonts -->
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css" type="text/css">
+
+    <!-- Plugin CSS -->
+    <link rel="stylesheet" href="/css/animate.min.css" type="text/css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css" type="text/css">
+    <link rel="stylesheet" href="/css/prism.css" type="text/css">
+
+    <script src="/js/prism.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+
+</head>
+
+
+<body>
+    <div class="wrapper">
+        <!-- Navigation -->
+        <nav id="mainNav" class="nav navbar navbar-default full-color">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand page-scroll" href="/index">ELOQUENTLY</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a class="page-scroll" href="/index">Home</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="/workshops">Workshops</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="/guides/index">Guides</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+
+        <div class="container post">
+            <div class="row">
+                <!--<div class="post-options pull-right">
+                    <div class="show">
+                        <a href="#postOptions" data-toggle="collapse" class="pull-right btn btn-default btn-sm">Display Options</a>
+                    </div>
+                    <div class="options collapse" id="postOptions">
+                        <input type="checkbox" checked data-toggle="toggle" data-on="Annotations On" data-off="Annotations Off" data-onstyle="primary-light" data-width="175">
+                        <br />
+                        <input type="checkbox" checked data-toggle="toggle" data-on="Line Numbers On" data-off="Line Numbers Off" data-onstyle="primary-light" data-width="175">
+                    </div>
+                </div>-->
+                <div class="post-content">
+                    <h2>React Blackjack Part 4</h2>
+
+<p><hr class="left" /></p>
+
+<p>In this final part of the React Blackjack guide, we will use several new React libraries to add additional functionality to our Blackjack game. Specifically, we are going to:</p>
+
+<ul>
+<li>Use Redux Saga to chain actions so that the dealer will draw cards one at a time with a slight delay between draws</li>
+<li>Use React Router to create a new page for settings</li>
+<li>Use Redux Redux form to create a settings form that allows the user to control how fast the dealer draws cards</li>
+<li>Use Redux Saga to persist and load users&#39; win-loss records to a Rails 5 API</li>
+</ul>
+
+<h3>Quick Configuration</h3>
+
+<p>Before we get started, let&#39;s change a configuration setting in <code>webpack.config.js</code>. We have been building complete source maps, which adds a decent amount of time to the build time. We can tell Webpack to make &quot;cheaper&quot; source maps that are much faster to build. Our build times will get noticeably slower as we add more dependencies to the project.</p>
+
+<p>To change the type of source maps we build, change the <code>devtool</code> in <code>webpack.config.js</code> from <code>&quot;source-map&quot;</code> to <code>&quot;cheap-module-eval-source-map&quot;</code>. This will actually be the default type of source maps that Webpack uses in the near future. They are significantly faster to build without adding too much confusion while debugging.</p>
+
+<div class="fp">webpack.config.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+module.exports = {
+    // ...
+    devtool: &quot;<mark>cheap-module-eval-</mark>source-map&quot;,
+    // ...
+};
+</code></pre>
+
+<h3>Chaining Actions with Redux Saga</h3>
+
+<p>In this section, we will use a package called Redux Saga to fire off actions in a sequence until a condition is met. This will allow the dealer to draw one card at a time and pause between each card drawn to add some suspense to our blackjack game.</p>
+
+<p>Redux Sagas take advantage of ES6 generator functions, so it&#39;s worth reading up on those before continuing with the tutorial. Read more <a href="https://davidwalsh.name/es6-generators">here</a>. A deep understanding of generators will also require you to understand promises. <a href="https://davidwalsh.name/promises">Here</a> is a good intro.</p>
+
+<p>You can think of sagas as process that run in the background of your application watching for certain actions. We&#39;ll install Saga middleware that will watch the reducer for actions and iterate a saga generator each time an action is dispatched. It is important to note that the sagas will run after your reducer, so they will only see the application state after an action is performed.</p>
+
+<p>Let&#39;s install the Redux Saga package:</p>
+
+<pre data-line="" class=""><code class="language-text">npm install --save redux-saga@0.10.4
+</code></pre>
+
+<p>We&#39;re also going to need to install Babel Polyfill and Babel Stage 0 Preset in order to use promises and generators in our code.</p>
+
+<pre data-line="" class=""><code class="language-text">npm install --save-dev babel-polyfill@6.9.0 babel-preset-stage-0@6.5.0
+</code></pre>
+
+<p>Let&#39;s also add the Stage 0 preset to <code>package.json</code>:</p>
+
+<div class="fp">package.json</div>
+
+<pre data-line="7" class="line-numbers"><code class="language-js">{
+  // ...
+  &quot;babel&quot;: {
+    &quot;presets&quot;: [
+      &quot;es2015&quot;,
+      &quot;react&quot;<mark>,</mark>
+      &quot;stage-0&quot;
+    ]
+  }
+}
+
+</code></pre>
+
+<p>Let&#39;s make a simple saga. We&#39;re going to make a new directory, <code>sagas/</code> to keep our code organized. Since we&#39;re using generators in this file, we need to import Babel Polyfill.</p>
+
+<div class="fp">app/sagas/index.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">import &#39;babel-polyfill&#39;;
+
+export default function*() {
+    let i = 0;
+    while(true) {
+        yield i;
+        i++;
+    }
+}
+</code></pre>
+
+<p>This function will return a generator (note the <code>*</code> after <code>function</code>), which we can then iterate using <code>next()</code>. Each call to <code>next()</code> will return an object that looks like: <code>{ value: 1, done: false }</code>. We can write a test for this generator like this:</p>
+
+<div class="fp">test/sagas/index_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">import { expect } from &#39;chai&#39;;
+import watchActions from &#39;../../app/sagas/index&#39;;
+
+describe(&#39;sagas&#39;, () =&gt; {
+    describe(&#39;watchActions()&#39;, () =&gt; {
+        it(&#39;counts up&#39;, () =&gt; {
+            const generator = watchActions();
+            let i;
+            i = generator.next().value;
+            expect(i).to.eq(0);
+            i = generator.next().value;
+            expect(i).to.eq(1);
+            i = generator.next().value;
+            expect(i).to.eq(2);
+        });
+    });
+});
+</code></pre>
+
+<p>This test should pass. Each time we call <code>next()</code> on the generator, it runs unitl it hits a <code>yield</code>. So if our generator looked like this:</p>
+
+<div class="fp">app/sagas/index.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">import &#39;babel-polyfill&#39;;
+
+export default function*() {
+    let i = 0;
+    yield &#39;start&#39;;
+    while(true) {
+        yield i;
+        i++;
+        yield &#39;end loop&#39;;
+    }
+}
+</code></pre>
+
+<p>We&#39;d have to change our test to look like this:</p>
+
+<div class="fp">test/sagas/index_spec.js</div>
+
+<pre data-line="14-15" class="line-numbers"><code class="language-js">// ...
+
+describe(&#39;sagas&#39;, () =&gt; {
+    describe(&#39;watchActions()&#39;, () =&gt; {
+        it(&#39;counts up&#39;, () =&gt; {
+            const generator = watchActions();
+            let i;
+            i = generator.next().value;
+            expect(i).to.eq(<mark>&#39;start&#39;</mark>);
+            i = generator.next().value;
+            expect(i).to.eq(<mark>0</mark>);
+            i = generator.next().value;
+            expect(i).to.eq(<mark>&#39;end loop&#39;</mark>);
+            i = generator.next().value;
+            expect(i).to.eq(/* what goes here? */);
+        });
+    });
+});
+</code></pre>
+
+<p>Instead of a generator function that simply counts up from 0, our &quot;root&quot; saga needs to emit <code>take</code> effects. <code>take</code> effects tell the saga middleware to watch for actions and execute a function (called a worker saga) after the reducer has changed the application state.</p>
+
+<p>Redux Saga gives us two functions that make it very simple to create <code>take</code> effects. The functions are called <code>takeEvery()</code> and <code>takeLatest()</code>. The difference between the two is that <code>takeEvery()</code> will run the worker saga every time the action is dispatched, even if the process from the previous dispatch is still running. <code>takeLatest()</code> will not run a new worker saga if one is already running.</p>
+
+<p>Since we want to deal cards to the dealer one at a time after the player chooses to stand, we will want to watch the <code>STAND</code> action. We only want to have one worker saga dealing cards to the dealer at a time, so we&#39;ll use <code>takeLatest()</code> (note: in this case it doesn&#39;t matter very much because it should be impossible to dispatch a second <code>STAND</code> before the first one ends). We will also write a placeholder worker saga.</p>
+
+<p>Here&#39;s what <code>sagas/index.js</code> should look like:</p>
+
+<div class="fp">app/sagas/index.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">import &#39;babel-polyfill&#39;;
+import { takeLatest } from &#39;redux-saga&#39;;
+
+export function* onStand() {
+    console.log(&quot;stand action&quot;);
+}
+
+export default function*() {
+    yield takeLatest(&#39;STAND&#39;, onStand);
+}
+</code></pre>
+
+<p>It is very easy to do unit testing on Sagas because they do not actually perform the effects they execute. Let&#39;s see what happens when we run the default generator in our tests now:</p>
+
+<div class="fp">test/sagas/index_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">import { expect } from &#39;chai&#39;;
+import watchActions from &#39;../../app/sagas/index&#39;;
+
+describe(&#39;sagas&#39;, () =&gt; {
+    describe(&#39;watchActions()&#39;, () =&gt; {
+        it(&#39;??&#39;, () =&gt; {
+            const generator = watchActions();
+            console.log(generator.next());
+        });
+    });
+});
+</code></pre>
+
+<p>In your test output, you should see that <code>generator.next()</code> looks like this:</p>
+
+<pre data-line="" class=""><code class="language-text">{ value:
+   { name: &#39;takeLatest(STAND, onStand)&#39;,
+     next: [Function: next],
+     throw: [Function] },
+  done: false }
+</code></pre>
+
+<p>Thus, our unit test for this generator simply needs to ensure that it yields an object with a name property <code>takeLatest(STAND, onStand)</code>:</p>
+
+<div class="fp">test/sagas/index_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">import { expect } from &#39;chai&#39;;
+import watchActions from &#39;../../app/sagas/index&#39;;
+
+describe(&#39;sagas&#39;, () =&gt; {
+    describe(&#39;watchActions()&#39;, () =&gt; {
+        const generator = watchActions();
+        const next = generator.next();
+
+        it(&#39;yields takeLatest&#39;, () =&gt; {
+            expect(next.value.name).to
+                .eq(&#39;takeLatest(STAND, onStand)&#39;);
+        });
+    });
+});
+</code></pre>
+
+<p>Sagas work as middleware, which means that they see every action that gets dispatched to the reducer. Let&#39;s hook up our sagas to the store:</p>
+
+<div class="fp">app/index.js</div>
+
+<pre data-line="7,12,16,19-22" class="line-numbers"><code class="language-js">import React from &#39;react&#39;;
+import ReactDOM from &#39;react-dom&#39;;
+import { AppContainer } from &#39;./components/app.js&#39;;
+import { createStore<mark>, applyMiddleware,</mark>
+         <mark>compose</mark> } from &#39;redux&#39;;
+import { Provider } from &#39;react-redux&#39;;
+import createSagaMiddleware from &#39;redux-saga&#39;;
+
+import reducer from &#39;./reducer&#39;;
+import { setupGame,
+         setRecord } from &#39;../app/action_creators&#39;;
+import watchActions from &#39;./sagas/index&#39;;
+
+require(&#39;./css/main.scss&#39;);
+
+const sagaMiddleware = createSagaMiddleware();
+
+let store = createStore(reducer, undefined, <mark>compose(</mark>
+    applyMiddleware(sagaMiddleware),
+    window.devToolsExtension ?
+        window.devToolsExtension() : f =&gt; f
+));
+
+sagaMiddleware.run(watchActions);
+// ...
+</code></pre>
+
+<p>Now in your browser, you should see &quot;stand action&quot; logged to the console by the worker saga each time you click the &quot;stand&quot; button!</p>
+
+<p>Our goal is to deal cards one at a time to the dealer from the worker saga instead of dealing them all at once in the reducer. We&#39;ll need to change up the actions and reducer logic a little bit to achieve this.</p>
+
+<p>First, we only want <code>STAND</code> to set <code>hasStood</code> to true and remove the dummy card from the dealer&#39;s hand. Second, we will create a new action <code>DEAL_TO_DEALER</code> that will add a single card to the dealer&#39;s hand in the same way that <code>DEAL_TO_PLAYER</code> adds a single card to the player&#39;s hand. Unlike <code>DEAL_TO_PLAYER</code>, <code>DEAL_TO_DEALER</code> doesn&#39;t need to worry about what happens if the score exceeds 21 (or 16) -- our saga will handle this logic and dispatch a <code>DETERMINE_WINNER</code> action, which we&#39;ll also have to create now.</p>
+
+<p>Let&#39;s shift the tests around first. We will mostly be breaking up the <code>STAND</code> reducer rather than writing new logic, so we don&#39;t have to write much new code -- just rearrange.</p>
+
+<p>First, let&#39;s write tests for the <code>DEAL_TO_DEALER</code> reducer. These tests will look similar to the <code>DEAL_TO_PLAYER</code> reducer tests:</p>
+
+<div class="fp">test/reducer_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">import { expect } from &#39;chai&#39;;
+import { Map, List, fromJS } from &#39;immutable&#39;;
+import { setupGame, setRecord,
+         dealToPlayer, stand<mark>,</mark>
+         <mark>dealToDealer</mark> } from &#39;../app/action_creators&#39;;
+import { newDeck } from &#39;../app/lib/cards&#39;;
+import proxyquire from &#39;proxyquire&#39;;
+import sinon from &#39;sinon&#39;;
+
+import reducer from &#39;../app/reducer&#39;;
+
+describe(&#39;reducer&#39;, () =&gt; {
+    // ...
+
+    describe(&quot;DEAL_TO_PLAYER&quot;, () =&gt; {
+        // ...
+    });
+
+    describe(&quot;DEAL_TO_DEALER&quot;, () =&gt; {
+        const action = dealToDealer();
+
+        const initialState = new Map({
+            &quot;dealerHand&quot;: new List(),
+            &quot;deck&quot;: newDeck()
+        });
+
+        const nextState = reducer(initialState, action);
+
+        it(&#39;adds one card to dealer hand&#39;, () =&gt; {
+            expect(nextState.get(&#39;dealerHand&#39;).size).to
+                .eq(initialState.get(&#39;dealerHand&#39;).size + 1);
+        });
+
+        it(&#39;removes one card from deck&#39;, () =&gt; {
+            expect(nextState.get(&#39;deck&#39;).size).to
+                .eq(initialState.get(&#39;deck&#39;).size - 1);
+        });
+    });
+
+    describe(&quot;STAND&quot;, () =&gt; {
+        // ...
+    });
+});
+</code></pre>
+
+<p>We&#39;ll need to write an action creator for <code>DEAL_TO_DEALER</code>:</p>
+
+<div class="fp">app/action_creators.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+export function dealToDealer(seed=new Date().getTime()) {
+    return { &quot;type&quot;: &quot;DEAL_TO_DEALER&quot;, seed };
+}
+</code></pre>
+
+<p>We can also eliminate the entire &quot;dealer drawing&quot; <code>describe</code> block from the <code>STAND</code> test.</p>
+
+<p>Next, we need to split up the <code>STAND</code> test so that the &quot;determining winner&quot; block is in a <code>DETERMINE_WINNER</code> test. We can also remove all the logic related to stubbing out the <code>score</code> function from the <code>STAND</code> test and put it in the <code>DETERMINE_WINNER</code> test.</p>
+
+<p>This is what my tests for <code>STAND</code> and <code>DETERMINE_WINNER</code> look like after moving things around:</p>
+
+<div class="fp">test/reducer_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+describe(&#39;reducer&#39;, () =&gt; {
+    // ...
+
+    describe(&quot;STAND&quot;, () =&gt; {
+        const action = stand();
+
+        const initialState = fromJS({
+            &quot;hasStood&quot;: false,
+            dealerHand: [{ suit: &#39;S&#39;, rank: &#39;K&#39; }, {}]
+        });
+
+        const nextState = reducer(initialState, action);
+
+        it(&#39;sets hasStood to true&#39;, () =&gt; {
+            expect(nextState.get(&#39;hasStood&#39;)).to.eq(true);
+        });
+
+        it(&#39;removes dummy card&#39;, () =&gt; {
+            expect(nextState.get(&#39;dealerHand&#39;).size).to
+                .eq(1);
+        });
+    });
+
+    describe(&quot;DETERMINE_WINNER&quot;, () =&gt; {
+        const action = determineWinner();
+        const cardUtils = { };
+        const stubbedReducer = proxyquire(
+            &#39;../app/reducer.js&#39;, {
+                &#39;./lib/cards&#39;: cardUtils
+            }
+        ).default;
+
+        const initialState = new Map({
+            &quot;hasStood&quot;: false,
+            dealerHand: new List(),
+            playerHand: new List(),
+            winCount: 11,
+            lossCount: 15
+        });
+
+        beforeEach( () =&gt; {
+            cardUtils.score = sinon.stub();
+            cardUtils.deal = sinon.stub();
+            cardUtils.deal.returns([new List(), new List()]);
+        });
+
+        it(&#39;increments win count and sets playerWon if player wins&#39;, () =&gt; {
+            cardUtils.score.onCall(0).returns(17); // dealer drawing check
+            cardUtils.score.onCall(1).returns(20); // user score
+            cardUtils.score.onCall(2).returns(17); // dealer score
+
+            const nextState = stubbedReducer(initialState, action);
+
+            expect(nextState.get(&#39;winCount&#39;)).to.eq(initialState.get(&#39;winCount&#39;) + 1);
+            expect(nextState.get(&#39;lossCount&#39;)).to.eq(initialState.get(&#39;lossCount&#39;));
+            expect(nextState.get(&#39;playerWon&#39;)).to.eq(true);
+        });
+
+        it(&#39;increments win count and sets playerWon if dealer busts&#39;, () =&gt; {
+            cardUtils.score.onCall(0).returns(17); // dealer drawing check
+            cardUtils.score.onCall(1).returns(20); // user score
+            cardUtils.score.onCall(2).returns(22); // dealer score
+
+            const nextState = stubbedReducer(initialState, action);
+
+            expect(nextState.get(&#39;winCount&#39;)).to.eq(initialState.get(&#39;winCount&#39;) + 1);
+            expect(nextState.get(&#39;lossCount&#39;)).to.eq(initialState.get(&#39;lossCount&#39;));
+            expect(nextState.get(&#39;playerWon&#39;)).to.eq(true);
+        });
+
+        it(&#39;increments loss count and sets playerWon if dealer wins&#39;, () =&gt; {
+            cardUtils.score.onCall(0).returns(17); // dealer drawing check
+            cardUtils.score.onCall(1).returns(16); // user score
+            cardUtils.score.onCall(2).returns(17); // dealer score
+
+            const nextState = stubbedReducer(initialState, action);
+
+            expect(nextState.get(&#39;winCount&#39;)).to.eq(initialState.get(&#39;winCount&#39;));
+            expect(nextState.get(&#39;lossCount&#39;)).to.eq(initialState.get(&#39;lossCount&#39;) + 1);
+            expect(nextState.get(&#39;playerWon&#39;)).to.eq(false);
+        });
+
+        it(&#39;does not change counts if tie&#39;, () =&gt; {
+            cardUtils.score.onCall(0).returns(17); // dealer drawing check
+            cardUtils.score.onCall(1).returns(17); // user score
+            cardUtils.score.onCall(2).returns(17); // dealer score
+
+            const nextState = stubbedReducer(initialState, action);
+
+            expect(nextState.get(&#39;winCount&#39;)).to.eq(initialState.get(&#39;winCount&#39;));
+            expect(nextState.get(&#39;lossCount&#39;)).to.eq(initialState.get(&#39;lossCount&#39;));
+            expect(nextState.get(&#39;playerWon&#39;)).to.eq(undefined);
+        });
+    });
+});
+</code></pre>
+
+<p>We&#39;ll need a <code>determineWinner()</code> action creator.</p>
+
+<div class="fp">app/action_creators.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+export function determineWinner() {
+    return { &quot;type&quot;: &quot;DETERMINE_WINNER&quot; };
+}
+</code></pre>
+
+<p>We also no longer need the seed in the <code>STAND</code> action, because it&#39;s not doing anything random any more.</p>
+
+<div class="fp">app/action_creators.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">export function stand() {
+    return { &quot;type&quot;: &quot;STAND&quot; };
+}
+</code></pre>
+
+<p>Now it&#39;s time for the reducer code. First, let&#39;s add the new actions to our root reducer. We can also remove <code>action.seed</code> from the call to the <code>STAND</code> reducer helper:</p>
+
+<div class="fp">app/reducer.js</div>
+
+<pre data-line="12-16" class="line-numbers"><code class="language-js">// ...
+
+export default function(currentState=new Map(), action) {
+    switch(action.type) {
+        case &#39;SETUP_GAME&#39;:
+            return setupGame(currentState, action.seed);
+        case &#39;SET_RECORD&#39;:
+            return setRecord(currentState, action.wins, action.losses);
+        case &#39;DEAL_TO_PLAYER&#39;:
+            return dealToPlayer(currentState, action.seed);
+        case &#39;STAND&#39;:
+            return stand(currentState);
+        case &#39;DEAL_TO_DEALER&#39;:
+            return dealToDealer(currentState, action.seed);
+        case &#39;DETERMINE_WINNER&#39;:
+            return determineWinner(currentState);
+    }
+    return currentState;
+}
+</code></pre>
+
+<p>Now time to implement our new actions. Let&#39;s start with <code>DEAL_TO_DEALER</code>:</p>
+
+<div class="fp">app/reducer.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+const dealToDealer = (currentState, seed) =&gt; {
+    const [deck, newCard] = deal(
+        currentState.get(&#39;deck&#39;), 1, seed
+    );
+
+    const dealerHand = currentState
+        .get(&#39;dealerHand&#39;).push(newCard.get(0));
+
+    return currentState.merge(new Map({ deck, dealerHand }));
+};
+
+// ...
+</code></pre>
+
+<p>Next, let&#39;s split up <code>stand()</code> to create <code>determineWinner()</code>:</p>
+
+<div class="fp">app/reducer.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+const stand = (currentState, seed) =&gt; {
+    let dealerHand = currentState.get(&#39;dealerHand&#39;);
+
+    dealerHand = dealerHand.filter(
+        (element) =&gt; element != new Map()
+    );
+
+    let newState = new Map({
+        &quot;hasStood&quot;: true,
+        &quot;dealerHand&quot;: dealerHand
+    });
+
+    return currentState.merge(newState);
+};
+
+const determineWinner = (currentState) =&gt; {
+    const dealerHand = currentState.get(&#39;dealerHand&#39;);
+    const playerHand = currentState.get(&#39;playerHand&#39;);
+    let winCount = currentState.get(&#39;winCount&#39;);
+    let lossCount = currentState.get(&#39;lossCount&#39;);
+
+    const playerScore = score(playerHand);
+    const dealerScore = score(dealerHand);
+    let playerWon = undefined;
+
+    if(playerScore &gt; dealerScore || dealerScore &gt; 21) {
+        winCount += 1;
+        playerWon = true;
+    } else if(dealerScore &gt; playerScore) {
+        lossCount += 1;
+        playerWon = false;
+    }
+
+    const gameOver = true;
+
+    const newState = new Map({
+        dealerHand, winCount, lossCount,
+        gameOver, playerWon
+    });
+
+    return currentState.merge(newState);
+};
+
+// ...
+</code></pre>
+
+<p>Now all the tests except for the <code>DETERMINE_WINNER</code> tests should pass. Why are the <code>DETERMINE_WINNER</code> tests still failing?</p>
+
+<p>Walk through them line by line to try to figure it out.</p>
+
+<p>The answer has to do with the way we stubbed the <code>score</code> function.</p>
+
+<p>When these tests were for <code>STAND</code> we called <code>score()</code> at least one time to check if the dealer needed to deal. Now that we&#39;ve refactored the actions, we no longer make that extra call to <code>score()</code>. However, we set up our stubs as if the first call is still being made. To fix the tests, we need to remove the <code>onCall</code> from each stub (and remember to re-index the others!).</p>
+
+<p>Here are the new <code>DETERMINE_WINNER</code> tests -- all of which should pass!</p>
+
+<div class="fp">test/reducer.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+describe(&#39;reducer&#39;, () =&gt; {
+    // ...
+
+    describe(&quot;DETERMINE_WINNER&quot;, () =&gt; {
+        // ...
+
+        it(&#39;increments win count and sets playerWon if player wins&#39;, () =&gt; {
+            cardUtils.score.onCall(<mark>0</mark>).returns(20); // user score
+            cardUtils.score.onCall(<mark>1</mark>).returns(17); // dealer score
+
+            const nextState = stubbedReducer(initialState, action);
+
+            expect(nextState.get(&#39;winCount&#39;)).to.eq(initialState.get(&#39;winCount&#39;) + 1);
+            expect(nextState.get(&#39;lossCount&#39;)).to.eq(initialState.get(&#39;lossCount&#39;));
+            expect(nextState.get(&#39;playerWon&#39;)).to.eq(true);
+        });
+
+        it(&#39;increments win count and sets playerWon if dealer busts&#39;, () =&gt; {
+            cardUtils.score.onCall(<mark>0</mark>).returns(20); // user score
+            cardUtils.score.onCall(<mark>1</mark>).returns(22); // dealer score
+
+            const nextState = stubbedReducer(initialState, action);
+
+            expect(nextState.get(&#39;winCount&#39;)).to.eq(initialState.get(&#39;winCount&#39;) + 1);
+            expect(nextState.get(&#39;lossCount&#39;)).to.eq(initialState.get(&#39;lossCount&#39;));
+            expect(nextState.get(&#39;playerWon&#39;)).to.eq(true);
+        });
+
+        it(&#39;increments loss count and sets playerWon if dealer wins&#39;, () =&gt; {
+            cardUtils.score.onCall(<mark>0</mark>).returns(16); // user score
+            cardUtils.score.onCall(<mark>1</mark>).returns(17); // dealer score
+
+            const nextState = stubbedReducer(initialState, action);
+
+            expect(nextState.get(&#39;winCount&#39;)).to.eq(initialState.get(&#39;winCount&#39;));
+            expect(nextState.get(&#39;lossCount&#39;)).to.eq(initialState.get(&#39;lossCount&#39;) + 1);
+            expect(nextState.get(&#39;playerWon&#39;)).to.eq(false);
+        });
+
+        it(&#39;does not change counts if tie&#39;, () =&gt; {
+            cardUtils.score.onCall(<mark>0</mark>).returns(17); // user score
+            cardUtils.score.onCall(<mark>1</mark>).returns(17); // dealer score
+
+            const nextState = stubbedReducer(initialState, action);
+
+            expect(nextState.get(&#39;winCount&#39;)).to.eq(initialState.get(&#39;winCount&#39;));
+            expect(nextState.get(&#39;lossCount&#39;)).to.eq(initialState.get(&#39;lossCount&#39;));
+            expect(nextState.get(&#39;playerWon&#39;)).to.eq(undefined);
+        });
+    });
+});
+</code></pre>
+
+<p>Now we can set up our worker saga (<code>*onStand()</code>) to dispatch these new actions. Our saga is going to need to get data from the application state to determine when to stop giving cards to the dealer. To do this, we will use a <code>select</code> effect which will grab data from the application state. To use <code>select</code>, we have to write a helper &quot;selector&quot; function that takes the state object as a parameter and returns the piece of state that we want to see.</p>
+
+<p>Here is how we will use <code>select</code> effects and selectors to get data from state in our saga:</p>
+
+<div class="fp">app/sagas/index.js</div>
+
+<pre data-line="3,4,6,9,10" class="line-numbers"><code class="language-js">import &#39;babel-polyfill&#39;;
+import { takeLatest } from &#39;redux-saga&#39;;
+import { select } from &#39;redux-saga/effects&#39;;
+import { score } from &#39;../lib/cards&#39;;
+
+const getDealerHand = (state) =&gt; state.get(&#39;dealerHand&#39;);
+
+export function* onStand() {
+    let dealerHand = yield select(getDealerHand);
+    console.log(score(dealerHand));
+}
+
+// ...
+</code></pre>
+
+<p>If you refresh your application and hit &quot;stand&quot;, you should see the score of the dealer&#39;s (one) card printed to the console.</p>
+
+<p>To get the dealer to draw a new card, we are going to use the <code>put</code> effect, which enables a saga to dispatch actions to the reducer.</p>
+
+<p>Since we always want the dealer to draw a new card to replace the dummy card, we can use <code>put</code> like this:</p>
+
+<div class="fp">app/sagas/index.js</div>
+
+<pre data-line="5,12-14" class="line-numbers"><code class="language-js">import &#39;babel-polyfill&#39;;
+import { takeLatest } from &#39;redux-saga&#39;;
+import { select<mark>, put</mark> } from &#39;redux-saga/effects&#39;;
+import { score } from &#39;../lib/cards&#39;;
+import { dealToDealer } from &#39;../action_creators&#39;;
+
+const getDealerHand = (state) =&gt; state.get(&#39;dealerHand&#39;);
+
+export function* onStand() {
+    let dealerHand = yield select(getDealerHand);
+    console.log(score(dealerHand));
+    yield put(dealToDealer());
+    dealerHand = yield select(getDealerHand);
+    console.log(score(dealerHand));
+}
+
+export default function*() {
+    yield takeLatest(&#39;STAND&#39;, onStand);
+}
+</code></pre>
+
+<p>Now we should see the dealer&#39;s score before drawing a card and the dealer&#39;s score after drawing a card. The <code>DEAL_TO_DEALER</code> action will also show up in the Redux DevTools.</p>
+
+<p>The last type of effect we need is the <code>call</code> effect, which allows a saga to run a function that returns a promise and stops the saga until the promise is resolved. Redux Saga provides us with a built-in <code>delay</code> function that returns a promise that isn&#39;t resolved for a fixed amount of time (passed as a parameter).</p>
+
+<p>Here&#39;s what a saga with <code>call</code> and <code>delay()</code> looks like:</p>
+
+<div class="fp">app/sagas/index.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">import &#39;babel-polyfill&#39;;
+import { takeLatest<mark>, delay</mark> } from &#39;redux-saga&#39;;
+import { select, put<mark>, call</mark> } from &#39;redux-saga/effects&#39;;
+import { score } from &#39;../lib/cards&#39;;
+import { dealToDealer } from &#39;../action_creators&#39;;
+
+const getDealerHand = (state) =&gt; state.get(&#39;dealerHand&#39;);
+
+export function* onStand() {
+    yield call(delay, 5000);
+    console.log(&#39;Patience is a virtue&#39;);
+}
+</code></pre>
+
+<p>Refresh your application and when you hit &quot;stand&quot;, wait for 5 seconds and you should see a message in the console.</p>
+
+<p>Now that we&#39;ve seen commonly used saga effects, it&#39;s time to actually implement the saga.</p>
+
+<p>Here is an outline of what we want the worker saga to do:</p>
+
+<ul>
+<li>Deal a card to the dealer</li>
+<li>Check the score of dealer.
+
+<ul>
+<li>If the score is &gt;= 17, <code>put</code> a <code>DETERMINE_WINNER</code> action</li>
+<li>If the score is &lt; 17, <code>call</code> <code>delay(750)</code> and repeat</li>
+</ul></li>
+</ul>
+
+<p>Let&#39;s write the saga first and then write the test. Writing tests for sagas can be tricky because you need to know exactly what the objects being yielded look like to write a test for them. After you have some practice writing the tests for sagas, TDD becomes more natural.</p>
+
+<div class="fp">app/sagas/index.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">import &#39;babel-polyfill&#39;;
+import { takeLatest, delay } from &#39;redux-saga&#39;;
+import { select, put, call } from &#39;redux-saga/effects&#39;;
+import { score } from &#39;../lib/cards&#39;;
+import { dealToDealer, determineWinner } from &#39;../action_creators&#39;;
+
+const getDealerHand = (state) =&gt; state.get(&#39;dealerHand&#39;);
+
+export function* onStand() {
+    let dealerHand;
+    while(true) {
+        yield put(dealToDealer());
+        dealerHand = yield select(getDealerHand);
+        if(score(dealerHand) &gt;= 17) {
+            break;
+        }
+        else {
+            yield call(delay, 750);
+        }
+    }
+    yield put(determineWinner());
+}
+
+export default function*() {
+    yield takeLatest(&#39;STAND&#39;, onStand);
+}
+</code></pre>
+
+<p>Try it out in the browser! You&#39;ll see the dealer draw one card at a time. Experiment with different delay amounts -- the next feature we add will allow the user to choose how fast the dealer draws.</p>
+
+<p>Let&#39;s look at how to test this saga. First, let&#39;s print each effect it yields so we can figure out how to write the test. We&#39;re going to use <code>proxyquire</code> to control the values we get from <code>score()</code>. Let&#39;s start with the situation where the dealer does not have to draw after replacing the dummy card:</p>
+
+<div class="fp">test/sagas/index_spec.js</div>
+
+<pre data-line="3-4" class="line-numbers"><code class="language-js">import { expect } from &#39;chai&#39;;
+import watchActions from &#39;../../app/sagas/index&#39;;
+import proxyquire from &#39;proxyquire&#39;;
+import sinon from &#39;sinon&#39;;
+
+describe(&#39;sagas&#39;, () =&gt; {
+    // ...
+
+    describe(&#39;onStand()&#39;, () =&gt; {
+        const cardUtils = {};
+        const stubbedSagas = proxyquire(
+            &#39;../../app/sagas/index&#39;,
+            { &#39;../lib/cards&#39; : cardUtils }
+        );
+
+        let generator;
+
+        beforeEach( () =&gt; {
+            cardUtils.score = sinon.stub();
+            generator = stubbedSagas.onStand();
+        });
+
+        context(&#39;when dealer does not draw&#39; , () =&gt; {
+            it(&#39;??&#39;, () =&gt; {
+                cardUtils.score.returns(21);
+                let next;
+                while(true) {
+                    next = generator.next();
+                    console.log(next);
+                    if(next.done) break;
+                }
+            });
+        });
+    });
+});
+</code></pre>
+
+<p>You should see the following output in the console when you run the test:</p>
+
+<pre data-line="" class=""><code class="language-text">{ value:
+   { &#39;@@redux-saga/IO&#39;: true,
+     PUT: { channel: null, action: [Object] } },
+  done: false }
+{ value:
+   { &#39;@@redux-saga/IO&#39;: true,
+     SELECT: { selector: [Function: getDealerHand], args: [] } },
+  done: false }
+{ value:
+   { &#39;@@redux-saga/IO&#39;: true,
+     PUT: { channel: null, action: [Object] } },
+  done: false }
+{ value: undefined, done: true }
+</code></pre>
+
+<p>First, the generator yields a <code>put</code> effect (to deal the dummy card). Next, the generator yields a <code>select</code> effect (to get the new dealerHand). Then, the generator yields another <code>put</code> effect (for <code>DETERMINE_WINNER</code>), and finally the generator yields an object with <code>done: true</code>.</p>
+
+<p>We can write tests for the actual actions that are part of the <code>put</code> effects. Let&#39;s print out the actions by adding this line to the test after <code>console.log(next);</code></p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">if(next.value.PUT) console.log(next.value.PUT.action);
+</code></pre>
+
+<p>Now the test output reads:</p>
+
+<pre data-line="" class=""><code class="language-text">{ value:
+   { &#39;@@redux-saga/IO&#39;: true,
+     PUT: { channel: null, action: [Object] } },
+  done: false }
+{ type: &#39;DEAL_TO_DEALER&#39;, seed: 1464382217894 }
+{ value:
+   { &#39;@@redux-saga/IO&#39;: true,
+     SELECT: { selector: [Function: getDealerHand], args: [] } },
+  done: false }
+{ value:
+   { &#39;@@redux-saga/IO&#39;: true,
+     PUT: { channel: null, action: [Object] } },
+  done: false }
+{ type: &#39;DETERMINE_WINNER&#39; }
+{ value: undefined, done: true }
+</code></pre>
+
+<p>We can get they type of action dispatched or the name of the selector function with code like:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">generator.next().value.PUT.action.type
+generator.next().value.SELECT.selector.name
+</code></pre>
+
+<p>Instead of typing that out a bunch of times, we&#39;ll add some helper methods to our test:</p>
+
+<div class="fp">test/sagas/index_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+const actionType = (next) =&gt; {
+    return next.value.PUT.action.type;
+};
+
+const selectorName = (next) =&gt; {
+    return next.value.SELECT.selector.name;
+};
+
+describe(&#39;sagas&#39;, () =&gt; {
+
+});
+</code></pre>
+
+<p>Now we&#39;re ready for the actual tests!</p>
+
+<div class="fp">test/sagas/index_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+describe(&#39;sagas&#39;, () =&gt; {
+    // ...
+
+    describe(&#39;onStand()&#39;, () =&gt; {
+        // ...
+
+        context(&#39;when dealer does not draw&#39; , () =&gt; {
+            it(&#39;yields correct effects&#39;, () =&gt; {
+                cardUtils.score.returns(21);
+
+                expect(actionType(generator.next())).to
+                    .eq(&#39;DEAL_TO_DEALER&#39;);
+
+                expect(selectorName(generator.next())).to
+                    .eq(&#39;getDealerHand&#39;);
+
+                expect(actionType(generator.next())).to
+                    .eq(&#39;DETERMINE_WINNER&#39;);
+
+                expect(generator.next().done).to
+                    .eq(true);
+            });
+        });
+    });
+});
+</code></pre>
+
+<p>We should also test the case where the dealer has to draw (after replacing the dummy card) and we have to <code>call</code> <code>delay</code>. If we print out <code>generator.next()</code>, for the call action, we end up with an object like this:</p>
+
+<pre data-line="" class=""><code class="language-text">{ &#39;@@redux-saga/IO&#39;: true,
+  CALL: { context: null, fn: [Function: delay], args: [ 750 ] } }
+</code></pre>
+
+<p>So we will add a helper function called <code>callFnName()</code> that will give us the name of the function the <code>call</code> effect yields.</p>
+
+<p>Here is the helper method and the test:</p>
+
+<div class="fp">test/sagas/index_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+const callFnName = (next) =&gt; {
+    return next.value.CALL.fn.name;
+};
+
+describe(&#39;sagas&#39;, () =&gt; {
+    // ...
+
+    describe(&#39;onStand()&#39;, () =&gt; {
+        // ...
+
+        context(&#39;when dealer does not draw&#39;, () =&gt; {
+            // ...
+        });
+
+        context(&#39;when dealer draws&#39; , () =&gt; {
+            it(&#39;yields correct effects&#39;, () =&gt; {
+                cardUtils.score.onCall(0).returns(10);
+                cardUtils.score.onCall(1).returns(21);
+
+                expect(actionType(generator.next())).to
+                    .eq(&#39;DEAL_TO_DEALER&#39;);
+
+                expect(selectorName(generator.next())).to
+                    .eq(&#39;getDealerHand&#39;);
+
+                expect(callFnName(generator.next())).to
+                    .eq(&#39;delay&#39;);
+
+                expect(actionType(generator.next())).to
+                    .eq(&#39;DEAL_TO_DEALER&#39;);
+
+                expect(selectorName(generator.next())).to
+                    .eq(&#39;getDealerHand&#39;);
+
+                expect(actionType(generator.next())).to
+                    .eq(&#39;DETERMINE_WINNER&#39;);
+
+                expect(generator.next().done).to
+                    .eq(true);
+            });
+        });
+    });
+});
+</code></pre>
+
+<p>At this point all the tests should pass, and we&#39;ve successfully completed this feature!</p>
+
+<p>One thing to note is that, by default, sagas run asynchronously. This means that while the saga is dispatching <code>DEAL_TO_DEALER</code> actions, the rest of the page will still function like normal and the reducer can receive other actions. We will see an example of this in the next section.</p>
+
+<h3>Settings</h3>
+
+<p>As mentioned above, we want the user to be able to choose how fast the dealer draws cards (instead of the default value of 750). To do this, we will set up a new reducer for our settings state variables and re-structure the state tree to keep the game variables separate from the setting variables.</p>
+
+<h3>combineReducers</h3>
+
+<p>As React applications go larger, it is common to split up reducer logic into multiple files and functions. It&#39;s also common to have different top level properties in the store. So far, we have kept all our reducer logic in <code>app/reducer.js</code>. This was okay because it all pertained to a single part of the application state: the game.</p>
+
+<p>Our application store currently looks something like this (keys only):</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">Map({
+    winCount,
+    lossCount,
+    deck,
+    playerHand,
+    dealerHand,
+    hasStood,
+    gameOver
+})
+</code></pre>
+
+<p>We&#39;ll eventually want to add some settings to the application state. It would be best to keep these separate from the game state. To do this, we can transform our store to look like this:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">{
+    settings: Map({
+        dealerDrawSpeed
+    }),
+    game: Map({
+        winCount,
+        lossCount,
+        deck,
+        playerHand,
+        dealerHand,
+        hasStood,
+        gameOver
+    })
+}
+</code></pre>
+
+<p>Why are we using a plain JS object instead of an immutable map for the root of the store? Certain packages (such as React-Router-Redux), are not compatible with ImmutableJS stores. The main advantage to using ImmutableJS objects in the store is so that you don&#39;t accidentally mutate state in the reducers. However, after we have multiple reducers (which we later combine with <code>combineReducers</code>), the individual reducers won&#39;t see the full state tree -- only their respective parts of it. Since we will still be dealing with ImmutableJS objects in the state that our reducers use, we don&#39;t have to worry about accidentally mutating state. This mitigates the downside to keeping our store in a plain JS object.</p>
+
+<p>We will just need to change a few things to refactor our current reducer to a &quot;game reducer&quot;. After we refactor, we&#39;ll be able to add as many new reducers as we want very easily.</p>
+
+<p>Let&#39;s start by moving the current reducer file from <code>app/reducer.js</code> to <code>app/reducers/game.js</code>.</p>
+
+<p>Since we&#39;ve changed the directory, we&#39;ll have to change the import path for cards.js:</p>
+
+<div class="fp">app/reducers/game.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+import { newDeck, deal, score } from &#39;.<mark>.</mark>/lib/cards&#39;;
+//...
+</code></pre>
+
+<p>We also need to move the test file and make a few changes to reflect the new paths. First, move <code>test/reducer.js</code> to <code>test/reducers/game_spec.js</code>. Then change the import paths:</p>
+
+<div class="fp">test/reducers/game_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">import { expect } from &#39;chai&#39;;
+import { Map, List, fromJS } from &#39;immutable&#39;;
+import { setupGame, setRecord,
+         dealToPlayer, stand,
+         dealToDealer, determineWinner
+       } from &#39;../<mark>../</mark>app/action_creators&#39;;
+import { newDeck } from &#39;../<mark>../</mark>app/lib/cards&#39;;
+import proxyquire from &#39;proxyquire&#39;;
+import sinon from &#39;sinon&#39;;
+
+import reducer from &#39;../<mark>../</mark>app/reducers/game&#39;;
+
+</code></pre>
+
+<p>Because we&#39;re using proxyquire twice in this program here, we need to change the path to the reducer and the path to the <code>cards.js</code> file relative to the new reducer path. To make this easier in case of any future moves, let&#39;s store the paths in two constants at the beginning of test file:</p>
+
+<div class="fp">test/reducers/game_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+const reducerPath = &#39;../../app/reducers/game&#39;;
+const cardsPath = &#39;../lib/cards&#39;;
+
+describe(&#39;reducer&#39;, () =&gt; {
+    // ...
+});
+</code></pre>
+
+<p>Our two <code>proxyquire</code> calls can now be replaced with this:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">const stubbedReducer = proxyquire(
+    reducerPath,
+    {[cardsPath]: cardUtils}
+).default;
+</code></pre>
+
+<p>Now all your tests should be passing again.</p>
+
+<p>To get the rest of the application to use our new reducer correctly, we need to create a file where we will combine all of our reducers into a single reducer. We&#39;ll do this in <code>app/reducers/index.js</code>. Right now we only have one reducer, so this is a little underwhelming.</p>
+
+<div class="fp">app/reducers/index.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">import { combineReducers } from &#39;redux&#39;;
+
+import game from &#39;./game&#39;;
+
+export default combineReducers({
+    game
+});
+</code></pre>
+
+<p>We&#39;ll have to change the location we import the reducer in <code>app/index.js</code>:</p>
+
+<div class="fp">app/index.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+import reducer from &#39;./reducer<mark>s/index</mark>&#39;;
+// ...
+</code></pre>
+
+<p>Next, we need to change the <code>mapStateToProps</code> functions to read the game state variables from the <code>game</code> key in the store.</p>
+
+<p>Let&#39;s start with <code>&lt;App /&gt;</code>:</p>
+
+<div class="fp">app/components/app.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+function mapStateToProps(state) {
+    return {
+        playerHand: state.<mark>game.</mark>get(&#39;playerHand&#39;),
+        dealerHand: state.<mark>game.</mark>get(&#39;dealerHand&#39;),
+        gameOver: state.<mark>game.</mark>get(&#39;gameOver&#39;),
+        playerWon: state.<mark>game.</mark>get(&#39;playerWon&#39;)
+    };
+}
+
+// ...
+</code></pre>
+
+<p>Similarly for <code>&lt;Info /&gt;</code>:</p>
+
+<div class="fp">app/components/info.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+const mapStateToProps = (state) =&gt; {
+    return {
+        winCount: state.<mark>game.</mark>get(&#39;winCount&#39;),
+        lossCount: state.<mark>game.</mark>get(&#39;lossCount&#39;),
+        hasStood: state.<mark>game.</mark>get(&#39;hasStood&#39;),
+        gameOver: state.<mark>game.</mark>get(&#39;gameOver&#39;)
+    };
+};
+
+// ...
+</code></pre>
+
+<p>The last thing left to do is to change the selector used to get the dealer hand from state in the sagas.</p>
+
+<div class="fp">app/sagas/index.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+const getDealerHand = (state) =&gt; state.<mark>game.</mark>get(&#39;dealerHand&#39;);
+
+// ...
+</code></pre>
+
+<p>Now if you view the page in the browser, everything will be normal.</p>
+
+<h3>Settings Reducer</h3>
+
+<p>With our new reducer setup, it will be very simple to create a new reducer for settings. Let&#39;s do that now:</p>
+
+<div class="fp">app/reducers/settings.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">import { Map } from &#39;immutable&#39;;
+
+export default function(currentState=new Map(), action) {
+    return currentState;
+}
+</code></pre>
+
+<p>We want a <code>SET_SPEED</code> action that will change the speed at which the dealer draws cards. Let&#39;s first write the test for the reducer:</p>
+
+<div class="fp">test/reducers/settings_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">import { expect } from &#39;chai&#39;;
+import { Map } from &#39;immutable&#39;;
+
+import reducer from &#39;../../app/reducers/settings&#39;;
+import { setSpeed } from &#39;../../app/action_creators&#39;;
+
+describe(&#39;settings reducer&#39;, () =&gt; {
+    describe(&#39;SET_SPEED&#39;, () =&gt; {
+        const action = setSpeed(100);
+
+        context(&#39;with undefined initial state&#39;, () =&gt; {
+            const initialState = undefined;
+            it(&#39;sets speed&#39;, () =&gt; {
+                const nextState = reducer(initialState, action);
+                expect(nextState.get(&#39;speed&#39;)).to.eq(100);
+            });
+        });
+
+        context(&#39;with existing initial state&#39;, () =&gt; {
+            const initialState = new Map({speed: 750});
+            it(&#39;sets speed&#39;, () =&gt; {
+                const nextState = reducer(initialState, action);
+                expect(nextState.get(&#39;speed&#39;)).to.eq(100);
+            });
+        });
+    });
+});
+</code></pre>
+
+<p>We&#39;ll also need an action creator:</p>
+
+<div class="fp">app/action_creators.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+export function setSpeed(speed) {
+    return { &quot;type&quot;: &quot;SET_SPEED&quot;, speed };
+}
+</code></pre>
+
+<p>And finally the code to pass the test:</p>
+
+<div class="fp">app/reducers/settings.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+const setSpeed = (currentState, newSpeed) =&gt; {
+    return currentState.set(&#39;speed&#39;, newSpeed);
+};
+
+export default function(currentState=new Map(), action) {
+    switch(action.type) {
+        case &#39;SET_SPEED&#39;:
+            return setSpeed(currentState, action.speed);
+    }
+    return currentState;
+}
+</code></pre>
+
+<p>The last thing to do is combine our settings reducer with the game reducer. We&#39;ll do this in <code>app/reducers/index.js</code>:</p>
+
+<div class="fp">app/reducers/index.js</div>
+
+<pre data-line="4" class="line-numbers"><code class="language-js">import { combineReducers } from &#39;redux&#39;;
+
+import game from &#39;./game&#39;;
+import settings from &#39;./settings&#39;;
+
+export default combineReducers({
+    game<mark>, settings</mark>
+});
+</code></pre>
+
+<p>Now that our reducer is hooked up, try dispatching SET<em>SPEED actions in the browser. You should see a new &quot;settings&quot; key added to the root state object, and your SET</em>SPEED actions should change the speed within the settings <code>Map</code>.</p>
+
+<p>To make our speed setting actually do something, we&#39;ll need to change the saga that deals cards to the dealer. At the beginning of the <code>onStand</code> saga, we will <code>select</code> the speed from the state.</p>
+
+<p>We need to change the tests for this saga to account for this extra step. Simply add this expect statement to each of the saga tests we wrote previously:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">expect(selectorName(generator.next())).to
+    .eq(&#39;getSpeed&#39;);
+</code></pre>
+
+<p>Now we can make these tests pass and have the saga <code>delay()</code> the correct amount between each card by making the following changes to the saga:</p>
+
+<div class="fp">app/sagas/index.js</div>
+
+<pre data-line="4,7" class="line-numbers"><code class="language-js">// ...
+
+const getDealerHand = (state) =&gt; state.game.get(&#39;dealerHand&#39;);
+const getSpeed = (state) =&gt; state.settings.get(&#39;speed&#39;);
+
+export function* onStand() {
+    const dealSpeed = yield select(getSpeed);
+    let dealerHand;
+    while(true) {
+        yield put(dealToDealer());
+        dealerHand = yield select(getDealerHand);
+        if(score(dealerHand) &gt;= 17) {
+            break;
+        }
+        else {
+            yield call(delay, <mark>dealSpeed</mark>);
+        }
+    }
+    yield put(determineWinner());
+}
+
+export default function*() {
+    yield takeLatest(&#39;STAND&#39;, onStand);
+}
+</code></pre>
+
+<p>The tests should pass and if you change the speed with SET_SPEED actions in the Redux DevTools, you can make the cards appear faster or slower.</p>
+
+<p>In the next step, we&#39;ll create a settings page on the application that will allow the user to choose the speed using radio buttons.</p>
+
+<h3>Settings Page</h3>
+
+<p>If we were to create a new page in a Rails application, we would have to set up a new route, a new controller method, and a new view file. When the user clicks on the link to the settings page, the browser would have to reload the entire page and all of the front-end application state would be lost in the browser.</p>
+
+<p>There is a React library called React Router that offers us the same functionality as a new route/controller/view in Rails. React Router works by deciding which components to render based on the URL typed into the browser window. When the user clicks on a link to a new route, React router just swaps which components are being displayed and the user only has to wait for the new components to render (a trivial amount of time for small applications) rather than sending a request to a server and having the browser process the response from scratch. Another advantage is that the application is not lost when the page changes. This means that if the user decides to visit the settings page in the middle of a blackjack game, the game will still be in the same state after they change the settings and return to the game page.</p>
+
+<p>There is a library called React-Router-Redux that makes React Router send its events to the Redux store so they will show up in the DevTools and make debugging easier.</p>
+
+<p>-- Incomplete -- work in progress</p>
+
+                    
+                        <hr />
+                        <p>Eloquently is a recruiting firm. We also host workshops that teach web development and career skills. If you are looking for a job or are interested in joining our web development workshops, please <a href="/index#contact">contact us</a>!</p>
+
+<p>We put together some <a href="/guides/index">guides</a> for participants in our workshops. Feel free to use them. If you see any errors, please submit an issue on our <a href="https://github.com/eloquently/eloquently.github.io">github repository</a>.</p>
+
+<p>These guides are a work in progress. If you see any errors or have a suggestion for a better way to do something, please <a href="/index#contact">let us know</a>.</p>
+
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="push"></div>
+    </div>
+
+    <section id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                &copy; 2016 Eloquently LLC
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- jQuery -->
+<script src="/js/jquery.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Plugin JavaScript -->
+<script src="/js/jquery.easing.min.js"></script>
+<script src="/js/jquery.fittext.js"></script>
+<script src="/js/wow.min.js"></script>
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73351128-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    <script async src="//genius.codes"></script>
+</body>
+
+</html>
