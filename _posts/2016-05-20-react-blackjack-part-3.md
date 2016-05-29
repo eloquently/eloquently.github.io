@@ -695,6 +695,7 @@ To finish up, we just need to change the component that is rendered in our `App`
 <div class="fp">app/components/app.js</div>
 ```jsx
 // ...
+import { GameOverMessage<mark>Container</mark> } from './game_over_message';
 
 export class App extends React.Component {
     render() {
