@@ -1277,7 +1277,7 @@ const stand = (currentState, seed) => {
 
 Now try hitting "stand" in the browser. You should see the dealer get some cards.
 
-The last step is to decide who the winner is. We want to test four cases: the player has a higher score than the dealer, the dealer has a higher score than the player and the dealer's score is 21 or lower, the dealer has a higher score than the player and the dealer's score is higher than 21, and the dealer and player have the same score. We'll keep using stubs to create the different scenarios we want to test. Now that we have the stubbing framework set up, they will be much easier to use.
+The last step is to decide who the winner is. We want to test four cases: the player has a higher score than the dealer, the dealer has a higher score than the player and the dealer's score is 21 or lower, the dealer has a higher score than the player and the dealer's score is higher than 21, and the dealer and player have the same score. We'll keep using stubs to create the different scenarios we want to test.
 
 <div class="fp">spec/reducer_spec.js</div>
 ```js
