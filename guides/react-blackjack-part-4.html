@@ -1181,7 +1181,7 @@ const getDealerHand = (state) =&gt; state.<mark>game.</mark>get(&#39;dealerHand&
 
 <p>Now if you view the page in the browser, everything will be normal.</p>
 
-<h3>Settings Reducer</h3>
+<h4>Settings Reducer</h4>
 
 <p>With our new reducer setup, it will be very simple to create a new reducer for settings. Let&#39;s do that now:</p>
 
@@ -1313,6 +1313,28 @@ export default function*() {
 
 <p>The tests should pass and if you change the speed with SET_SPEED actions in the Redux DevTools, you can make the cards appear faster or slower.</p>
 
+<p>Right now the speed state variable is initially undefined. Let&#39;s fix that by adding an initial state to our store:</p>
+
+<div class="fp">app/index.js</div>
+
+<pre data-line="2,6" class="line-numbers"><code class="language-js">// ...
+import { Map } from &#39;immutable&#39;;
+
+// ...
+
+const initialState = { settings: new Map({speed: 750}) };
+
+// ...
+
+const store = createStore(reducer, <mark>initialState</mark>, compose(
+    applyMiddleware(sagaMiddleware),
+    window.devToolsExtension ?
+        window.devToolsExtension() : f =&gt; f
+));
+
+// ...
+</code></pre>
+
 <p>In the next step, we&#39;ll create a settings page on the application that will allow the user to choose the speed using radio buttons.</p>
 
 <h3>Settings Page</h3>
@@ -1323,7 +1345,449 @@ export default function*() {
 
 <p>There is a library called React-Router-Redux that makes React Router send its events to the Redux store so they will show up in the DevTools and make debugging easier.</p>
 
-<p>-- Incomplete -- work in progress</p>
+<p>Let&#39;s install the package first:</p>
+
+<pre data-line="" class=""><code class="language-text">npm install --save react-router-redux@4.0.4
+</code></pre>
+
+<p>Next, we need to add the routing reducer to our combined reducer:</p>
+
+<div class="fp">app/reducers/index.js</div>
+
+<pre data-line="2,3" class="line-numbers"><code class="language-js">// ...
+import { routerReducer as routing }
+    from &#39;react-router-redux&#39;;
+
+// ...
+
+export default combineReducers({
+    game, settings<mark>, routing</mark>
+});
+</code></pre>
+
+<p>Then we&#39;ll need to import the router, connect the router history object with our application store, and wrap our components in router components. We&#39;ll do this all in <code>index.js</code>:</p>
+
+<div class="fp">app/index.js</div>
+
+<pre data-line="2,3,9,15-18" class="line-numbers"><code class="language-jsx">// ...
+import { Router, Route, hashHistory } from &#39;react-router&#39;;
+import { syncHistoryWithStore } from &#39;react-router-redux&#39;;
+
+// ...
+
+sagaMiddleware.run(watchActions);
+
+const history = syncHistoryWithStore(hashHistory, store);
+
+// ...
+
+ReactDOM.render(
+    &lt;Provider store={store}&gt;
+        &lt;Router history={history}&gt;
+            &lt;Route path=&quot;/&quot; component={AppContainer} /&gt;
+        &lt;/Router&gt;
+    &lt;/Provider&gt;,
+    document.getElementById(&#39;app&#39;)
+);
+</code></pre>
+
+<p>Now we&#39;re ready to make a settings page. We need a top-level component for this page, so let&#39;s call it <code>&lt;Settings /&gt;</code>.</p>
+
+<div class="fp">app/components/settings.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">import React from &#39;react&#39;;
+
+export class Settings extends React.Component {
+    render() {
+        return (
+            &lt;div id=&quot;settings&quot;&gt;
+                &lt;h1&gt;Settings&lt;/h1&gt;
+            &lt;/div&gt;
+        );
+    }
+}
+</code></pre>
+
+<p>To access this page, we need to add a route to it in <code>index.js</code>:</p>
+
+<div class="fp">app/index.js</div>
+
+<pre data-line="7" class="line-numbers"><code class="language-jsx">// ...
+
+ReactDOM.render(
+    &lt;Provider store={store}&gt;
+        &lt;Router history={history}&gt;
+            &lt;Route path=&quot;/&quot; component={AppContainer} /&gt;
+            &lt;Route path=&quot;/settings&quot; component={Settings} /&gt;
+        &lt;/Router&gt;
+    &lt;/Provider&gt;,
+    document.getElementById(&#39;app&#39;)
+);
+</code></pre>
+
+<p>Now if you type &#39;#/settings&#39; at the end of the URL you use to see your application, you&#39;ll see the settings page! Note: you could choose to use <code>browserHistory</code> rather than <code>hashHistory</code> so that you would visit &#39;/settings&#39; rather than &#39;#/settings&#39; like a normal web application. This requires additional server configuration that we are not going to deal with right now.</p>
+
+<p>React Router gives us a <code>&lt;Link&gt;</code> component that will generate an <code>&lt;a&gt;</code> tag that will send the user to the correct page when clicked (automatically adjusting for if you are using <code>hashHistory</code> or <code>browserHistory</code>). Let&#39;s add this component to create links between the <code>App</code> component and the <code>Settings</code> component.</p>
+
+<p>First <code>&lt;App /&gt;</code>:</p>
+
+<div class="fp">app/components/app.js</div>
+
+<pre data-line="2,14-16" class="line-numbers"><code class="language-jsx">// ...
+import { Link } from &#39;react-router&#39;;
+
+// ...
+
+export class App extends React.Component {
+    render() {
+        // ...
+
+        return (
+            &lt;div className=&quot;app&quot;&gt;
+                &lt;div className=&quot;links&quot;&gt;
+                    &lt;Link to=&quot;/settings&quot;&gt;Settings&lt;/Link&gt;
+                &lt;/div&gt;
+                &lt;h1&gt;React Blackjack&lt;/h1&gt;
+                // ...
+            &lt;/div&gt;
+        );
+    }
+}
+
+// ...
+</code></pre>
+
+<p>And then <code>&lt;Settings /&gt;</code>:</p>
+
+<div class="fp">app/components/settings.js</div>
+
+<pre data-line="2,9-11" class="line-numbers"><code class="language-jsx">import React from &#39;react&#39;;
+import { Link } from &#39;react-router&#39;;
+
+export class Settings extends React.Component {
+    render() {
+        return (
+            &lt;div id=&quot;settings&quot;&gt;
+                &lt;div class=&quot;links&quot;&gt;
+                    &lt;Link to=&quot;/&quot;&gt;Back to game&lt;/Link&gt;
+                &lt;/div&gt;
+                &lt;h1&gt;Settings&lt;/h1&gt;
+            &lt;/div&gt;
+        );
+    }
+}
+</code></pre>
+
+<p>Now you can use the links to navigate between your game and your settings page. You can also load the settings page directly by entering the URL from that page in the browser just like a normal application.</p>
+
+<h3>Dealer Speed Form</h3>
+
+<p>Now that we have a settings page, we can put a form on it that allows the user to choose how fast the dealer should deal.</p>
+
+<p>We are going to use a package called Redux Form that will take care a lot of the form logic for us. Specifically, Redux Form will dispatch actions to our reducer for various form events</p>
+
+<p>Let&#39;s install Redux Form:</p>
+
+<pre data-line="" class=""><code class="language-text">npm install --save redux-form@5.2.5
+</code></pre>
+
+<p>The first step is to add a form reducer in the same way we added the routing reducer:</p>
+
+<div class="fp">app/reducers/index.js</div>
+
+<pre data-line="4" class="line-numbers"><code class="language-js">import { combineReducers } from &#39;redux&#39;;
+import { routerReducer as routing }
+    from &#39;react-router-redux&#39;;
+import { reducer as form } from &#39;redux-form&#39;;
+
+import game from &#39;./game&#39;;
+import settings from &#39;./settings&#39;;
+
+export default combineReducers({
+    game, settings, routing<mark>, form</mark>
+});
+</code></pre>
+
+<p>Next, we&#39;ll create a form component in plain HTML, then we will use Redux Form to create a connected version of the form that will dispatch actions to the form router.</p>
+
+<p>This is what the pure <code>&lt;DealerSpeedForm /&gt;</code> will look like:</p>
+
+<div class="fp">app/components/dealer_speed_form.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">import React from &#39;react&#39;;
+
+export class DealerSpeedForm extends React.Component {
+    render() {
+        return (
+            &lt;div class=&quot;dealer-speed-form&quot;&gt;
+                &lt;form&gt;
+                    &lt;label&gt;
+                        Fast
+                        &lt;input type=&quot;radio&quot; name=&quot;speed&quot;
+                               value={250} /&gt;
+                    &lt;/label&gt;
+                    &lt;label&gt;
+                        Normal
+                        &lt;input type=&quot;radio&quot; name=&quot;speed&quot;
+                               value={750} /&gt;
+                    &lt;/label&gt;
+                    &lt;label&gt;
+                        Slow
+                        &lt;input type=&quot;radio&quot; name=&quot;speed&quot;
+                               value={1500} /&gt;
+                    &lt;/label&gt;
+                    &lt;input type=&quot;submit&quot; /&gt;
+                &lt;/form&gt;
+            &lt;/div&gt;
+        );
+    }
+}
+</code></pre>
+
+<p>We&#39;ll have to make some changes to the radio buttons, so it would be nice to DRY this code up a little bit. Before we refactor it, let&#39;s write a couple of tests to make sure nothing breaks as we change the code:</p>
+
+<div class="fp">test/components/dealer_speed_form_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">import React from &#39;react&#39;;
+import { expect } from &#39;chai&#39;;
+import { shallow } from &#39;enzyme&#39;;
+
+import { DealerSpeedForm }
+    from &#39;../../app/components/dealer_speed_form&#39;;
+
+describe(&#39;&lt;DealerSpeedForm /&gt;&#39;, () =&gt; {
+    const rendered = shallow(&lt;DealerSpeedForm /&gt;);
+
+    it(&#39;renders three radio buttons&#39;, () =&gt; {
+        expect(rendered).to.have.exactly(3)
+            .descendants(&#39;input[type=&quot;radio&quot;]&#39;);
+    });
+
+    it(&#39;gives correct speeds to radio buttons&#39;, () =&gt; {
+        const radios = rendered.find(&#39;input[type=&quot;radio&quot;]&#39;);
+        expect(radios.map((el) =&gt; el.prop(&#39;value&#39;))).to
+            .eql([250, 750, 1500]);
+    });
+});
+</code></pre>
+
+<p>Now let&#39;s put the possible speeds and labels into an array and loop through it to create the <code>&lt;label&gt;</code>s and <code>&lt;input&gt;</code>s:</p>
+
+<div class="fp">test/components/dealer_speed_form_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">// ...
+export class DealerSpeedForm extends React.Component {
+    render() {
+        return (
+            &lt;div class=&quot;dealer-speed-form&quot;&gt;
+                &lt;form&gt;
+                    {[
+                        [&quot;Fast&quot;, 250],
+                        [&quot;Normal&quot;, 750],
+                        [&quot;Slow&quot;, 1500]
+                     ].map((el) =&gt; (
+                        &lt;label key={el[1]}&gt;
+                            {el[0]}
+                            &lt;input type=&quot;radio&quot;
+                                   name=&quot;speed&quot;
+                                   value={el[1]} /&gt;
+                        &lt;/label&gt;
+                      ))
+                    }
+                    &lt;input type=&quot;submit&quot; /&gt;
+                &lt;/form&gt;
+            &lt;/div&gt;
+        );
+    }
+}
+</code></pre>
+
+<p>If everything went right, the tests we wrote should still pass.</p>
+
+<p>With the code structured this way, we will have a much easier time if we need to change the radio buttons (such as adding new props or CSS classes to them) or add/remove new speed options.</p>
+
+<p>Now let&#39;s write the code to create the connected version of the component:</p>
+
+<div class="fp">test/components/dealer_speed_form_spec.js</div>
+
+<pre data-line="2" class="line-numbers"><code class="language-jsx">import React from &#39;react&#39;;
+import { reduxForm } from &#39;redux-form&#39;;
+
+export class DealerSpeedForm extends React.Component {
+    // ...
+}
+
+export const DealerSpeedFormContainer = reduxForm({
+    form: &#39;dealerSpeed&#39;,
+    fields: [&#39;speed&#39;]
+})(DealerSpeedForm);
+</code></pre>
+
+<p>We need to give <code>reduxForm()</code> a name for the form. This can be anything as long as it&#39;s unique (among other things, Redux Form will use this name as the key for the form&#39;s data in the store). We also need to give it an array of fields in the form. In this case, we just have a <code>speed</code> field. Redux Form will create props for each field.</p>
+
+<p>Now we can render the form in the <code>Settings</code> component:</p>
+
+<div class="fp">app/components/settings.js</div>
+
+<pre data-line="3-4" class="line-numbers"><code class="language-jsx">import React from &#39;react&#39;;
+import { Link } from &#39;react-router&#39;;
+import { DealerSpeedFormContainer }
+    from &#39;./dealer_speed_form&#39;;
+
+export class Settings extends React.Component {
+    render() {
+        return (
+            &lt;div id=&quot;settings&quot;&gt;
+                &lt;div class=&quot;links&quot;&gt;
+                    &lt;Link to=&quot;/&quot;&gt;Back to game&lt;/Link&gt;
+                &lt;/div&gt;
+                &lt;h1&gt;Settings&lt;/h1&gt;
+                &lt;DealerSpeedFormContainer /&gt;
+            &lt;/div&gt;
+        );
+    }
+}
+</code></pre>
+
+<p>If you visit the settings page in your browser, you should see the new radio buttons (don&#39;t worry -- they don&#39;t do anything yet).</p>
+
+<p>To make our form actually do something, we need to use some of the props provided to us by Redux Form. First, we&#39;ll use the field props to dispatch actions on various form events. Let&#39;s get the field props for the &quot;speed&quot; field and pass them to the input component.</p>
+
+<p>We&#39;re also going to write an <code>onSubmit</code> function that we&#39;ll give to the <code>handleSubmit()</code> prop provided by Redux Form. <code>handleSubmit()</code> will call our custom <code>onSubmit</code> function with two parameters: the values of the form inputs and the dispatch function for the store (similar to a <code>mapDispatchToProps()</code>). In this case, we just want to dispatch a <code>SET_SPEED</code> action with the value of the speed field. <code>handleSubmit()</code> will prevent the default submit action for us, so all we need to worry about is dispatching actions with the values from the form.</p>
+
+<div class="fp">app/components/dealer_speed_form.js</div>
+
+<pre data-line="3,5-7,11,23" class="line-numbers"><code class="language-jsx">import React from &#39;react&#39;;
+import { reduxForm } from &#39;redux-form&#39;;
+import { setSpeed } from &#39;../action_creators&#39;;
+
+const onSubmit = (values, dispatch) =&gt; {
+    dispatch(setSpeed(parseInt(values.speed)));
+};
+
+export class DealerSpeedForm extends React.Component {
+    render() {
+        const speed = this.props.fields.speed;
+        const handleSubmit = this.props.handleSubmit;
+        return (
+            &lt;div class=&quot;dealer-speed-form&quot;&gt;
+                &lt;form <mark>onSubmit={handleSubmit(onSubmit)}</mark>&gt;
+                    {[
+                        // ...
+                     ].map((el) =&gt; (
+                        &lt;label key={el[1]}&gt;
+                            {el[0]}
+                            &lt;input type=&quot;radio&quot;
+                                   name=&quot;speed&quot;
+                                   {...speed}
+                                   value={el[1]} /&gt;
+                        &lt;/label&gt;
+                      ))
+                    }
+                    &lt;input type=&quot;submit&quot; /&gt;
+                &lt;/form&gt;
+            &lt;/div&gt;
+        );
+    }
+}
+
+// ...
+</code></pre>
+
+<p>Our test will fail because it doesn&#39;t see a <code>fields</code> prop or a <code>handleSubmit</code> prop. Let&#39;s get our test to pass by providing it with these props.</p>
+
+<div class="fp">test/components/dealer_speed_form_spec.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">// ...
+
+describe(&#39;&lt;DealerSpeedForm /&gt;&#39;, () =&gt; {
+    const props = {
+        fields: { speed: { } },
+        handleSubmit: () =&gt; { }
+    };
+    const rendered = shallow(&lt;DealerSpeedForm <mark>{...props}</mark> /&gt;);
+
+    // ...
+});
+</code></pre>
+
+<p>The tests should pass again. In the browser, you should see events fired when you click on the radio buttons and when you submit the form, the speed at which the dealer draws cards should change!</p>
+
+<p>We would also like to have the form show the current value of the dealer draw speed when it is rendered. Unfortunately, this version of Redux Form doesn&#39;t handle initial values for radio buttons very well, so we will have to write a couple lines of code to get it to work.</p>
+
+<p>First we will need to get the initial speed from the settings in the state. We will do this with a <code>mapStateToProps</code> function.</p>
+
+<p>Then we will decide which value should be checked. If <code>speed.value</code> is undefined, the radio button with the value equal to the speed in the settings should be checked. Once the user selects a radio button, <code>speed.value</code> will be set to the value of the radio button selected by the user, so the radio button with a value equal to <code>speed.value</code> should be checked.</p>
+
+<p>Before we write the code in the component, we should write a test for this behavior:</p>
+
+<div class="fp">test/components/dealer_speed_form_spec.js</div>
+
+<pre data-line="7,11-14" class="line-numbers"><code class="language-jsx">// ...
+
+describe(&#39;&lt;DealerSpeedForm /&gt;&#39;, () =&gt; {
+    const props = {
+        fields: { speed: { } },
+        handleSubmit: () =&gt; { }<mark>,</mark>
+        initialSpeed: 750
+    };
+    // ...
+
+    it(&#39;checks button with initial value&#39;, () =&gt; {
+        const initial = rendered.find(&#39;input[value=750]&#39;);
+        expect(initial.prop(&#39;checked&#39;)).to.eq(true);
+    });
+});
+</code></pre>
+
+<p>Now for the code in the component:</p>
+
+<div class="fp">app/components/dealer_speed_form.js</div>
+
+<pre data-line="6,20,32-34" class="line-numbers"><code class="language-jsx">// ...
+
+export class DealerSpeedForm extends React.Component {
+    render() {
+        // ...
+        const val = speed.value || this.props.initialSpeed;
+        return (
+            &lt;div class=&quot;dealer-speed-form&quot;&gt;
+                &lt;form onSubmit={handleSubmit(onSubmit)}&gt;
+                    {[
+                        [&quot;Fast&quot;, 250],
+                        [&quot;Normal&quot;, 750],
+                        [&quot;Slow&quot;, 1500]
+                     ].map((el) =&gt; (
+                        &lt;label key={el[1]}&gt;
+                            {el[0]}
+                            &lt;input type=&quot;radio&quot;
+                                   name=&quot;speed&quot;
+                                   {...speed}
+                                   checked={val == el[1]}
+                                   value={el[1]} /&gt;
+                        &lt;/label&gt;
+                      ))
+                    }
+                    &lt;input type=&quot;submit&quot; /&gt;
+                &lt;/form&gt;
+            &lt;/div&gt;
+        );
+    }
+}
+
+const mapStateToProps = (state) =&gt; {
+    return { initialSpeed: state.settings.get(&#39;speed&#39;) };
+};
+
+export const DealerSpeedFormContainer = reduxForm({
+    form: &#39;dealerSpeed&#39;,
+    fields: [&#39;speed&#39;]
+}<mark>, mapStateToProps</mark>)(DealerSpeedForm);
+</code></pre>
+
+<p>Now when you load the page, the &quot;normal&quot; radio button should be checked. If you choose a different speed option, switch to the game page, and switch back to the setting page, the option you selected should be checked when the form is re-rendered!</p>
+
+<p>We now have a fully functional settings form that allows the user to choose how fast the dealer will receive cards.</p>
 
                     
                         <hr />
