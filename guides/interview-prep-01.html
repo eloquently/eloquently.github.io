@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Eloquently - Learning and Recruiting</title>
+
+    <!-- Custom Fonts -->
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css" type="text/css">
+
+    <!-- Plugin CSS -->
+    <link rel="stylesheet" href="/css/animate.min.css" type="text/css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css" type="text/css">
+    <link rel="stylesheet" href="/css/prism.css" type="text/css">
+
+    <script src="/js/prism.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+
+</head>
+
+
+<body>
+    <div class="wrapper">
+        <!-- Navigation -->
+        <nav id="mainNav" class="nav navbar navbar-default full-color">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand page-scroll" href="/index">ELOQUENTLY</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a class="page-scroll" href="/index">Home</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="/workshops">Workshops</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="/guides/index">Guides</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+
+        <div class="container post">
+            <div class="row">
+                <!--<div class="post-options pull-right">
+                    <div class="show">
+                        <a href="#postOptions" data-toggle="collapse" class="pull-right btn btn-default btn-sm">Display Options</a>
+                    </div>
+                    <div class="options collapse" id="postOptions">
+                        <input type="checkbox" checked data-toggle="toggle" data-on="Annotations On" data-off="Annotations Off" data-onstyle="primary-light" data-width="175">
+                        <br />
+                        <input type="checkbox" checked data-toggle="toggle" data-on="Line Numbers On" data-off="Line Numbers Off" data-onstyle="primary-light" data-width="175">
+                    </div>
+                </div>-->
+                <div class="post-content">
+                    <h2>Interview Prep 01 - Counting and Primes</h2>
+
+<p><hr class="left" /></p>
+
+<p>This is the first part in Eloquently&#39;s Front End Developer Interview prep series.</p>
+
+<p>You can get the files and tests for this exercise <a href="https://github.com/eloquently/interview-prep-01">here</a>.</p>
+
+<p>These questions are meant to be solved in JavaScript, and the tests for them are written with Mocha/Chai.</p>
+
+<p>There are tests for these exercises. Don&#39;t just randomly guess things to get the tests to pass -- you will not learn as much. Instead, pretend this is a real interview and after you come up with a solution, check your work (literally talk through it line by line). If you&#39;re not sure that your solution will work, don&#39;t just cross your fingers and run the tests. Take the time to think more and improve your answer -- as if it were a real interview.</p>
+
+<p>Only after you are 100% sure that your solution is right, you can run the tests. We haven&#39;t set up a test watcher for this exercise: you&#39;ll have to type <code>npm test path/to/file_spec.js</code> each time. We&#39;ve also put in a 20s delay at the beginning of the test suite to discourage you from running the tests too often.</p>
+
+<p>Don&#39;t just search online for the solutions. In a real interview, that will not be an option. Instead ask for a hint -- that is acceptable in an interview as long as you&#39;ve tried to solve the problem.</p>
+
+<p>In the test files, the <code>describe</code> blocks have a <code>.skip</code> after them. This makes Mocha consider them pending, and they won&#39;t run. After you complete one test, remove the <code>.skip</code> from the next <code>describe</code> block to have Mocha run the next test.</p>
+
+<h3>Counting</h3>
+
+<h4><code>countWhile()</code></h4>
+
+<p>Write a function that returns a string with the numbers 1-100 separated by newlines. The last character in the returned string should also be a new line. Your function should be called <code>countWhile()</code>. It does not need to take any parameters and should return a string. Use a <code>while</code> loop that looks like this: <code>while(i &lt;= 100)</code>.</p>
+
+<h4><code>countFor()</code></h4>
+
+<p>Now write a function called <code>countFor()</code> that does the same thing but uses a <code>for</code> loop instead of a <code>while</code> loop.</p>
+
+<h4><code>countOdds()</code></h4>
+
+<p>Write a function, <code>countOdds()</code> that returns a string with the numbers 1-100, but with the odd numbers labeled. Specifically, your return string should look like this:</p>
+
+<pre data-line="" class=""><code class="language-text">1 odd
+2
+3 odd
+4
+5 odd
+.
+.
+.
+</code></pre>
+
+<p>Hint: Use the modulus operator <code>%</code> to determine if something is odd.</p>
+
+<h4><code>fizzbuzz()</code></h4>
+
+<p>Fizzbuzz is a classic interview question. Return the numbers 1-100 with a slight modification: replace any multiples of 3 with &quot;fizz&quot;, replace any multiples of 5 with &quot;buzz&quot;, and replace any number that is a multiple of both 3 and 5 with &quot;fizzbuzz&quot;.</p>
+
+<p>Here is some sample output:</p>
+
+<pre data-line="" class=""><code class="language-text">1
+2
+fizz
+4
+buzz
+.
+.
+.
+14
+fizzbuzz
+16
+.
+.
+.
+</code></pre>
+
+<h3>Prime</h3>
+
+<p><code>n</code> is a prime number if it can only be divided by 1 and <code>n</code> to get an integer.</p>
+
+<h4><code>isPrime()</code></h4>
+
+<p>Create a new file <code>src/primes.js</code>, and write a function <code>isPrime()</code> that determines if the number passed to it as a parameter is prime. <code>isPrime()</code> should return true or false. Your solution should use some type of loop. Don&#39;t worry about making your algorithm efficient at this point -- it just needs to work.</p>
+
+<p>When running your tests, note how long it takes to run the test for very large numbers (such as 2608038161). We&#39;ll try to make this algorithm more efficient in the next steps.</p>
+
+<h4><code>isPrimeSteps()</code></h4>
+
+<p>Copy your <code>isPrime()</code> function to a new function called <code>isPrimeSteps()</code>. Before your loop, create a variable that will track the number of times your program loops to calculate if the number is prime. <code>isPrimeSteps()</code> should return an array with two values: 1) a boolean for whether the parameter is prime or not and 2) the number of steps your algorithm went through to determine if the number is prime.</p>
+
+<p>You may wish to skip the <code>isPrime</code> tests so you don&#39;t have to wait for the large number calculations.</p>
+
+<h4><code>fasterPrime()</code></h4>
+
+<p>Try to improve your <code>isPrimeSteps()</code> function so that it calculates whether a number is prime within the number of steps provided by the tests. Copy it into a new method called <code>fasterPrime()</code>. If you get stuck, try calculating whether a small number (like 9 or 11) is a prime by hand. Are there any steps that your algorithm currently performs that are unnecessary?</p>
+
+<h4><code>firstPrimes()</code></h4>
+
+<p>Write a function called <code>firstPrimes()</code> that will calculate the first <code>n</code> primes, where <code>n</code> is a number passed to the function as a parameter. Use the <code>fasterPrime()</code> function to determine if a number is a prime. Keep track of the total number of steps in the <code>fasterPrime()</code> method. <code>firstPrimes()</code> should return an array with two values: 1) an array containing the first <code>n</code> primes and 2) the total number of steps executed in all of the <code>fasterPrime()</code> calls.</p>
+
+<h4>Even Faster with Dynamic Programming</h4>
+
+<p>This gets a bit slow when we want to calculate something like the first 500,000 primes. We can use a technique called dynamic programming to speed it up. First, we&#39;ll need to write a new <code>fasterPrime()</code> function:</p>
+
+<h5><code>evenFasterPrime()</code></h5>
+
+<p><code>evenFasterPrime()</code> is a version of <code>fasterPrime()</code> that takes an additional parameter: an array of all the primes up to the number we are checking (I call this <code>primesLessThanN</code>). Write an <code>evenFasterPrime()</code> function that uses this new parameter to  determine if a number is prime. The method should still calculate the number of steps, and return an array with two values: 1) a boolean that is true when the number is prime and 2) the number of steps the function performed.</p>
+
+<h5><code>fasterFirstPrimes()</code></h5>
+
+<p>Now we can write <code>fasterFristPrimes()</code>, which will calculate the first <code>n</code> primes much more efficiently. <code>fasterFirstPrimes()</code> will use <code>evenFasterPrime()</code>. Instead of requiring 1,132,749,812 steps to calculate the first 500,000 primes, we can do so with only 190,682,992 steps -- a 6x improvement! This takes the run time down from 14.7s to 2.3s in my Cloud9 environment.</p>
+
+                    
+                        <hr />
+                        <p>Eloquently is a recruiting firm. We also host workshops that teach web development and career skills. If you are looking for a job or are interested in joining our web development workshops, please <a href="/index#contact">contact us</a>!</p>
+
+<p>We put together some <a href="/guides/index">guides</a> for participants in our workshops. Feel free to use them. If you see any errors, please submit an issue on our <a href="https://github.com/eloquently/eloquently.github.io">github repository</a>.</p>
+
+<p>These guides are a work in progress. If you see any errors or have a suggestion for a better way to do something, please <a href="/index#contact">let us know</a>.</p>
+
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="push"></div>
+    </div>
+
+    <section id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                &copy; 2016 Eloquently LLC
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- jQuery -->
+<script src="/js/jquery.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Plugin JavaScript -->
+<script src="/js/jquery.easing.min.js"></script>
+<script src="/js/jquery.fittext.js"></script>
+<script src="/js/wow.min.js"></script>
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73351128-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    <script async src="//genius.codes"></script>
+</body>
+
+</html>
