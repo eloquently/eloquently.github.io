@@ -95,7 +95,7 @@
 
 <p>There are tests for these exercises. Don&#39;t just randomly guess things to get the tests to pass -- you will not learn as much. Instead, pretend this is a real interview and after you come up with a solution, check your work (literally talk through it line by line). If you&#39;re not sure that your solution will work, don&#39;t just cross your fingers and run the tests. Take the time to think more and improve your answer -- as if it were a real interview.</p>
 
-<p>Only after you are 100% sure that your solution is right, you can run the tests. We haven&#39;t set up a test watcher for this exercise: you&#39;ll have to type <code>npm test path/to/file_spec.js</code> each time. We&#39;ve also put in a 20s delay at the beginning of the test suite to discourage you from running the tests too often.</p>
+<p>Only after you are 100% sure that your solution is right, you can run the tests. We haven&#39;t set up a test watcher for this exercise: you&#39;ll have to type <code>npm test path/to/file_spec.js</code> each time. For example, to run the <code>counting_spec.js</code> file, you need to type <code>npm test test/counting_spec.js</code>. We&#39;ve also put in a 20s delay at the beginning of the test suite to discourage you from running the tests too often.</p>
 
 <p>Don&#39;t just search online for the solutions. In a real interview, that will not be an option. Instead ask for a hint -- that is acceptable in an interview as long as you&#39;ve tried to solve the problem.</p>
 
@@ -168,7 +168,9 @@ fizzbuzz
 
 <h4><code>isPrime()</code></h4>
 
-<p>Create a new file <code>src/primes.js</code>, and write a function <code>isPrime()</code> that determines if the number passed to it as a parameter is prime. <code>isPrime()</code> should return true or false. Your solution should use some type of loop. Don&#39;t worry about making your algorithm efficient at this point -- it just needs to work.</p>
+<p>Create a new file <code>src/primes.js</code>, and write a function <code>isPrime()</code> that determines if the number passed to it as a parameter is prime. <code>isPrime()</code> should return true or false.</p>
+
+<p>We can figure out if a number <code>n</code> is prime by checking if <code>n</code> divided by each number between 2 and <code>n-1</code> has no remainder. Write a loop that goes from 2 to <code>n-1</code> and returns false if <code>n</code> modulus the number is 0. If the loop completes, then we know that no numbers other than 1 and <code>n</code> give an integer result. Therefore, <code>n</code> must be prime.</p>
 
 <p>When running your tests, note how long it takes to run the test for very large numbers (such as 2608038161). We&#39;ll try to make this algorithm more efficient in the next steps.</p>
 
@@ -196,7 +198,7 @@ fizzbuzz
 
 <h5><code>fasterFirstPrimes()</code></h5>
 
-<p>Now we can write <code>fasterFristPrimes()</code>, which will calculate the first <code>n</code> primes much more efficiently. <code>fasterFirstPrimes()</code> will use <code>evenFasterPrime()</code>. Instead of requiring 1,132,749,812 steps to calculate the first 500,000 primes, we can do so with only 190,682,992 steps -- a 6x improvement! This takes the run time down from 14.7s to 2.3s in my Cloud9 environment.</p>
+<p>Now we can write <code>fasterFristPrimes()</code>, which will calculate the first <code>n</code> primes much more efficiently. <code>fasterFirstPrimes()</code> will look similar to <code>firstPrimes()</code>, except it will use <code>evenFasterPrime()</code> rather than <code>fasterPrime()</code>. Instead of requiring 1,132,749,812 steps to calculate the first 500,000 primes, we can do so with only 190,682,992 steps -- a 6x improvement! This takes the run time down from 14.7s to 2.3s in my Cloud9 environment.</p>
 
                     
                         <hr />
