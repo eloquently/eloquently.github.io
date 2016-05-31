@@ -101,6 +101,19 @@
 
 <p>In the test files, the <code>describe</code> blocks have a <code>.skip</code> after them. This makes Mocha consider them pending, and they won&#39;t run. After you complete one test, remove the <code>.skip</code> from the next <code>describe</code> block to have Mocha run the next test.</p>
 
+<p>One last thing: be sure to <code>export</code> your functions. For example, your <code>countWhile()</code> function declaration should look like:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">export const countWhile = () =&gt; {
+
+}
+
+// or...
+
+export function countWhile() {
+
+}
+</code></pre>
+
 <h3>Counting</h3>
 
 <h4><code>countWhile()</code></h4>
