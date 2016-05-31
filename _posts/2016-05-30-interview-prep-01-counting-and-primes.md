@@ -23,6 +23,20 @@ Don't just search online for the solutions. In a real interview, that will not b
 
 In the test files, the `describe` blocks have a `.skip` after them. This makes Mocha consider them pending, and they won't run. After you complete one test, remove the `.skip` from the next `describe` block to have Mocha run the next test.
 
+One last thing: be sure to `export` your functions. For example, your `countWhile()` function declaration should look like:
+
+```js
+export const countWhile = () => {
+
+}
+
+// or...
+
+export function countWhile() {
+
+}
+```
+
 ### Counting
 
 #### `countWhile()`
