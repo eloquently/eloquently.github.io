@@ -35,7 +35,7 @@ Here's an example. Given an array with `n` elements, find the largest element.
 const findMax = (arr) => {
     let max = arr[0];
     for(let i = 1; i < arr.length; i++) {
-        if(arr[i] > max) max = arr[0];
+        if(arr[i] > max) max = arr[i];
     }
     return max;
 }
