@@ -7,6 +7,8 @@ date: 2016-05-31
 
 ## {{ page.title }}
 
+<hr class="left" />
+
 Computational complexity is a formal way of analyzing how efficient a solution is. We are going to use big O notation to talk about algorithms' time complexity and space complexity. Unless otherwise specified, we'll be talking about the average case complexity.
 
 Here's a brief description of what those terms mean.
