@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Eloquently - Learning and Recruiting</title>
+
+    <!-- Custom Fonts -->
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css" type="text/css">
+
+    <!-- Plugin CSS -->
+    <link rel="stylesheet" href="/css/animate.min.css" type="text/css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css" type="text/css">
+    <link rel="stylesheet" href="/css/prism.css" type="text/css">
+
+    <script src="/js/prism.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+
+</head>
+
+
+<body>
+    <div class="wrapper">
+        <!-- Navigation -->
+        <nav id="mainNav" class="nav navbar navbar-default full-color">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand page-scroll" href="/index">ELOQUENTLY</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a class="page-scroll" href="/index">Home</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="/workshops">Workshops</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="/guides/index">Guides</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+
+        <div class="container post">
+            <div class="row">
+                <!--<div class="post-options pull-right">
+                    <div class="show">
+                        <a href="#postOptions" data-toggle="collapse" class="pull-right btn btn-default btn-sm">Display Options</a>
+                    </div>
+                    <div class="options collapse" id="postOptions">
+                        <input type="checkbox" checked data-toggle="toggle" data-on="Annotations On" data-off="Annotations Off" data-onstyle="primary-light" data-width="175">
+                        <br />
+                        <input type="checkbox" checked data-toggle="toggle" data-on="Line Numbers On" data-off="Line Numbers Off" data-onstyle="primary-light" data-width="175">
+                    </div>
+                </div>-->
+                <div class="post-content">
+                    <h2>Interview Prep 02 - Computational Complexity</h2>
+
+<p>Computational complexity is a formal way of analyzing how efficient a solution is. We are going to use big O notation to talk about algorithms&#39; time complexity and space complexity. Unless otherwise specified, we&#39;ll be talking about the average case complexity.</p>
+
+<p>Here&#39;s a brief description of what those terms mean.</p>
+
+<h3>Time and Space Complexity</h3>
+
+<p><strong>Time complexity</strong> roughly corresponds with how long it will take an algorithm to run. More specifically, it is a measure of how many &quot;steps&quot; an algorithm will take (see the previous exercises). If you halve the number of steps an algorithm takes, it does not mean that your algorithm will run in exactly half the time. The actual run time of a program depends on a lot of factors beyond your control, such as how busy the processor is with other tasks and optimizations the compiler/interpreter makes for you.</p>
+
+<p><strong>Space complexity</strong> describes how much memory your algorithm needs to run. Again, the space complexity of an algorithm may not perfectly describe how much RAM your implementation of the algorithm actually uses due to factors outside of your control.</p>
+
+<h3>Asymptotic Complexity</h3>
+
+<p>When we consider the complexity of an algorithm, we typically care about what happens as the number of input or the size of inputs gets very large. Saving one or two steps (for example, by starting a factorial algorithm at 1 rather than 0), does not make an algorithm less complex.</p>
+
+<p>Mathematically, we describe this concept as &quot;asymptotic complexity&quot;. &quot;Asymptotic&quot; means we look at the complexity as the number/size of inputs approaches infinity (i.e. gets arbitrarily large).</p>
+
+<h3>Big O Notation</h3>
+
+<p>Big O notation is a common way to describe the asymptotic complexity of an algorithm. To describe an algorithm with big O, we need to find a function that describes how the number of steps increases based on the input.</p>
+
+<p>Here&#39;s an example. Given an array with <code>n</code> elements, find the largest element.</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">const findMax = (arr) =&gt; {
+    let max = arr[0];
+    for(let i = 1; i &lt; arr.length; i++) {
+        if(arr[i] &gt; max) max = arr[0];
+    }
+    return max;
+}
+</code></pre>
+
+<p>Each time the number of elements in <code>arr</code> increases by 1, our algorithm will take one additional step to find the maximum.</p>
+
+<p>Therefore, we can describe the number of steps with a function <code>f(n)</code>, and we just argued that <code>f(n) = n</code>. This means that the big O notation of <code>findMax</code> is <code>O(n)</code>.</p>
+
+<p>For a different algorithm, we might find that <code>f(n) = n^2 + n + 3</code>. Because we are looking for the asymptotic complexity, we can omit the lower order terms <code>n</code> and <code>3</code> when writing the big O. (As n gets very large, the <code>n</code> and <code>3</code> terms become so small relative to the <code>n^2</code> term that we can ignore them). Thus the big O notation for this algorithm would simply be <code>O(n^2)</code>.</p>
+
+<p>We can also omit any constant multiples. For example if <code>f(n) = 4n</code>, the big O would simply be <code>O(n)</code>.</p>
+
+<p>It is possible to figure out an algorithm&#39;s computational complexity and express it in big O notation mathematically. We won&#39;t go into the details, but instead teach you heuristics for figuring out the computational complexity of various algorithms.</p>
+
+<h3>Example Complexities</h3>
+
+<p>Here are some common time complexities and examples of algorithms:</p>
+
+<table><thead>
+<tr>
+<th>Time Complexity</th>
+<th>Example Algorithm</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>O(1)</code></td>
+<td>is number even?</td>
+</tr>
+<tr>
+<td><code>O(log(n))</code> (usually with base 2)</td>
+<td>binary search</td>
+</tr>
+<tr>
+<td><code>O(sqrt(n))</code></td>
+<td><a href="/guides/interview-prep-01"><code>fasterPrime()</code></a></td>
+</tr>
+<tr>
+<td><code>O(n)</code></td>
+<td>find maximum, linear search</td>
+</tr>
+<tr>
+<td><code>O(n*log(n))</code></td>
+<td>merge sort</td>
+</tr>
+<tr>
+<td><code>O(n^2)</code></td>
+<td>select sort</td>
+</tr>
+<tr>
+<td><code>O(n!)</code></td>
+<td>bogosort</td>
+</tr>
+</tbody></table>
+
+<p>We&#39;ll go through each of these algorithms.</p>
+
+<p>You can find the tests for these exercises <a href="https://github.com/eloquently/interview-prep-02">here</a>.</p>
+
+<h3><code>isEven()</code></h3>
+
+<p>Write a function <code>isEven()</code> that takes one parameter: <code>n</code> and returns true if <code>n</code> is even -- otherwise it will return false.</p>
+
+<p><code>isEven()</code> is simply <code>O(1)</code> because it only requires one step to complete. If we had another function, <code>isNextNumEven()</code> that determined if <code>n+1</code> was even, our function would require two steps: <code>n+1</code> and then <code>isEven()</code>. <code>isNextNumEven()</code> would still be <code>O(1)</code> even though it requires two steps because we can eliminate any constants in the function.</p>
+
+<h3><code>linearSearch()</code></h3>
+
+<p>Let&#39;s say we have the following array (top row is index, bottom row contains values).</p>
+
+<table>
+<thead>
+<tr>
+<th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4</td><td>8</td><td>15</td><td>16</td><td>23</td><td>42</td><td>64</td><td>100</td><td>112</td><td>1000</td>
+</tr>
+</tbody>
+</table>
+
+<pre data-line="" class="line-numbers"><code class="language-js">arr = [4, 8, 15, 16, 23, 42, 64, 100, 112, 1000]
+</code></pre>
+
+<p>We want to find the index of <code>23</code> (the solution is 4).</p>
+
+<p>One way to solve this problem is to start at 0 and look at each element. If that element is 23, then return the index.</p>
+
+<p>This is called a linear search. Write a <code>linearSearch</code> function that will take two parameters, <code>needle</code> and <code>haystack</code>. The first parameter, <code>needle</code> is the number we are searching for. The second parameter, <code>haystack</code>, is the array we are searching in.</p>
+
+<p>The function should return the index of the position of <code>needle</code>. You can assume that <code>needle</code> will always be in the <code>haystack</code>.</p>
+
+<h4>Complexity Analysis</h4>
+
+<p>Try to figure out what the time complexity of your <code>linearSearch()</code> is and why before reading on.</p>
+
+<p>On average, the algorithm will find <code>needle</code> in <code>n/2</code> steps. <code>n/2 = 1/2 * n</code>. Since we omit a multiplied constant, big O for this algorithm is <code>O(n)</code>.</p>
+
+<h3><code>binarySearch()</code></h3>
+
+<p>If <code>haystack</code> is sorted, we can find something in it much faster than with a <code>linearSearch()</code>. Imagine that you have a phone book (names in it are sorted alphabetically) and you are trying to find a particular person&#39;s phone number. Finding the number with <code>linearSearch()</code> would mean you start at page one, read every name, then go to the next page, read every name, until you find the person you are looking for. This is not very efficient. How could you do better? Assume the phone book has no table of contents or index -- it&#39;s just a sorted list of people and phone numbers.</p>
+
+<p>One way is to open the phone book to the middle, check the names of the people on that page. Then if the name of the person you are looking for comes before that page, flip to the middle of the first half of the phone book and repeat. If the name of the person you are looking for comes after the names on the page, flip to the middle of the second half of the book and repeat until you find your person.</p>
+
+<p>This algorithm is called a binary search because we are splitting the phone book in 2 (binary) each iteration.</p>
+
+<p>Let&#39;s see how to apply it to an array. First we will look at the middle element. If the element we are looking for is less than the middle element, we know the element must be in the first half of the array. If the element we are looking for is greater than the middle element, we know the element must be in the second half of the array. (If the element we&#39;re looking for is the same as the middle element, then we&#39;re done). Then we take the half that the element must be in and repeat the process.</p>
+
+<p>Write a <code>binarySearch</code> function that takes two parameters: a <code>needle</code> and a <code>haystack</code> and returns the index of element we are searching for. It is natural to use recursion for this type of algorithm.</p>
+
+<h4>Complexity Analysis</h4>
+
+<p>We&#39;ll have to do a little more work to analyze this function than we did for <code>linearSearch()</code>. In this case, let&#39;s think about how the number of steps increases as <code>n</code> (the number of elements in <code>haystack</code>) increases. For this algorithm, we&#39;re going to analyze the worst case complexity because it&#39;s a little complicated to reason about how you might get lucky and finish early because the middle item in the array is the one you are looking for. If we design our algorithm to &quot;round down&quot; when selecting the middle element (e.g take the 2nd element if we have 4 elements), then the worst case scenario is trying to find the last element in the array. Let&#39;s see how many steps it takes to find the last element for different sizes of <code>haystack</code>.</p>
+
+<p>In this case, we consider a &quot;step&quot; to be the combined actions of splitting and checking the middle element. It&#39;s okay to consider multiple actions to be one step as long as they are always performed together. Considering these two actions as one step each would mean we end up with twice as many steps total (e.g. number of double-steps * 2), which gives us a constant of 2. Since we&#39;ll get rid of any constant multiples when we write the complexity in big O, it doesn&#39;t matter.</p>
+
+<p>If <code>n</code> is 2, we will find the <code>needle</code> in 2 steps.</p>
+
+<p>If <code>n</code> is 3, it will also take 2 steps (select the middle and split, then select the last element and finish).</p>
+
+<p>If <code>n</code> is 4, 3 steps is the worst case scenario (select second element and split, select third element and split, select fourth element and finish).</p>
+
+<p>To get an extra step, we had to go from 2 to 4. This could mean that we get another step every time we add 2 to <code>n</code> or it could mean we get an extra step every time we double <code>n</code>. Figure out which it is by working through <code>n = 5</code> through <code>n = 8</code>.</p>
+
+<p>--</p>
+
+<p>You should have discovered that we add another step each time <code>n</code> doubles. If <code>steps</code> is the number of steps, we can describe the relationship we have with <code>2^steps = n</code>. Stop and think about why this works and how it makes sense in the context of our problem. Use n=2, n=4, and n=8 and the steps that we solved for above.</p>
+
+<p>If we know <code>n</code>, and we want to see how many steps we have, we can use a logarithm to rewrite <code>2^steps = n</code> as <code>log(n) = steps</code> (with a base 2 logarithm). Therefore, we can say that binary search has complexity <code>O(log(n))</code>.</p>
+
+                    
+                        <hr />
+                        <p>Eloquently is a recruiting firm. We also host workshops that teach web development and career skills. If you are looking for a job or are interested in joining our web development workshops, please <a href="/index#contact">contact us</a>!</p>
+
+<p>We put together some <a href="/guides/index">guides</a> for participants in our workshops. Feel free to use them. If you see any errors, please submit an issue on our <a href="https://github.com/eloquently/eloquently.github.io">github repository</a>.</p>
+
+<p>These guides are a work in progress. If you see any errors or have a suggestion for a better way to do something, please <a href="/index#contact">let us know</a>.</p>
+
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="push"></div>
+    </div>
+
+    <section id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                &copy; 2016 Eloquently LLC
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- jQuery -->
+<script src="/js/jquery.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Plugin JavaScript -->
+<script src="/js/jquery.easing.min.js"></script>
+<script src="/js/jquery.fittext.js"></script>
+<script src="/js/wow.min.js"></script>
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73351128-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+</body>
+
+</html>
