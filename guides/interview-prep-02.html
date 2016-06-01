@@ -112,7 +112,7 @@
 <pre data-line="" class="line-numbers"><code class="language-js">const findMax = (arr) =&gt; {
     let max = arr[0];
     for(let i = 1; i &lt; arr.length; i++) {
-        if(arr[i] &gt; max) max = arr[0];
+        if(arr[i] &gt; max) max = arr[i];
     }
     return max;
 }
