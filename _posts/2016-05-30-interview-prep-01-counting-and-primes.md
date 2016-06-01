@@ -17,7 +17,7 @@ These questions are meant to be solved in JavaScript, and the tests for them are
 
 There are tests for these exercises. Don't just randomly guess things to get the tests to pass -- you will not learn as much. Instead, pretend this is a real interview and after you come up with a solution, check your work (literally talk through it line by line). If you're not sure that your solution will work, don't just cross your fingers and run the tests. Take the time to think more and improve your answer -- as if it were a real interview.
 
-Only after you are 100% sure that your solution is right, you can run the tests. We haven't set up a test watcher for this exercise: you'll have to type `npm test path/to/file_spec.js` each time. We've also put in a 20s delay at the beginning of the test suite to discourage you from running the tests too often.
+Only after you are 100% sure that your solution is right, you can run the tests. We haven't set up a test watcher for this exercise: you'll have to type `npm test path/to/file_spec.js` each time. For example, to run the `counting_spec.js` file, you need to type `npm test test/counting_spec.js`. We've also put in a 20s delay at the beginning of the test suite to discourage you from running the tests too often.
 
 Don't just search online for the solutions. In a real interview, that will not be an option. Instead ask for a hint -- that is acceptable in an interview as long as you've tried to solve the problem.
 
@@ -52,11 +52,11 @@ Now write a function called `countFor()` that does the same thing but uses a `fo
 Write a function, `countOdds()` that returns a string with the numbers 1-100, but with the odd numbers labeled. Specifically, your return string should look like this:
 
 ```
-1 odd
+1 - odd
 2
-3 odd
+3 - odd
 4
-5 odd
+5 - odd
 .
 .
 .
@@ -64,7 +64,7 @@ Write a function, `countOdds()` that returns a string with the numbers 1-100, bu
 
 Hint: Use the modulus operator `%` to determine if something is odd.
 
-#### `fizzbuzz()`
+#### `fizzBuzz()`
 
 Fizzbuzz is a classic interview question. Return the numbers 1-100 with a slight modification: replace any multiples of 3 with "fizz", replace any multiples of 5 with "buzz", and replace any number that is a multiple of both 3 and 5 with "fizzbuzz".
 
@@ -93,7 +93,9 @@ fizzbuzz
 
 #### `isPrime()`
 
-Create a new file `src/primes.js`, and write a function `isPrime()` that determines if the number passed to it as a parameter is prime. `isPrime()` should return true or false. Your solution should use some type of loop. Don't worry about making your algorithm efficient at this point -- it just needs to work.
+Create a new file `src/primes.js`, and write a function `isPrime()` that determines if the number passed to it as a parameter is prime. `isPrime()` should return true or false.
+
+We can figure out if a number `n` is prime by checking if `n` divided by each number between 2 and `n-1` has no remainder. Write a loop that goes from 2 to `n-1` and returns false if `n` modulus the number is 0. If the loop completes, then we know that no numbers other than 1 and `n` give an integer result. Therefore, `n` must be prime.
 
 When running your tests, note how long it takes to run the test for very large numbers (such as 2608038161). We'll try to make this algorithm more efficient in the next steps.
 
@@ -121,4 +123,4 @@ This gets a bit slow when we want to calculate something like the first 500,000 
 
 ##### `fasterFirstPrimes()`
 
-Now we can write `fasterFristPrimes()`, which will calculate the first `n` primes much more efficiently. `fasterFirstPrimes()` will use `evenFasterPrime()`. Instead of requiring 1,132,749,812 steps to calculate the first 500,000 primes, we can do so with only 190,682,992 steps -- a 6x improvement! This takes the run time down from 14.7s to 2.3s in my Cloud9 environment.
+Now we can write `fasterFristPrimes()`, which will calculate the first `n` primes much more efficiently. `fasterFirstPrimes()` will look similar to `firstPrimes()`, except it will use `evenFasterPrime()` rather than `fasterPrime()`. Instead of requiring 1,132,749,812 steps to calculate the first 500,000 primes, we can do so with only 190,682,992 steps -- a 6x improvement! This takes the run time down from 14.7s to 2.3s in my Cloud9 environment.

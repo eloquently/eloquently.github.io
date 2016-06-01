@@ -389,3 +389,9 @@ header.workshop-header {
     transition: none;
     height: auto;
 }
+
+table {
+    @extend .table;
+    @extend .table-striped;
+    table-layout: fixed;
+}
