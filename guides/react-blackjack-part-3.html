@@ -1140,7 +1140,7 @@ Fix this or I&#39;ll sue you!
 
 <p>Initializing <code>winCount</code> and <code>lossCount</code> without an action and passing it to <code>createStore()</code> as the initial state is perfectly valid and would be the best approach at this point in the application. However, in the next part of this guide, we are going to let users save their records to a server and load them from a server as well. The easiest way to do that will be to change the <code>SET_RECORD</code> action to get a record from the server rather than just setting the record to 0-0, so we will still want to dispatch <code>SET_RECORD</code> at the beginning of the application.</p>
 
-<p>For now, let&#39;s fix this bug by changing the order that we dispatch actions. We&#39;ll set the initial record and then deal the first hand and add one to <code>winCount</code> if ncecessary:</p>
+<p>For now, let&#39;s fix this bug by changing the order that we dispatch actions. We&#39;ll set the initial record and then deal the first hand and add one to <code>winCount</code> if necessary:</p>
 
 <div class="fp">app/index.js</div>
 
