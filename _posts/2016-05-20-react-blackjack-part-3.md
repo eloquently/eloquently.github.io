@@ -588,7 +588,7 @@ describe('reducer', () => {
 Now let's change the reducer function so that these tests pass:
 
 <div class="fp">app/reducer.js</div>
-```js{7-10,12}
+```js{7-10}
 // ...
 
 const dealToPlayer = (currentState, seed) => {
