@@ -649,15 +649,6 @@ describe(&#39;reducer&#39;, () =&gt; {
                 expect(nextState.get(&#39;playerWon&#39;)).to.eq(false);
             });
         });
-
-        describe(&quot;when player gets exactly 21 points&quot;, () =&gt; {
-            // ...
-
-            it(&#39;toggles gameOver and sets playerWon&#39;, () =&gt; {
-                expect(nextState.get(&#39;gameOver&#39;)).to.eq(true);
-                expect(nextState.get(&#39;playerWon&#39;)).to.eq(true);
-            });
-        });
     });
 
     // ...
