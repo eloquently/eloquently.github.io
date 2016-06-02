@@ -1066,7 +1066,7 @@ Only setting `winCount` and `lossCount` if they are undefined, which makes this 
 
 Initializing `winCount` and `lossCount` without an action and passing it to `createStore()` as the initial state is perfectly valid and would be the best approach at this point in the application. However, in the next part of this guide, we are going to let users save their records to a server and load them from a server as well. The easiest way to do that will be to change the `SET_RECORD` action to get a record from the server rather than just setting the record to 0-0, so we will still want to dispatch `SET_RECORD` at the beginning of the application.
 
-For now, let's fix this bug by changing the order that we dispatch actions. We'll set the initial record and then deal the first hand and add one to `winCount` if ncecessary:
+For now, let's fix this bug by changing the order that we dispatch actions. We'll set the initial record and then deal the first hand and add one to `winCount` if necessary:
 
 <div class="fp">app/index.js</div>
 ```js{5-6}
