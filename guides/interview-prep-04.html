@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Eloquently - Learning and Recruiting</title>
+
+    <!-- Custom Fonts -->
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css" type="text/css">
+
+    <!-- Plugin CSS -->
+    <link rel="stylesheet" href="/css/animate.min.css" type="text/css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css" type="text/css">
+    <link rel="stylesheet" href="/css/prism.css" type="text/css">
+
+    <script src="/js/prism.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+
+</head>
+
+
+<body>
+    <div class="wrapper">
+        <!-- Navigation -->
+        <nav id="mainNav" class="nav navbar navbar-default full-color">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand page-scroll" href="/index">ELOQUENTLY</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a class="page-scroll" href="/index">Home</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="/workshops">Workshops</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="/guides/index">Guides</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+
+        <div class="container post">
+            <div class="row">
+                <!--<div class="post-options pull-right">
+                    <div class="show">
+                        <a href="#postOptions" data-toggle="collapse" class="pull-right btn btn-default btn-sm">Display Options</a>
+                    </div>
+                    <div class="options collapse" id="postOptions">
+                        <input type="checkbox" checked data-toggle="toggle" data-on="Annotations On" data-off="Annotations Off" data-onstyle="primary-light" data-width="175">
+                        <br />
+                        <input type="checkbox" checked data-toggle="toggle" data-on="Line Numbers On" data-off="Line Numbers Off" data-onstyle="primary-light" data-width="175">
+                    </div>
+                </div>-->
+                <div class="post-content">
+                    <h2>Interview Prep 04 - Sorting</h2>
+
+<p><hr class="left" /></p>
+
+<p>In a previous exercise, we looked at how to find the index of an element in an array given an array that&#39;s already sorted. Today, we&#39;ll look at how to take an unsorted array and return a sorted array.</p>
+
+<p>Sorting is a very popular algorithm problem, and there are many popular sorting algorithms.</p>
+
+<p>When analyzing a sorting algorithm, the important things to check for are the time complexity, the space complexity, and whether the sort is &quot;stable&quot;.</p>
+
+<p>A sort is stable if two elements that are &quot;tied&quot; (i.e. have the same value for the key that we are sorting on) will be in the same order after the sort as they were before the sort.</p>
+
+<p>For example, imagine we have an array of objects with a name and a phone number and we want to sort them by name. Let&#39;s say the array looks like this:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">[
+    {name: &quot;Jack Sprat&quot;, phone: 5555555511},
+    {name: &quot;Jane Sprat&quot;, phone: 5555555522},
+    {name: &quot;Jack Sprat&quot;, phone: 5555555533}
+]
+</code></pre>
+
+<p>We have two people with the same name (Jack Sprat), so when we try to sort the array by name, there are two valid solutions:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">[
+    {name: &quot;Jack Sprat&quot;, phone: 5555555511},
+    {name: &quot;Jack Sprat&quot;, phone: 5555555533},
+    {name: &quot;Jane Sprat&quot;, phone: 5555555522}
+]
+
+[
+    {name: &quot;Jack Sprat&quot;, phone: 5555555533},
+    {name: &quot;Jack Sprat&quot;, phone: 5555555511},
+    {name: &quot;Jane Sprat&quot;, phone: 5555555522}
+]
+</code></pre>
+
+<p>Both of these are valid because the items are correctly sorted by their names. The first solution above is what a &quot;stable&quot; sort algorithm will return, because the phone number ending with 11 comes before the phone number ending with 33 in both the input array and the output array. An &quot;unstable&quot; sorting algorithm may return either solution, but a stable sorting algorithm must return the first one.</p>
+
+<h3><code>insertionSort()</code></h3>
+
+<p>Write a function called <code>insertionSort()</code> that will take an array of numbers as input and return a sorted version of the array as output.</p>
+
+<p>Here&#39;s an outline of selection sort where <code>n</code> is the number of elements in the array.</p>
+
+<ul>
+<li>Start with <code>i = 0</code> and repeat until <code>i == n</code>
+
+<ul>
+<li>Let <code>j = i</code></li>
+<li>While there is still an element to the left and the loop hasn&#39;t already exited:
+
+<ul>
+<li>Compare element <code>j</code> with element <code>j-1</code></li>
+<li>If element <code>j</code> &lt;= element <code>j-1</code>:
+
+<ul>
+<li>Swap elements <code>j</code> and <code>j-1</code></li>
+<li>Decrement <code>j</code></li>
+</ul></li>
+<li>Otherwise:
+
+<ul>
+<li>Exit the loop</li>
+</ul></li>
+</ul></li>
+<li>Increment <code>i</code></li>
+</ul></li>
+</ul>
+
+<p>At the end of each iteration of the outer loop, the elements from <code>0</code> to <code>i</code> will be sorted.</p>
+
+<p>Wikipedia contributor Swfung8 has created a <a href="https://commons.wikimedia.org/w/index.php?title=File:Insertion-sort-example-300px.gif&amp;oldid=187391701">great animation</a> of how insertion sort works:</p>
+
+<p><img src="/img/guides/algorithms/insertion-sort.gif" alt="insertion sort"></p>
+
+<p>Once you&#39;re done with your insertion sort algorithm, run the test. The test for the &quot;long random&quot; array might take a few seconds to run (about 2s on my Cloud9 instance).</p>
+
+<p>Is your insertion sort algorithm stable? If not, what could you change to make it stable (you&#39;ll probably only have to change one very minor detail if you followed the pseudo-code above). What is the time complexity of insertion sort? To figure it out, consider how many steps you need if there are two elements. Four elements?</p>
+
+<h3><code>mergeSort()</code></h3>
+
+<p>Merge sort is a much more efficient sorting algorithm than <code>insertionSort()</code>. Merge sort is commonly used in production settings. It was invented/discovered by John von Neumann in 1945.</p>
+
+<p>Merge sort works in two stages. In the first stage, the arrays are split in half until they are left with one element each. In the second stage, the sorted left and right half are merged back together.</p>
+
+<p>Here is a more detailed description of how merge sort might be implemented recursively. <code>arr</code> is the name of the parameter passed to the function.</p>
+
+<ul>
+<li>If <code>arr</code> has only one element, it&#39;s already sorted, so just return <code>arr</code></li>
+<li>Split the array in half. Call the left side <code>left</code> and the right side <code>right</code>.</li>
+<li>Recursively call <code>mergeSort</code> on the left and right halves and overwrite the <code>left</code> and <code>right</code> variables.</li>
+<li>We can now assume that <code>left</code> and <code>right</code> are sorted arrays.</li>
+<li>Create a new array to store the sorted results (<code>sorted</code>)</li>
+<li>Repeat until <code>left</code> and <code>right</code> are empty:
+
+<ul>
+<li>Compare the smallest element of <code>left</code> with the smallest element of <code>right</code> (the smallest element will be the first element in each list because we know they are sorted).</li>
+<li>Remove whichever element is smaller from its respective list and put it at the end of <code>sorted</code> (JS arrays have a <code>push</code> function to add an element at the end)</li>
+</ul></li>
+<li>Once left and right are empty, then <code>sorted</code> is finished, so we&#39;re done.</li>
+<li>Return <code>sorted</code> to finish.</li>
+</ul>
+
+<p>Wikipedia contributor Swfung8 has created another <a href="https://commons.wikimedia.org/w/index.php?title=File:Merge-sort-example-300px.gif&amp;oldid=187394693">great animation</a> of how merge sort works:</p>
+
+<p><img src="/img/guides/algorithms/merge-sort.gif" alt="merge sort"></p>
+
+<p>After you code up the algorithm, run the tests! If you did everything correctly, the merge sort should be much faster than the insertion sort for the long random.</p>
+
+<p>Calculating the computational complexity of merge sort is trickier than analyzing insertion sort.</p>
+
+<p>Khan Academy&#39;s algorithms course has a great explanation of how to analyze the time and space complexity of merge sort. Check it out <a href="https://www.khanacademy.org/computing/computer-science/algorithms/merge-sort/a/analysis-of-merge-sort">here</a>.</p>
+
+<p>Heuristically, when you see an algorithm that takes a divide and conquer approach to a problem (such as merge sort, binary search, or the 1-D peak finding algorithm), the complexity will be related to <code>O(log(n))</code> with a base two logarithm. If a step in the algorithm involves recursively dividing the data structure in half, it&#39;s quite likely that you will have to double the size of the input to get the dividing part of the algorithm to take an extra step.</p>
+
+<p>To get to the <code>O(n*log(n))</code> step, you can remember a rule that there is no array sort algorithm that has better average case performance than <code>O(n*log(n))</code>. Therefore, merge sort has to be at least <code>O(n*log(n))</code>. Thinking about the merging (conquer) part of the algorithm, you can see that the number of comparisons grows linearly (to understand why, read the Khan Academy analysis listed above).</p>
+
+<p>NOTE: The above reasoning is purely a heuristic. It is meant as a way to help you quickly remember performance of various algorithms -- not as a way to actually analyze an algorithm. If you are asked to analyze the complexity of a search algorithm in an interview, it is not very good to answer the question with a line of reasoning like &quot;comparison search algorithms have average/worst case performance of at least <code>O(n*log(n))</code>&quot;. The correct answer to that question in an interview would be an analysis like the one by Khan Academy.</p>
+
+<p>Is merge sort a stable sorting algorithm? How would you test it (hint: you are going to have to sort something other than just integers).</p>
+
+                    
+                        <hr />
+                        <p>Eloquently is a recruiting firm. We also host workshops that teach web development and career skills. If you are looking for a job or are interested in joining our web development workshops, please <a href="/index#contact">contact us</a>!</p>
+
+<p>We put together some <a href="/guides/index">guides</a> for participants in our workshops. Feel free to use them. If you see any errors, please submit an issue on our <a href="https://github.com/eloquently/eloquently.github.io">github repository</a>.</p>
+
+<p>These guides are a work in progress. If you see any errors or have a suggestion for a better way to do something, please <a href="/index#contact">let us know</a>.</p>
+
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="push"></div>
+    </div>
+
+    <section id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                &copy; 2016 Eloquently LLC
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- jQuery -->
+<script src="/js/jquery.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Plugin JavaScript -->
+<script src="/js/jquery.easing.min.js"></script>
+<script src="/js/jquery.fittext.js"></script>
+<script src="/js/wow.min.js"></script>
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73351128-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+</body>
+
+</html>
