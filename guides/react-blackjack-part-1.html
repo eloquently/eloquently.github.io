@@ -726,7 +726,9 @@ chai.use(chaiEnzyme());
 
 <p>The <code>shallow</code> function returns a &quot;wrapper&quot; object that has some useful functions. In this test, we will use the <code>find</code> function to search for other elements inside the shallow wrapper using CSS selectors (<code>element</code>, <code>#id</code>, <code>.class</code>).</p>
 
-<p>Our first task for the <code>App</code> component is to make it render one <code>Info</code> component:</p>
+<p>Our first task for the <code>App</code> component is to make it render one <code>Info</code> component. Let&#39;s create an <code>app_spec.js</code> file and write our first component test.</p>
+
+<div class="fp">test/components/app_spec.js</div>
 
 <pre data-line="" class="line-numbers"><code class="language-jsx">import React from &#39;react&#39;;
 import { expect } from &#39;chai&#39;;
