@@ -649,8 +649,9 @@ Shallow rendering can also boost performance as rendering all children and ances
 
 The `shallow` function returns a "wrapper" object that has some useful functions. In this test, we will use the `find` function to search for other elements inside the shallow wrapper using CSS selectors (`element`, `#id`, `.class`).
 
-Our first task for the `App` component is to make it render one `Info` component:
+Our first task for the `App` component is to make it render one `Info` component. Let's create an `app_spec.js` file and write our first component test.
 
+<div class="fp">test/components/app_spec.js</div>
 ```jsx
 import React from 'react';
 import { expect } from 'chai';
