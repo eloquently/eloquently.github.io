@@ -130,7 +130,7 @@ module.exports = {
         loaders: [
             {
                 test: /\.jsx?$/,
-                loader: 'babel-loader?presets[]=es2015,presets[]=react',
+                loader: 'babel-loader',
                 exclude: /node_modules/
             }
         ]
