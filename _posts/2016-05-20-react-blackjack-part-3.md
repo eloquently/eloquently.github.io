@@ -1357,7 +1357,10 @@ const stand = (currentState, seed) => {
 
     const gameOver = true;
 
-    newState = newState.merge({dealerHand, deck, winCount, lossCount, gameOver, playerWon});
+    newState = newState.merge({
+        dealerHand, deck, <mark>winCount,</mark>
+        <mark>lossCount, gameOver, playerWon</mark>
+    });
 
     return currentState.merge(newState);
 };
