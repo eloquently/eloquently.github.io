@@ -1,2 +1,2 @@
-server: jekyll serve --draft --incremental --destination _serve
+server: jekyll serve --drafts --future --incremental --destination _serve
 guard: bundle exec guard
