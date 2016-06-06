@@ -57,15 +57,15 @@ Solve the following problems recursively! You can implement each of the traversa
 
 #### Pre-order Traversal
 
-In a pre-order traversal, the algorithm first traverses the left sub-tree, then visits the root, then traverses the right subtree.
+In a pre-order traversal, the algorithm first visits the root, then traverses the left sub-tree, then traverses the right subtree.
 
 Write an algorithm `preorder()` that does a pre-order traversal printing each node's data given one parameter: the root node of the tree (`root`).
 
-For the small tree, your algorithm should print out `213` (separated by newlines).
+For the small tree, your algorithm should print out `123` (separated by newlines).
 
-For the large tree, your algorithm should print `26413590`.
+For the large tree, your algorithm should print `16243950`.
 
-If the parameter is ever `undefined` the function exit by returning `undefined`.
+If the parameter is ever `undefined`, the function can exit by returning `undefined`.
 
 Run your traversals with lines like this at the end of your program:
 
@@ -83,13 +83,13 @@ npm run node src/trees.rb
 
 #### In-order Traversal
 
-In an in-order traversal, the algorithm first visits the root, then traverses the left sub-tree, then traverses the right subtree.
+In an in-order traversal, the algorithm first traverses the left sub-tree, then visits the root, then traverses the right subtree.
 
 Write an algorithm `inorder()` that does an in-order traversal printing each node's data given one parameter: the root node of the tree (`root`).
 
 For the small tree, your algorithm should print out `123` (separated by newlines).
 
-For the large tree, your algorithm should print `16243950`.
+For the large tree, your algorithm should print `26413590`.
 
 #### Post-order Traversal
 
@@ -97,7 +97,7 @@ In a post-order traversal, the algorithm first traverses the left sub-tree, then
 
 Write an algorithm `postorder()` that does a post-order traversal printing each node's data given one parameter: the root node of the tree (`root`).
 
-For the small tree, your algorithm should print out `231` (separated by newlines).
+For the small tree, your algorithm should print out `213` (separated by newlines).
 
 For the large tree, your algorithm should print `24650931`.
 
