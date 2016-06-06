@@ -177,6 +177,23 @@ export default function*() {
 }
 </code></pre>
 
+<p>Instead of dispatching <code>SET_RECORD</code> after setting up the store in <code>app/index.js</code>, we can now dispatch <code>FETCH_RECORD</code>:</p>
+
+<div class="fp">app/index.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+import reducer from &#39;./reducers/index&#39;;
+import { setupGame,
+         <mark>fetchRecord</mark> } from &#39;../app/action_creators&#39;;
+
+// ...
+
+store.dispatch(<mark>fetchRecord()</mark>);
+store.dispatch(setupGame());
+// ...
+</code></pre>
+
 <p>If you refresh the page in the browser, you should see the &quot;fetching record&quot; message in the console and see that the user has 0 wins and 0 losses.</p>
 
 <p>To set the record to whatever is in the database, we&#39;ll need to make an API call. To keep our code organized, we&#39;ll create an API lib file that will define the functions we need to interact with the API.</p>
