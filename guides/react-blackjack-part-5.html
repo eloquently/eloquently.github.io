@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Eloquently - Learning and Recruiting</title>
+
+    <!-- Custom Fonts -->
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css" type="text/css">
+
+    <!-- Plugin CSS -->
+    <link rel="stylesheet" href="/css/animate.min.css" type="text/css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css" type="text/css">
+    <link rel="stylesheet" href="/css/prism.css" type="text/css">
+
+    <script src="/js/prism.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+
+</head>
+
+
+<body>
+    <div class="wrapper">
+        <!-- Navigation -->
+        <nav id="mainNav" class="nav navbar navbar-default full-color">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand page-scroll" href="/index">ELOQUENTLY</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a class="page-scroll" href="/index">Home</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="/workshops">Workshops</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="/guides/index">Guides</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+
+        <div class="container post">
+            <div class="row">
+                <!--<div class="post-options pull-right">
+                    <div class="show">
+                        <a href="#postOptions" data-toggle="collapse" class="pull-right btn btn-default btn-sm">Display Options</a>
+                    </div>
+                    <div class="options collapse" id="postOptions">
+                        <input type="checkbox" checked data-toggle="toggle" data-on="Annotations On" data-off="Annotations Off" data-onstyle="primary-light" data-width="175">
+                        <br />
+                        <input type="checkbox" checked data-toggle="toggle" data-on="Line Numbers On" data-off="Line Numbers Off" data-onstyle="primary-light" data-width="175">
+                    </div>
+                </div>-->
+                <div class="post-content">
+                    <h2>React Blackjack Part 5</h2>
+
+<p><hr class="left"></p>
+
+<p>In this final part of the React Blackjack guide, we will use an API to load and save the win/loss records of users.</p>
+
+<p>The React application does not need to know anything about how the API is implemented. There are a number of different backend options that a React application could use. For this guide, we have put together a simple Rails 5 application. You can view the source code of the application <a href="https://github.com/eloquently/react-blackjack-api">here</a>.</p>
+
+<h3>The API</h3>
+
+<p>The API is a Rails 5 application created with the &quot;api only&quot; option. We generated a scaffold for a User model with attributes for <code>win_count</code>, <code>loss_count</code> and a <code>token</code>. We want to be able to refer to users by their unique tokens, so we changed the routing configuration to use tokens rather than ids. We also set up the controller so that if an operation is attempted on a user with a token that is not found, we will create a new user rather than returning an error.</p>
+
+<p>We also had to allow the API to accept requests from other domains. This is called Cross-Origin Resource Sharing (CORS). We used the <a href="https://github.com/cyu/rack-cors">Rack-Cors gem</a> to set this up easily.</p>
+
+<p>While following along with this part of the guide, you can clone the API application to your local environment and run the rails server in a separate terminal. To follow this approach, clone the repository:</p>
+
+<pre data-line="" class=""><code class="language-text">git clone https://github.com/eloquently/react-blackjack-api
+</code></pre>
+
+<p>Then <code>cd</code> to the directory, install the bundle, create/migrate the database, and start the server with:</p>
+
+<pre data-line="" class=""><code class="language-text">rails s -b $IP -p 8081
+</code></pre>
+
+<p>If you are not on Cloud9, you can omit the <code>-b $IP</code> part. Now your Rails application is running on port 8081. We can reference it from the React application at the URL: <code>localhost:8081</code>.</p>
+
+<p>Alternatively, you can deploy the API to Heroku in two clicks using the &quot;Deploy to Heroku&quot; button on the <a href="https://github.com/eloquently/react-blackjack-api">GitHub repository</a>. Following this approach will mean you have to use a URL that looks like: <code>something.herokuapp.com</code> to access the API from your React application.</p>
+
+<h3>Loading User Data</h3>
+
+<p>In order to keep track of users, we want to generate a unique token for each user. User tokens will be random strings of numbers and letters.</p>
+
+<p>We want users to be able to resume where they left off by entering their token into the URL when they visit the page. For example, if a user&#39;s token is asdf1234, the user just needs to visit reactblackjackurl.com/?token=asdf1234 to load his or her progress. Users that plan to play a lot of blackjack can bookmark the unique URLs corresponding to their respective games.</p>
+
+<p>Therefore, when the application loads, we need to check if the URL has a token. We are going to use a package called <code>query-string</code> to parse the URL. If the user does not have a token, we will want to generate one for the user. To do this, we will use a package called <code>randomstring</code>. Let&#39;s install both of those packages:</p>
+
+<pre data-line="" class=""><code class="language-text">npm install --save query-string@4.2.0 randomstring@1.1.5
+</code></pre>
+
+<p>Let&#39;s import them in <code>index.js</code> and use them to generate a token for the user and store that token in the initial state we use to create the Redux store:</p>
+
+<div class="fp">app/index.js</div>
+
+<pre data-line="3-4,8-10" class="line-numbers"><code class="language-js">// ...
+
+import queryString from &#39;query-string&#39;;
+import randomstring from &#39;randomstring&#39;;
+
+// ...
+
+const userToken =
+    queryString.parse(window.location.search).token ||
+    randomstring.generate(12);
+
+const initialState = {
+    settings: new Map({speed: 750<mark>, userToken</mark>})
+};
+// ...
+</code></pre>
+
+<p>If you add <code>?token=123</code> to the end of the URL you use when working on your website, you should see a <code>userToken</code> key in the settings portion of the state tree in the Redux DevTools. Try loading the page without giving it a token and verify that <code>userToken</code> is set to a random string in the state tree.</p>
+
+<h4><code>FETCH_RECORD</code></h4>
+
+<p>We are going to create a new action that we will dispatch whenever we want to load the user&#39;s record from the server. We&#39;ll call this action <code>FETCH_RECORD</code>. First, let&#39;s add it to the action creators:</p>
+
+<div class="fp">app/action_creators.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">export function fetchRecord() {
+    return { &quot;type&quot;: &quot;FETCH_RECORD&quot; };
+}
+</code></pre>
+
+<p>Instead of setting up a reducer to handle this action, we will have our sagas watch for it. For now we&#39;ll just log to the console and yield a <code>SET_RECORD</code> action to initialize the record at 0 wins and 0 losses.</p>
+
+<div class="fp">app/sagas/index.js</div>
+
+<pre data-line="3-6,10" class="line-numbers"><code class="language-js">// ...
+
+export function* onFetchRecord() {
+    console.log(&#39;fetching record&#39;);
+    yield put(setRecord(0, 0));
+}
+
+export default function*() {
+    yield [ takeLatest(&#39;STAND&#39;, onStand)<mark>,</mark>
+            takeLatest(&#39;FETCH_RECORD&#39;, onFetchRecord)
+    ];
+}
+</code></pre>
+
+<p>If you refresh the page in the browser, you should see the &quot;fetching record&quot; message in the console and see that the user has 0 wins and 0 losses.</p>
+
+<p>To set the record to whatever is in the database, we&#39;ll need to make an API call. To keep our code organized, we&#39;ll create an API lib file that will define the functions we need to interact with the API.</p>
+
+<p>We&#39;re going to use a package called Isomorphic Fetch to handle the AJAX calls. &quot;Fetch&quot; is a built-in JavaScript function in modern browsers that provides a syntax similar to jQuery&#39;s <code>$.ajax(...)</code> for making asynchronous calls to external APIs. The Isomorphic Fetch package mimics the browser&#39;s <code>fetch()</code> so that <code>fetch()</code> calls can be made from JavaScript environments outside of the browser (like a NodeJS server or a Mocha test). Babel will also be able to transform the code in Isomorphic Fetch so that it is compatible with older browsers.</p>
+
+<p>Let&#39;s install Isomorphic Fetch:</p>
+
+<pre data-line="" class=""><code class="language-text">npm install --save isomorphic-fetch
+</code></pre>
+
+<p>We&#39;ll also use the built-in <code>url</code> package to create a URL for us given a host, port, and path.</p>
+
+<div class="fp">app/lib/api.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">import fetch from &#39;isomorphic-fetch&#39;;
+import url from &#39;url&#39;;
+
+function makeUrl(token) {
+    const pathname = `users/${token}`;
+    return url.format({
+        hostname: &quot;<mark>YOUR URL HERE</mark>&quot;,
+        port: 8081,
+        pathname
+    });
+}
+
+export function fetchUser(token) {
+    return fetch(makeUrl(token), {
+        method: &#39;GET&#39;,
+        headers: {
+            &#39;Content-Type&#39;: &#39;application/json&#39;
+        }
+    }).then(response =&gt; response.json());
+}
+</code></pre>
+
+<p>Fetch returns a Promise (see previous guide). After the promise is resolved, we convert the response to a JSON object. Make sure to use the URL/port for the URL hostname. If you are running the Rails server from a Cloud9 instance (according to the instructions above), the hostname will be something like: <code>workspacename-c9username.c9users.io</code>.</p>
+
+<p>We are almost ready to drop this function straight into the <code>onFetchRecord</code> saga. The only thing we need to add is a selector that will return the user&#39;s token given the application state.</p>
+
+<p>Here&#39;s how to add the selector and modify the saga to make the API call:</p>
+
+<div class="fp">app/sagas/index.js</div>
+
+<pre data-line="2,5-6,11-12" class="line-numbers"><code class="language-js">// ...
+import { fetchUser } from &#39;../lib/api&#39;;
+
+// ...
+const getUserToken =
+    (state) =&gt; state.settings.get(&#39;userToken&#39;);
+
+//...
+
+export function* onFetchRecord() {
+    const userToken = yield select(getUserToken);
+    const user = yield call(fetchUser, userToken);
+    yield put(setRecord(<mark>user.win_count</mark>, <mark>user.loss_count</mark>));
+}
+
+// ...
+</code></pre>
+
+<p>Make sure your Rails server is running, and refresh the browser. In the JavaScript console, you should see that &quot;Fetch complete&quot; message and that the record is initialized to 0-0.</p>
+
+<h3>Changing Components Based on API Call Status</h3>
+
+<p>If the user manages to play a game or two before the record finishes loading from the server, the win-loss record would be overwritten by the one from the server. It would be nice to hide the game from the player while the record is loading to prevent angry user complaints.</p>
+
+<p>We can do this by dispatching additional actions from the <code>onFetchRecord</code> saga. Before we make the fetch call, we&#39;ll dispatch a <code>FETCHING_RECORD</code> action. After the fetch completes, we&#39;ll dispatch a <code>FETCHED_RECORD</code> action. These actions will toggle a state variable that the <code>App</code> component will use to decide if it should display the game or a loading message.</p>
+
+<p>To keep our state tree organized, we&#39;ll create a new top level key in the state object and make a simple reducer to handle the <code>FETCHING_RECORD</code> and <code>FETCHED_RECORD</code> actions. This reducer will be pretty simple, so we are not going to write tests for it. If you want more practice writing tests, feel free to!</p>
+
+<p>First, let&#39;s add the action creators for these two new actions:</p>
+
+<div class="fp">app/action_creators.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+export function fetchingRecord() {
+    return { &quot;type&quot;: &quot;FETCHING_RECORD&quot; };
+}
+
+export function fetchedRecord() {
+    return { &quot;type&quot;: &quot;FETCHED_RECORD&quot; };
+}
+</code></pre>
+
+<p>Now let&#39;s import these actions and dispatch them from the saga:</p>
+
+<div class="fp">app/sagas/index.js</div>
+
+<pre data-line="9,11" class="line-numbers"><code class="language-js">// ...
+import { dealToDealer, determineWinner,
+         setRecord<mark>, fetchingRecord</mark>,
+         <mark>fetchedRecord</mark> } from &#39;../action_creators&#39;;
+// ...
+
+export function* onFetchRecord() {
+    const userToken = yield select(getUserToken);
+    yield put(fetchingRecord());
+    const user = yield call(fetchUser, userToken);
+    yield put(fetchedRecord());
+    yield put(setRecord(user.win_count, user.loss_count));
+}
+
+// ...
+</code></pre>
+
+<p>Next, we&#39;ll create a reducer to handle these:</p>
+
+<div class="fp">app/reducers/api.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">import { Map } from &#39;immutable&#39;;
+
+export default function(currentState = new Map(), action) {
+    switch(action.type) {
+        case &#39;FETCHING_RECORD&#39;:
+            return currentState.set(&#39;fetchingRecord&#39;, true);
+        case &#39;FETCHED_RECORD&#39;:
+            return currentState.set(&#39;fetchingRecord&#39;, false);
+    }
+
+    return currentState;
+}
+</code></pre>
+
+<p>We also need to add the new reducer to the root reducer:</p>
+
+<div class="fp">app/reducers/index.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+import api from &#39;./api&#39;;
+
+export default combineReducers({
+    game, settings<mark>, api</mark>, routing, form
+});
+</code></pre>
+
+<p>Now let&#39;s change the <code>App</code> component to hide the components related to the game whenever the record is being fetched from the server:</p>
+
+<div class="fp">app/components/app.js</div>
+
+<pre data-line="7-21,29,38" class="line-numbers"><code class="language-jsx">// ...
+
+export class App extends React.Component {
+    render() {
+        // ...
+
+        let gameComponents;
+        if(this.props.fetchingRecord) {
+            gameComponents = &lt;h1&gt;Loading record...&lt;/h1&gt;;
+        } else {
+            gameComponents = (
+                &lt;div class=&quot;game&quot;&gt;
+                    &lt;InfoContainer /&gt;
+                    { messageComponent }
+                    &lt;strong&gt;Player hand:&lt;/strong&gt;
+                    &lt;Hand cards={this.props.playerHand } /&gt;
+                    &lt;strong&gt;Dealer hand:&lt;/strong&gt;
+                    &lt;Hand cards={this.props.dealerHand } /&gt;
+                &lt;/div&gt;
+            );
+        }
+
+        return (
+            &lt;div className=&quot;app&quot;&gt;
+                &lt;div className=&quot;links&quot;&gt;
+                    &lt;Link to=&quot;/settings&quot;&gt;Settings&lt;/Link&gt;
+                &lt;/div&gt;
+                &lt;h1&gt;React Blackjack&lt;/h1&gt;
+                {gameComponents}
+            &lt;/div&gt;
+        );
+    }
+}
+
+function mapStateToProps(state) {
+    return {
+        // ...
+        fetchingRecord: state.api.get(&#39;fetchingRecord&#39;)
+    };
+}
+
+// ...
+</code></pre>
+
+<p>Now if you refresh the page in the browser, you should see the loading message until the <code>fetch</code> is complete!</p>
+
+<h3>Updating the Record on the Server</h3>
+
+<p>The flow for saving the record between each game is very similar. In this case, we are going to watch the <code>SETUP_GAME</code> action and dispatch a similar set of actions. First, we&#39;ll write the action creators:</p>
+
+<div class="fp">app/action_creators.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+export function patchRecord() {
+    return { &quot;type&quot;: &quot;PATCH_RECORD&quot; };
+}
+
+export function patchingRecord() {
+    return { &quot;type&quot;: &quot;PATCHING_RECORD&quot; };
+}
+
+export function patchedRecord() {
+    return { &quot;type&quot;: &quot;PATCHED_RECORD&quot; };
+}
+</code></pre>
+
+<p>Next, we&#39;ll write a function in our API utility file that sends a <code>PATCH</code> request to the Rails server. This request will be very similar to the <code>GET</code> request we send for fetching the record. The only difference here is that we need to send some data (the new win and loss counters) to the server, so we&#39;ll send a body with our request:</p>
+
+<div class="fp">app/lib/api.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+export function patchUser(token, body) {
+    return fetch(makeUrl(token), {
+        method: &#39;PATCH&#39;,
+        headers: {
+            &#39;Content-Type&#39;: &#39;application/json&#39;
+        },
+        body
+    }).then(response =&gt; response.json());
+}
+</code></pre>
+
+<p>Now let&#39;s write the Saga:</p>
+
+<div class="fp">app/sagas/index.js</div>
+
+<pre data-line="10-15,21" class="line-numbers"><code class="language-js">// ...
+import { dealToDealer, determineWinner,
+         setRecord, fetchingRecord,
+         fetchedRecord<mark>, patchingRecord</mark>,
+         <mark>patchedRecord</mark> } from &#39;../action_creators&#39;;
+import { fetchUser<mark>, patchUser</mark> } from &#39;../lib/api&#39;;
+
+// ...
+
+export function* onPatchRecord() {
+    const userToken = yield select(getUserToken);
+    yield put(patchingRecord());
+    yield call(fetchUser, userToken);
+    yield put(patchedRecord());
+}
+
+export default function*() {
+    yield [
+        takeLatest(&#39;STAND&#39;, onStand),
+        takeLatest(&#39;FETCH_RECORD&#39;, onFetchRecord),
+        takeLatest(&#39;SETUP_GAME&#39;, onPatchRecord)
+    ];
+}
+</code></pre>
+
+<p>Now refresh the page in your browser. Try loading the page with an easy to remember token (add <code>?token=hello</code> to the end of the URL you visit to see your application). Play a few games. Then close the page, and open it again with the same token. You should see that your record is the same as when you left!</p>
+
+<p>The record is only saved when the <code>SETUP_GAME</code> action is fired. This means that it is possible that the sever may not remember the user&#39;s last game if the tab was closed before the <code>SETUP_GAME</code> action fired. While this is not ideal, it&#39;s okay for the purposes of this guide. It is a little bit trickier to patch the record immediately after the game ends because this application has multiple actions that can trigger the end of the game!</p>
+
+<p>The final step is to add a message while the game is saving. We can do this by adding handling the <code>PATCHING_RECORD</code> and <code>PATCHED_RECORD</code> actions in the API reducer and modifying the <code>App</code> component.</p>
+
+<p>First the reducer methods:</p>
+
+<div class="fp">app/reducers/api.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">// ...
+
+export default function(currentState = new Map(), action) {
+    switch(action.type) {
+        // ...
+        case &#39;PATCHING_RECORD&#39;:
+            return currentState.set(&#39;patchingRecord&#39;, true);
+        case &#39;PATCHED_RECORD&#39;:
+            return currentState.set(&#39;patchingRecord&#39;, false);
+    }
+
+    return currentState;
+}
+</code></pre>
+
+<p>Then the modifications to the <code>App</code> component:</p>
+
+<div class="fp">app/components/app.js</div>
+
+<pre data-line="" class="line-numbers"><code class="language-jsx">// ...
+
+export class App extends React.Component {
+    render() {
+        // ...
+
+        return (
+            &lt;div className=&quot;app&quot;&gt;
+                &lt;div className=&quot;links&quot;&gt;
+                    &lt;Link to=&quot;/settings&quot;&gt;Settings&lt;/Link&gt;
+                &lt;/div&gt;
+                &lt;h1&gt;React Blackjack&lt;/h1&gt;
+                {gameComponent}
+                {this.props.patchingRecord ?
+                    &quot;Saving...&quot;
+                    : &quot;&quot; }
+            &lt;/div&gt;
+        );
+    }
+}
+
+function mapStateToProps(state) {
+    return {
+        // ...
+        patchingRecord: state.api.get(&#39;patchingRecord&#39;)
+    };
+}
+
+// ...
+</code></pre>
+
+<p>Notice that we did not set the initial value for <code>patchingRecord</code> in <code>index.js</code>. If <code>patchingRecord</code> is undefined, then the conditional in the <code>App</code> component will be false, and the <code>Saving...</code> message will not be rendered, which is exactly what we want. We technically did not need to set the initial value for <code>fetchingRecord</code> earlier, but we did so anyway to make the data flow more clear (and it can prevent other problems if a later feature cannot handle an undefined value).</p>
+
+<p>Now, whenever a new game is set up</p>
+
+<h3>End</h3>
+
+<p>This is the end of the guide. Feel free to continue practicing React and Redux and TDD by continuing to add features on top of what we built together!</p>
+
+<p>This guide is still a huge work in progress. If you found any errors or have suggestions for better ways to do things, please contact us or put up an issue on our repository!</p>
+
+<p>Thanks for following along!</p>
+
+                    
+                        <hr />
+                        <p>Eloquently is a recruiting firm. We also host workshops that teach web development and career skills. If you are looking for a job or are interested in joining our web development workshops, please <a href="/index#contact">contact us</a>!</p>
+
+<p>We put together some <a href="/guides/index">guides</a> for participants in our workshops. Feel free to use them. If you see any errors, please submit an issue on our <a href="https://github.com/eloquently/eloquently.github.io">github repository</a>.</p>
+
+<p>These guides are a work in progress. If you see any errors or have a suggestion for a better way to do something, please <a href="/index#contact">let us know</a>.</p>
+
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="push"></div>
+    </div>
+
+    <section id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                &copy; 2016 Eloquently LLC
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- jQuery -->
+<script src="/js/jquery.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Plugin JavaScript -->
+<script src="/js/jquery.easing.min.js"></script>
+<script src="/js/jquery.fittext.js"></script>
+<script src="/js/wow.min.js"></script>
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73351128-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+</body>
+
+</html>
