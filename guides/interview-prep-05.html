@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Eloquently - Learning and Recruiting</title>
+
+    <!-- Custom Fonts -->
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css" type="text/css">
+
+    <!-- Plugin CSS -->
+    <link rel="stylesheet" href="/css/animate.min.css" type="text/css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css" type="text/css">
+    <link rel="stylesheet" href="/css/prism.css" type="text/css">
+
+    <script src="/js/prism.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+
+</head>
+
+
+<body>
+    <div class="wrapper">
+        <!-- Navigation -->
+        <nav id="mainNav" class="nav navbar navbar-default full-color">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand page-scroll" href="/index">ELOQUENTLY</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a class="page-scroll" href="/index">Home</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="/workshops">Workshops</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="/guides/index">Guides</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+
+        <div class="container post">
+            <div class="row">
+                <!--<div class="post-options pull-right">
+                    <div class="show">
+                        <a href="#postOptions" data-toggle="collapse" class="pull-right btn btn-default btn-sm">Display Options</a>
+                    </div>
+                    <div class="options collapse" id="postOptions">
+                        <input type="checkbox" checked data-toggle="toggle" data-on="Annotations On" data-off="Annotations Off" data-onstyle="primary-light" data-width="175">
+                        <br />
+                        <input type="checkbox" checked data-toggle="toggle" data-on="Line Numbers On" data-off="Line Numbers Off" data-onstyle="primary-light" data-width="175">
+                    </div>
+                </div>-->
+                <div class="post-content">
+                    <h2>Interview Prep 05 - Trees</h2>
+
+<p><hr class="left"></p>
+
+<p>We are going to look at another type of data structure: trees.</p>
+
+<p>Trees are similar to linked lists in that they are a very simple data structure. The only difference between a tree and a linked list is that a node in a linked list points to a single next node, whereas a node in a tree can point to more than one node.</p>
+
+<p>An everyday use of a tree data structure is the file system on your computer. A directory points to many sub-directories and files. The sub-directories can in turn point to other directories or more files. In the following exercises, we will be implementing and working with binary trees -- trees that can only have two children.</p>
+
+<p>Like linked lists, it is natural to use recursion to perform common operations like traversal, search, insertion, and deletion on trees.</p>
+
+<h3>Implementing <code>TreeNode</code></h3>
+
+<p>Start implementing a tree by copying your implementation of a linked list node. The only thing that needs to change is that instead of a <code>next</code> instance variable, a tree node needs <code>left</code> and <code>right</code> instance variables.</p>
+
+<p>At the end of your program, code up the following trees. You will use them to test your algorithms and we will base the examples off of them.</p>
+
+<p>It&#39;s okay to code the trees like this:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">const smallTree_1 = new TreeNode(1);
+const smallTree_2 = new TreeNode(2);
+smallTree_1.left = smallTree_2;
+</code></pre>
+
+<p>Here are the trees:</p>
+
+<pre data-line="" class=""><code class="language-text">small tree:
+     1
+    / \
+   2   3
+
+large tree:
+     1
+    / \
+   6   3
+  / \   \
+ 2   4   9
+        / \
+       5   0
+</code></pre>
+
+<h3>Traversals</h3>
+
+<p>Traversing a linked list is straightforward: start at the beginning of the list and visit each element in order. It is less obvious how to traverse a tree because there are two options for the &quot;next&quot; node. The three most common types of traversals are called &quot;pre-order&quot; &quot;in-order&quot; and &quot;post-order&quot;.</p>
+
+<p>Solve the following problems recursively! You can implement each of the traversals with about 5 lines of code!</p>
+
+<h4>Pre-order Traversal</h4>
+
+<p>In a pre-order traversal, the algorithm first traverses the left sub-tree, then visits the root, then traverses the right subtree.</p>
+
+<p>Write an algorithm <code>preorder()</code> that does a pre-order traversal printing each node&#39;s data given one parameter: the root node of the tree (<code>root</code>).</p>
+
+<p>For the small tree, your algorithm should print out <code>213</code> (separated by newlines).</p>
+
+<p>For the large tree, your algorithm should print <code>26413590</code>.</p>
+
+<p>If the parameter is ever <code>undefined</code> the function exit by returning <code>undefined</code>.</p>
+
+<p>Run your traversals with lines like this at the end of your program:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">preorder(smallTree_1);
+console.log(&#39;---&#39;);
+preorder(largeTree_1);
+</code></pre>
+
+<p>You can run your program with:</p>
+
+<pre data-line="" class=""><code class="language-text">npm run node src/trees.rb
+</code></pre>
+
+<h4>In-order Traversal</h4>
+
+<p>In an in-order traversal, the algorithm first visits the root, then traverses the left sub-tree, then traverses the right subtree.</p>
+
+<p>Write an algorithm <code>inorder()</code> that does an in-order traversal printing each node&#39;s data given one parameter: the root node of the tree (<code>root</code>).</p>
+
+<p>For the small tree, your algorithm should print out <code>123</code> (separated by newlines).</p>
+
+<p>For the large tree, your algorithm should print <code>16243950</code>.</p>
+
+<h4>Post-order Traversal</h4>
+
+<p>In a post-order traversal, the algorithm first traverses the left sub-tree, then traverses the right subtree, then visits the root.</p>
+
+<p>Write an algorithm <code>postorder()</code> that does a post-order traversal printing each node&#39;s data given one parameter: the root node of the tree (<code>root</code>).</p>
+
+<p>For the small tree, your algorithm should print out <code>231</code> (separated by newlines).</p>
+
+<p>For the large tree, your algorithm should print <code>24650931</code>.</p>
+
+<h3>Searching</h3>
+
+<p>Write a function, <code>basicSearch()</code>, that takes two parameters, <code>root</code> and <code>needle</code>, and returns the <code>TreeNode</code> object that contains <code>needle</code> as the data. It is common to store keys and values in tree nodes, and you might want to search a tree to find the value associated with a particular key. In this case, our <code>TreeNode</code>s only have a single data property, so we will just search for the actual node object.</p>
+
+<p>Don&#39;t worry about writing an efficient algorithm -- just get one that passes the tests!</p>
+
+<p>You may assume that <code>needle</code> will always be somewhere in the tree.</p>
+
+<p>Once the tests pass, what is the time complexity of <code>basicSearch()</code>? Is this faster or slower than searching an unsorted array or linked list?</p>
+
+<h3>Binary Search Trees</h3>
+
+<p>Binary Search Trees (BSTs) are a type of data structure that can be used to efficiently store and retrieve sorted data.</p>
+
+<p>A BST is a binary tree with a special property: each node must be greater than any node in its left subtree, and each node must be less than any node in its right subtree.</p>
+
+<p>Here are some examples of binary search trees:</p>
+
+<pre data-line="" class=""><code class="language-text">BST 1:
+
+    5
+   / \
+  3   8
+ / \   \
+1   4   10
+       /  \
+      9   15
+
+BST 2:
+
+  9
+   \
+    10
+     \
+      18
+     /  \
+    11   28
+     \
+     13
+</code></pre>
+
+<p>Given a set of numbers, there can be many ways to arrange them in a BST. The shape of the tree depends on what order the elements were inserted in. Image what BST 2 would look like if 18 has been inserted first.</p>
+
+<h4><code>searchBST()</code></h4>
+
+<p>Write a function, <code>searchBST()</code>, that takes two parameters: the root node of a BST and a <code>needle</code> to search for. The function should return the node that has <code>needle</code> as its data.</p>
+
+<p>You should write this recursively! This algorithm should be much more efficient than <code>basicSearch()</code>. In fact, it should have <code>O(log(n))</code> time complexity.</p>
+
+<h4><code>insert()</code></h4>
+
+<p>Write a function, <code>insert()</code>, that takes two parameters: the root of a BST (<code>root</code>) and a new value (a number, not a node) to be inserted in the tree (<code>newValue</code>). The function does not need to return anything. Make sure that the tree with the element inserted still has the property of a BST discussed above!</p>
+
+<p>You can assume that the new element is unique (not already in the tree).</p>
+
+<p>What is the time complexity of <code>insert()</code>?</p>
+
+                    
+                        <hr />
+                        <p>Eloquently is a recruiting firm. We also host workshops that teach web development and career skills. If you are looking for a job or are interested in joining our web development workshops, please <a href="/index#contact">contact us</a>!</p>
+
+<p>We put together some <a href="/guides/index">guides</a> for participants in our workshops. Feel free to use them. If you see any errors, please submit an issue on our <a href="https://github.com/eloquently/eloquently.github.io">github repository</a>.</p>
+
+<p>These guides are a work in progress. If you see any errors or have a suggestion for a better way to do something, please <a href="/index#contact">let us know</a>.</p>
+
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="push"></div>
+    </div>
+
+    <section id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                &copy; 2016 Eloquently LLC
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- jQuery -->
+<script src="/js/jquery.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Plugin JavaScript -->
+<script src="/js/jquery.easing.min.js"></script>
+<script src="/js/jquery.fittext.js"></script>
+<script src="/js/wow.min.js"></script>
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73351128-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+</body>
+
+</html>
