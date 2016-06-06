@@ -421,11 +421,16 @@ export function patchUser(token, body) {
 }
 </code></pre>
 
-<p>Now let&#39;s write the Saga:</p>
+<p>Now let&#39;s write the Saga. We&#39;ll need to write new selectors to get the win-loss record for the state, and create an object to pass as the body of our request to the rails server. The API will want an object that looks like:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">{ user: { win_count: 1, loss_count: 2 } }
+</code></pre>
+
+<p>Note that the <code>win_count</code> and <code>loss_count</code> keys follow Ruby&#39;s snake case convention, and the win and loss counts are wrapped in an object with the key <code>user</code>. This is how the scaffolded Rails controller expects the parameters to be formatted.</p>
 
 <div class="fp">app/sagas/index.js</div>
 
-<pre data-line="10-15,21" class="line-numbers"><code class="language-js">// ...
+<pre data-line="9-10" class="line-numbers"><code class="language-js">// ...
 import { dealToDealer, determineWinner,
          setRecord, fetchingRecord,
          fetchedRecord<mark>, patchingRecord</mark>,
@@ -433,11 +438,22 @@ import { dealToDealer, determineWinner,
 import { fetchUser<mark>, patchUser</mark> } from &#39;../lib/api&#39;;
 
 // ...
+const getWinCount = (state) =&gt; state.game.get(&#39;winCount&#39;);
+const getLossCount = (state) =&gt; state.game.get(&#39;lossCount&#39;);
+
+// ...
 
 export function* onPatchRecord() {
     const userToken = yield select(getUserToken);
+    const winCount = yield select(getWinCount);
+    const lossCount = yield select(getLossCount);
     yield put(patchingRecord());
-    yield call(fetchUser, userToken);
+    yield call(patchUser, userToken, {
+        user: {
+            &#39;win_count&#39;: winCount,
+            &#39;loss_count&#39;: lossCount
+        }
+    });
     yield put(patchedRecord());
 }
 
@@ -512,11 +528,16 @@ function mapStateToProps(state) {
 
 <p>Notice that we did not set the initial value for <code>patchingRecord</code> in <code>index.js</code>. If <code>patchingRecord</code> is undefined, then the conditional in the <code>App</code> component will be false, and the <code>Saving...</code> message will not be rendered, which is exactly what we want. We technically did not need to set the initial value for <code>fetchingRecord</code> earlier, but we did so anyway to make the data flow more clear (and it can prevent other problems if a later feature cannot handle an undefined value).</p>
 
-<p>Now, whenever a new game is set up</p>
-
 <h3>End</h3>
 
 <p>This is the end of the guide. Feel free to continue practicing React and Redux and TDD by continuing to add features on top of what we built together!</p>
+
+<p>Here are some ideas:</p>
+
+<ul>
+<li>Add a URL with the user&#39;s token to the settings page or the game page so that the user can easily bookmark their game.</li>
+<li>More ideas coming soon.</li>
+</ul>
 
 <p>This guide is still a huge work in progress. If you found any errors or have suggestions for better ways to do things, please contact us or put up an issue on our repository!</p>
 
