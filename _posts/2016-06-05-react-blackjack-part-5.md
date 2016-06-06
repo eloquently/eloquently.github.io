@@ -345,10 +345,16 @@ export function patchUser(token, body) {
 }
 ```
 
-Now let's write the Saga:
+Now let's write the Saga. We'll need to write new selectors to get the win-loss record for the state, and create an object to pass as the body of our request to the rails server. The API will want an object that looks like:
+
+```js
+{ user: { win_count: 1, loss_count: 2 } }
+```
+
+Note that the `win_count` and `loss_count` keys follow Ruby's snake case convention, and the win and loss counts are wrapped in an object with the key `user`. This is how the scaffolded Rails controller expects the parameters to be formatted.
 
 <div class="fp">app/sagas/index.js</div>
-```js{10-15,21}
+```js{9-10}
 // ...
 import { dealToDealer, determineWinner,
          setRecord, fetchingRecord,
@@ -357,11 +363,22 @@ import { dealToDealer, determineWinner,
 import { fetchUser<mark>, patchUser</mark> } from '../lib/api';
 
 // ...
+const getWinCount = (state) => state.game.get('winCount');
+const getLossCount = (state) => state.game.get('lossCount');
+
+// ...
 
 export function* onPatchRecord() {
     const userToken = yield select(getUserToken);
+    const winCount = yield select(getWinCount);
+    const lossCount = yield select(getLossCount);
     yield put(patchingRecord());
-    yield call(fetchUser, userToken);
+    yield call(patchUser, userToken, {
+        user: {
+            'win_count': winCount,
+            'loss_count': lossCount
+        }
+    });
     yield put(patchedRecord());
 }
 
@@ -436,11 +453,14 @@ function mapStateToProps(state) {
 
 Notice that we did not set the initial value for `patchingRecord` in `index.js`. If `patchingRecord` is undefined, then the conditional in the `App` component will be false, and the `Saving...` message will not be rendered, which is exactly what we want. We technically did not need to set the initial value for `fetchingRecord` earlier, but we did so anyway to make the data flow more clear (and it can prevent other problems if a later feature cannot handle an undefined value).
 
-Now, whenever a new game is set up
-
 ### End
 
 This is the end of the guide. Feel free to continue practicing React and Redux and TDD by continuing to add features on top of what we built together!
+
+Here are some ideas:
+
+- Add a URL with the user's token to the settings page or the game page so that the user can easily bookmark their game.
+- More ideas coming soon.
 
 This guide is still a huge work in progress. If you found any errors or have suggestions for better ways to do things, please contact us or put up an issue on our repository!
 
