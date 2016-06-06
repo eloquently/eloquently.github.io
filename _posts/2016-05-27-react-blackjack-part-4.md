@@ -9,12 +9,11 @@ date: 2016-05-27
 
 <hr class="left" />
 
-In this final part of the React Blackjack guide, we will use several new React libraries to add additional functionality to our Blackjack game. Specifically, we are going to:
+In this part of the React Blackjack guide, we will use several new React libraries to add additional functionality to our Blackjack game. Specifically, we are going to:
 
 - Use Redux Saga to chain actions so that the dealer will draw cards one at a time with a slight delay between draws
 - Use React Router to create a new page for settings
 - Use Redux Redux form to create a settings form that allows the user to control how fast the dealer draws cards
-- Use Redux Saga to persist and load users' win-loss records to a Rails 5 API
 
 ### Quick Configuration
 
