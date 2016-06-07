@@ -173,7 +173,7 @@ const c = () =&gt; {
 
 <p>Then when the user wishes to undo something, you simply pop the last state off of the stack and replace that. If they wish to undo multiple steps, you can continue popping off the stack.</p>
 
-<p>You could also have a redo stack where you push the states that the user each time the user undoes an action.</p>
+<p>You could also have a redo stack that you can push the current state to before undoing an action.</p>
 
 <p>Let&#39;s see how that would work with a simple example.</p>
 
