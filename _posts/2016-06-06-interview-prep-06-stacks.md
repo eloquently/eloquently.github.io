@@ -93,7 +93,7 @@ You can also implement an "undo" functionality using a stack. To do this, you wo
 
 Then when the user wishes to undo something, you simply pop the last state off of the stack and replace that. If they wish to undo multiple steps, you can continue popping off the stack.
 
-You could also have a redo stack where you push the states that the user each time the user undoes an action.
+You could also have a redo stack that you can push the current state to before undoing an action.
 
 Let's see how that would work with a simple example.
 
