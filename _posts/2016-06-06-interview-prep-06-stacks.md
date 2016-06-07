@@ -35,7 +35,7 @@ To remove something from the stack, we can just remove the last element from `th
 
 To peek at the element on the top of the stack, we need to return the last element from `this.arr`.
 
-Now you have implemented a Stack!
+Now you have implemented a Stack! When you are using this Stack class below, you shouldn't reference `arr` directly. You should only use its `push()`, `pop()`, and `peek()` methods.
 
 ### Stack Problems
 
@@ -43,7 +43,7 @@ Now you have implemented a Stack!
 
 Write a function `reverseString()` that takes one parameter `str` and returns a string with the characters from `str` in reverse order.
 
-Your method should use a stack to do the reversal.
+Your method should use a stack to do the reversal. One approach is to push each character from `str` into a stack. Then create a blank sting and `pop()` the characters off the stack onto the end of the string until the stack is empty.
 
 #### `minValueInStack()`
 
