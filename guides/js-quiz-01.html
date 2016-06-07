@@ -339,7 +339,7 @@ Duck.prototype = animal;
 
 <p>e) error</p>
 
-<p><strong><code>console.log(c instanceof animal);</code></strong></p>
+<p><strong><code>c = new Cow(); console.log(c instanceof animal);</code></strong></p>
 
 <p>a) <code>true</code></p>
 
@@ -349,7 +349,7 @@ Duck.prototype = animal;
 
 <p>d) error</p>
 
-<p><strong><code>console.log(c instanceof Cow());</code></strong></p>
+<p><strong><code>c = new Cow(); console.log(c instanceof Cow());</code></strong></p>
 
 <p>a) <code>true</code></p>
 
@@ -359,7 +359,7 @@ Duck.prototype = animal;
 
 <p>d) error</p>
 
-<p><strong><code>console.log(c instanceof Cow);</code></strong></p>
+<p><strong><code>c = new Cow(); console.log(c instanceof Cow);</code></strong></p>
 
 <p>a) <code>true</code></p>
 
@@ -369,7 +369,7 @@ Duck.prototype = animal;
 
 <p>d) error</p>
 
-<p><strong><code>console.log(confused instanceof Cow);</code></strong></p>
+<p><strong><code>confused = new Cow(); confused.sound = &#39;neigh&#39;; console.log(confused instanceof Cow);</code></strong></p>
 
 <p>a) <code>true</code></p>
 
@@ -379,7 +379,7 @@ Duck.prototype = animal;
 
 <p>d) error</p>
 
-<p><strong><code>for(var prop in c) { console.log(prop); }</code></strong></p>
+<p><strong><code>c = new Cow(); for(var prop in c) { console.log(prop); }</code></strong></p>
 
 <p>a) <code>speak</code></p>
 
@@ -393,7 +393,7 @@ Duck.prototype = animal;
 
 <p>f) error</p>
 
-<p><strong><code>console.log(typeof c);</code></strong></p>
+<p><strong><code>c = new Cow(); console.log(typeof c);</code></strong></p>
 
 <p>a) <code>number</code></p>
 
