@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Eloquently - Learning and Recruiting</title>
+
+    <!-- Custom Fonts -->
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css" type="text/css">
+
+    <!-- Plugin CSS -->
+    <link rel="stylesheet" href="/css/animate.min.css" type="text/css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css" type="text/css">
+    <link rel="stylesheet" href="/css/prism.css" type="text/css">
+
+    <script src="/js/prism.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+
+</head>
+
+
+<body>
+    <div class="wrapper">
+        <!-- Navigation -->
+        <nav id="mainNav" class="nav navbar navbar-default full-color">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand page-scroll" href="/index">ELOQUENTLY</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a class="page-scroll" href="/index">Home</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="/workshops">Workshops</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="/schedule">Schedule</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="/guides/index">Guides</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+
+        <div class="container post">
+            <div class="row">
+                <!--<div class="post-options pull-right">
+                    <div class="show">
+                        <a href="#postOptions" data-toggle="collapse" class="pull-right btn btn-default btn-sm">Display Options</a>
+                    </div>
+                    <div class="options collapse" id="postOptions">
+                        <input type="checkbox" checked data-toggle="toggle" data-on="Annotations On" data-off="Annotations Off" data-onstyle="primary-light" data-width="175">
+                        <br />
+                        <input type="checkbox" checked data-toggle="toggle" data-on="Line Numbers On" data-off="Line Numbers Off" data-onstyle="primary-light" data-width="175">
+                    </div>
+                </div>-->
+                <div class="post-content">
+                    <h2>JavaScript Quiz 01</h2>
+
+<p><hr class="left"></p>
+
+<p>What do the following lines print to the console?</p>
+
+<p><code>console.log([1,2,3].toString())</code></p>
+
+<p>a) <code>1, 2, 3</code></p>
+
+<p>b) <code>[1, 2, 3]</code></p>
+
+<p>c) <code>1 2 3</code></p>
+
+<p>d) <code>1\n2\n3</code></p>
+
+<p>e) <code>undefined</code></p>
+
+<p>f) <code>error</code></p>
+
+<p><code>console.log(true.toString())</code></p>
+
+<p>a) <code>1</code></p>
+
+<p>b) <code>true</code></p>
+
+<p>c) <code>0</code></p>
+
+<p>d) <code>true.toString()</code></p>
+
+<p>e) <code>undefined</code></p>
+
+<p>f) <code>error</code></p>
+
+<p><code>console.log(2.toString())</code></p>
+
+<p>a) <code>2</code></p>
+
+<p>b) <code>2.0</code></p>
+
+<p>c) <code>two</code></p>
+
+<p>d) <code>1.999999</code></p>
+
+<p>e) <code>undefined</code></p>
+
+<p>f) <code>error</code></p>
+
+<p>console.log(2..toString())</p>
+
+<p>a) <code>2</code></p>
+
+<p>b) <code>2.0</code></p>
+
+<p>c) <code>two</code></p>
+
+<p>d) <code>1.999999</code></p>
+
+<p>e) <code>undefined</code></p>
+
+<p>f) <code>error</code></p>
+
+<p><hr></p>
+
+<p>What do the following lines print after this code is run:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">var a = {
+    name: &quot;Eric&quot;, &quot;phone&quot;: &quot;555-555-5555&quot;,
+    address: &quot;2121 S Mill Ave&quot;
+}
+</code></pre>
+
+<p><code>console.log(a.name)</code></p>
+
+<p>a) <code>name: &quot;Eric&quot;</code></p>
+
+<p>b) <code>{ name: &quot;Eric&quot;, phone: &quot;555-555-5555&quot;, address: &quot;2121 S Mill Ave&quot; }</code></p>
+
+<p>c) <code>Eric</code></p>
+
+<p>d) <code>undefined</code></p>
+
+<p>e) <code>error</code></p>
+
+<p><code>console.log(a..name)</code></p>
+
+<p>a) <code>name: &quot;Eric&quot;</code></p>
+
+<p>b) <code>{ name: &quot;Eric&quot;, phone: &quot;555-555-5555&quot;, address: &quot;2121 S Mill Ave&quot; }</code></p>
+
+<p>c) <code>Eric</code></p>
+
+<p>d) <code>undefined</code></p>
+
+<p>e) <code>error</code></p>
+
+<p>console.log(a[name])</p>
+
+<p>a) <code>name: &quot;Eric&quot;</code></p>
+
+<p>b) <code>{ name: &quot;Eric&quot;, phone: &quot;555-555-5555&quot;, address: &quot;2121 S Mill Ave&quot; }</code></p>
+
+<p>c) <code>Eric</code></p>
+
+<p>d) <code>undefined</code></p>
+
+<p>e) <code>error</code></p>
+
+<p><code>console.log(a[&#39;name&#39;])</code></p>
+
+<p>a) <code>name: &quot;Eric&quot;</code></p>
+
+<p>b) <code>{ name: &quot;Eric&quot;, phone: &quot;555-555-5555&quot;, address: &quot;2121 S Mill Ave&quot; }</code></p>
+
+<p>c) <code>Eric</code></p>
+
+<p>d) <code>undefined</code></p>
+
+<p>e) <code>error</code></p>
+
+<p><code>console.log(a.phone)</code></p>
+
+<p>a) <code>phone: &quot;555-555-5555&quot;</code></p>
+
+<p>b) <code>{ name: &quot;Eric&quot;, phone: &quot;555-555-5555&quot;, address: &quot;2121 S Mill Ave&quot; }</code></p>
+
+<p>c) <code>&quot;555-555-5555&quot;</code></p>
+
+<p>d) <code>undefined</code></p>
+
+<p>e) <code>error</code></p>
+
+<p><code>console.log(a[&#39;phone&#39;])</code></p>
+
+<p>a) <code>phone: &quot;555-555-5555&quot;</code></p>
+
+<p>b) <code>{ name: &quot;Eric&quot;, phone: &quot;555-555-5555&quot;, address: &quot;2121 S Mill Ave&quot; }</code></p>
+
+<p>c) <code>&quot;555-555-5555&quot;</code></p>
+
+<p>d) <code>undefined</code></p>
+
+<p>e) <code>error</code></p>
+
+<p><strong><code>console.log(a[&quot;phone&quot;])</code></strong></p>
+
+<p>a) <code>phone: &quot;555-555-5555&quot;</code></p>
+
+<p>b) <code>{ name: &quot;Eric&quot;, phone: &quot;555-555-5555&quot;, address: &quot;2121 S Mill Ave&quot; }</code></p>
+
+<p>c) <code>&quot;555-555-5555&quot;</code></p>
+
+<p>d) <code>undefined</code></p>
+
+<p>e) error</p>
+
+<p><hr></p>
+
+<p>What do the following lines print after this code is run:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">var animal = { speak: function() { console.log(this.sound) } };
+
+function Cow() { this.sound = &#39;moo&#39;; }
+function Duck() { this.sound = &#39;quack&#39;; }
+function Horse() { this.sound = &#39;neigh&#39;; }
+Cow.prototype = animal;
+Duck.prototype = animal;
+</code></pre>
+
+<p><strong><code>animal.speak()</code></strong></p>
+
+<p>a) <code>moo</code></p>
+
+<p>b) <code>quack</code></p>
+
+<p>c) <code>neigh</code></p>
+
+<p>d) <code>undefined</code></p>
+
+<p>f) <code>nothing</code></p>
+
+<p>e) <code>error</code></p>
+
+<p><strong><code>Cow.speak()</code></strong></p>
+
+<p>a) <code>moo</code></p>
+
+<p>b) <code>quack</code></p>
+
+<p>c) <code>neigh</code></p>
+
+<p>d) <code>undefined</code></p>
+
+<p>f) <code>nothing</code></p>
+
+<p>e) <code>error</code></p>
+
+<p><strong><code>c = new Cow(); c.speak()</code></strong></p>
+
+<p>a) <code>moo</code></p>
+
+<p>b) <code>quack</code></p>
+
+<p>c) <code>neigh</code></p>
+
+<p>d) <code>undefined</code></p>
+
+<p>f) <code>nothing</code></p>
+
+<p>e) <code>error</code></p>
+
+<p><strong><code>new Duck().speak()</code></strong></p>
+
+<p>a) <code>moo</code></p>
+
+<p>b) <code>quack</code></p>
+
+<p>c) <code>neigh</code></p>
+
+<p>d) <code>undefined</code></p>
+
+<p>f) <code>nothing</code></p>
+
+<p>e) <code>error</code></p>
+
+<p><strong><code>h = new Horse(); h.speak()</code></strong></p>
+
+<p>a) <code>moo</code></p>
+
+<p>b) <code>quack</code></p>
+
+<p>c) <code>neigh</code></p>
+
+<p>d) <code>undefined</code></p>
+
+<p>f) <code>nothing</code></p>
+
+<p>e) <code>error</code></p>
+
+<p><strong><code>confused = new Cow(); confused.sound = &#39;neigh&#39;; confused.speak()</code></strong></p>
+
+<p>a) <code>moo</code></p>
+
+<p>b) <code>quack</code></p>
+
+<p>c) <code>neigh</code></p>
+
+<p>d) <code>undefined</code></p>
+
+<p>f) <code>nothing</code></p>
+
+<p>e) <code>error</code></p>
+
+<p><strong><code>console.log(c instanceof animal);</code></strong></p>
+
+<p>a) <code>true</code></p>
+
+<p>b) <code>false</code></p>
+
+<p>c) <code>undefined</code></p>
+
+<p>d) <code>error</code></p>
+
+<p>console.log(c instanceof Cow());</p>
+
+<p>a) <code>true</code></p>
+
+<p>b) <code>false</code></p>
+
+<p>c) <code>undefined</code></p>
+
+<p>d) <code>error</code></p>
+
+<p>console.log(c instanceof Cow);</p>
+
+<p>a) <code>true</code></p>
+
+<p>b) <code>false</code></p>
+
+<p>c) <code>undefined</code></p>
+
+<p>d) <code>error</code></p>
+
+<p>console.log(confused instanceof Cow);</p>
+
+<p>a) <code>true</code></p>
+
+<p>b) <code>false</code></p>
+
+<p>c) <code>undefined</code></p>
+
+<p>d) <code>error</code></p>
+
+<p>for(var prop in c) { console.log(prop); }</p>
+
+<p>a) <code>speak</code></p>
+
+<p>b) <code>sound</code></p>
+
+<p>c) speak\nsound d) nothing e) undefined f) error</p>
+
+<p>console.log(typeof c);</p>
+
+<p>a) number b) boolean c) function d) undefined e) object</p>
+
+<p>console.log(typeof Cow);</p>
+
+<p>a) number b) boolean c) function d) undefined e) object</p>
+
+<p>console.log(typeof Cow());</p>
+
+<p>a) number b) boolean c) function d) undefined e) object</p>
+
+<p>console.log(typeof new Cow());</p>
+
+<p>a) number b) boolean c) function d) undefined e) object</p>
+
+<p>console.log(typeof animal);</p>
+
+<p>a) number b) boolean c) function d) undefined e) object</p>
+
+<p><hr></p>
+
+<p>What do the following code blocks print?</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">function raiseSails() { console.log(&#39;sails raised&#39;); }
+raiseSails();
+</code></pre>
+
+<p>a) <code>sails raised\nsails raised</code></p>
+
+<p>b) <code>sails raised</code></p>
+
+<p>c) <code>nothing</code></p>
+
+<p>d) <code>undefined</code></p>
+
+<p>f) <code>error</code></p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">raiseSails();
+function raiseSails() { console.log(&#39;sails raised&#39;); }
+</code></pre>
+
+<p>a) <code>sails raised\nsails raised</code></p>
+
+<p>b) <code>sails raised</code></p>
+
+<p>c) <code>nothing</code></p>
+
+<p>d) <code>undefined</code></p>
+
+<p>f) <code>error</code></p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">var raiseSails = function() { console.log(&#39;sails raised&#39;); };
+raiseSails();
+</code></pre>
+
+<p>a) <code>sails raised\nsails raised</code></p>
+
+<p>b) <code>sails raised</code></p>
+
+<p>c) <code>nothing</code></p>
+
+<p>d) <code>undefined</code></p>
+
+<p>f) <code>error</code></p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">raiseSails();
+var raiseSails = function() { console.log(&#39;sails raised&#39;); };
+</code></pre>
+
+<p>a) <code>sails raised\nsails raised</code></p>
+
+<p>b) <code>sails raised</code></p>
+
+<p>c) <code>nothing</code></p>
+
+<p>d) undefined</p>
+
+<p>f) error</p>
+
+                    
+                        <hr />
+                        <p>Eloquently is a recruiting firm. We also host workshops that teach web development and career skills. If you are looking for a job or are interested in joining our web development workshops, please <a href="/index#contact">contact us</a>!</p>
+
+<p>We put together some <a href="/guides/index">guides</a> for participants in our workshops. Feel free to use them. If you see any errors, please submit an issue on our <a href="https://github.com/eloquently/eloquently.github.io">github repository</a>.</p>
+
+<p>These guides are a work in progress. If you see any errors or have a suggestion for a better way to do something, please <a href="/index#contact">let us know</a>.</p>
+
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="push"></div>
+    </div>
+
+    <section id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                &copy; 2016 Eloquently LLC
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- jQuery -->
+<script src="/js/jquery.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Plugin JavaScript -->
+<script src="/js/jquery.easing.min.js"></script>
+<script src="/js/jquery.fittext.js"></script>
+<script src="/js/wow.min.js"></script>
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73351128-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+</body>
+
+</html>
