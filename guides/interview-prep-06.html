@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Eloquently - Learning and Recruiting</title>
+
+    <!-- Custom Fonts -->
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css" type="text/css">
+
+    <!-- Plugin CSS -->
+    <link rel="stylesheet" href="/css/animate.min.css" type="text/css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css" type="text/css">
+    <link rel="stylesheet" href="/css/prism.css" type="text/css">
+
+    <script src="/js/prism.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+
+</head>
+
+
+<body>
+    <div class="wrapper">
+        <!-- Navigation -->
+        <nav id="mainNav" class="nav navbar navbar-default full-color">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand page-scroll" href="/index">ELOQUENTLY</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a class="page-scroll" href="/index">Home</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="/workshops">Workshops</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="/schedule">Schedule</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="/guides/index">Guides</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+
+        <div class="container post">
+            <div class="row">
+                <!--<div class="post-options pull-right">
+                    <div class="show">
+                        <a href="#postOptions" data-toggle="collapse" class="pull-right btn btn-default btn-sm">Display Options</a>
+                    </div>
+                    <div class="options collapse" id="postOptions">
+                        <input type="checkbox" checked data-toggle="toggle" data-on="Annotations On" data-off="Annotations Off" data-onstyle="primary-light" data-width="175">
+                        <br />
+                        <input type="checkbox" checked data-toggle="toggle" data-on="Line Numbers On" data-off="Line Numbers Off" data-onstyle="primary-light" data-width="175">
+                    </div>
+                </div>-->
+                <div class="post-content">
+                    <h2>Interview Prep 06 - Stacks</h2>
+
+<p><hr class="left" /></p>
+
+<p>In this guide we will look at a data structure called a stack. Stacks are analogous to a stack of papers sitting on a desk. You can only add papers to the top of the stack, and when you remove papers, you can only remove them from the top of the stack. This is called a LIFO data structure (last in first out).</p>
+
+<p>Adding a variable to the top of a stack is called a <code>push</code>. Removing the top variable from the stack is called a <code>pop</code>. Looking at the top element without removing it is called a <code>peek</code>.</p>
+
+<p>We are going to implement a stack in JavaScript by creating an object (<code>Stack</code>) with an array instance variable. We are going to add three instance methods to the <code>Stack</code> class: <code>push()</code>, <code>pop()</code>, and <code>peek()</code>.</p>
+
+<h3><code>Stack</code> Class</h3>
+
+<h4><code>constructor()</code></h4>
+
+<p>We just need a very simple constructor for the <code>Stack</code> class. All it needs to do is set <code>this.arr</code> to an empty array.</p>
+
+<h4><code>push()</code></h4>
+
+<p>To add something to the stack, all we need to do is <code>push()</code> that element to <code>this.arr</code>. Write a function <code>push()</code> that takes one parameter, and pushes that parameter to <code>this.arr</code> using the built in <code>push()</code> function on JavaScript Arrays.</p>
+
+<p><code>push()</code> does not need to return anything.</p>
+
+<h4><code>pop()</code></h4>
+
+<p>To remove something from the stack, we can just remove the last element from <code>this.arr</code> and return it. JavaScript arrays also have a built in <code>pop()</code> function that you can use.</p>
+
+<h4><code>peek()</code></h4>
+
+<p>To peek at the element on the top of the stack, we need to return the last element from <code>this.arr</code>.</p>
+
+<p>Now you have implemented a Stack!</p>
+
+<h3>Stack Problems</h3>
+
+<h4><code>reverseString()</code></h4>
+
+<p>Write a function <code>reverseString()</code> that takes one parameter <code>str</code> and returns a string with the characters from <code>str</code> in reverse order.</p>
+
+<p>Your method should use a stack to do the reversal.</p>
+
+<h4><code>minValueInStack()</code></h4>
+
+<p>Write a function <code>minValueInStack()</code> that takes one parameter, <code>stack</code>, and returns the minimum value in the stack.</p>
+
+<p>After the method is done, the original stack should be left unchanged.</p>
+
+<h3>Stacks in Real Life</h3>
+
+<h4>Call Stack</h4>
+
+<p>Stacks can be very useful data structures in real life. When you write a function that calls other functions (or itself recursively), your computer keeps track of all the functions it needs to execute in a stack called the &quot;call stack&quot;.</p>
+
+<p>For example, if you have functions that look like this:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">const a = () =&gt; {
+    console.log(&#39;the end!&#39;);
+}
+
+const b = () =&gt; {
+    console.log(&#39;before a&#39;);
+    a();
+    console.log(&#39;after a&#39;);
+}
+
+const c = () =&gt; {
+    console.log(&#39;before b&#39;);
+    b();
+    console.log(&#39;after b&#39;);
+}
+</code></pre>
+
+<p>When you call <code>c()</code>, the program will start by printing <code>before b</code>, then it will see that it needs to call <code>b()</code>. Before starting to execute <code>b()</code>, the program will add its current location inside <code>c()</code> to the call stack. Then it will start executing <code>b()</code>, and print <code>before a</code>. Once the program sees that it needs to call <code>a()</code>, it will add it&#39;s current location inside <code>b()</code> to the call stack.</p>
+
+<p>Now the call stack has two elements, the position inside <code>c()</code> and the position inside <code>b()</code>. Since the position inside <code>b()</code> has been most recently added, it will be on the top.</p>
+
+<p>Now the program can execute <code>a()</code> and print <code>the end!</code>. Now the program sees that <code>a()</code> is done executing, so it will <code>pop()</code> the top location off the call stack (<code>b()</code>) and resume the execution of that function by printing <code>after a</code>. Now that <code>b()</code> is done, it will pop the next item off the call stack (<code>c()</code>) and continue executing from that location by printing <code>after b</code>. Now that <code>c()</code> is done, and the call stack is empty, the program will terminate.</p>
+
+<p>When your program crashes with an error, it is common to print out the &quot;stack trace&quot;. This is just the contents call stack when the program died.</p>
+
+<p>If you have recursion that goes too deep (or you have infinite recursion), your computer may not have enough memory to store the call stack. If this happens, you have an error called &quot;stack overflow&quot; -- which is where your favorite website gets its name!</p>
+
+<h4>Undo Stack</h4>
+
+<p>You can also implement an &quot;undo&quot; functionality using a stack. To do this, you would push the state of the application to a stack after each change is made.</p>
+
+<p>Then when the user wishes to undo something, you simply pop the last state off of the stack and replace that. If they wish to undo multiple steps, you can continue popping off the stack.</p>
+
+<p>You could also have a redo stack where you push the states that the user each time the user undoes an action.</p>
+
+<p>Let&#39;s see how that would work with a simple example.</p>
+
+<p>We have put together a very basic word processor. It prompts the user for input and can do three things: 1) <code>add</code> the user&#39;s text to the end of the document, 2) <code>undo</code> the last addition to the document, and 3) <code>redo</code> any undone changes.</p>
+
+<p>It is your job to implement the <code>undo</code> and <code>redo</code> functionality.</p>
+
+<p>Here is an example of how it should work:</p>
+
+<pre data-line="" class=""><code class="language-text">$ npm run node src/word_processor.js
+
+welcome to the simple word processor
+type add TEXT HERE to add text
+type undo to undo the last command
+type ctrl+c to exit
+ &gt; add It was the best of times, it was the worst of times,
+your document:
+It was the best of times, it was the worst of times,
+
+ &gt; add it was the age of wisdom, it was the age of typos,
+your document:
+It was the best of times, it was the worst of times,
+it was the age of wisdom, it was the age of typos,
+
+ &gt; add it was the epoch of belief, it was the epoch of something
+your document:
+It was the best of times, it was the worst of times,
+it was the age of wisdom, it was the age of typos,
+it was the epoch of belief, it was the epoch of something
+
+ &gt; undo
+your document:
+It was the best of times, it was the worst of times,
+it was the age of wisdom, it was the age of typos,
+
+ &gt; add it was the epoch of belief, it was the epoch of incredulity
+your document:
+It was the best of times, it was the worst of times,
+it was the age of wisdom, it was the age of typos,
+it was the epoch of belief, it was the epoch of incredulity
+
+ &gt; undo
+your document:
+It was the best of times, it was the worst of times,
+it was the age of wisdom, it was the age of typos,
+
+ &gt; undo
+your document:
+It was the best of times, it was the worst of times,
+
+ &gt; undo
+your document:
+
+ &gt; redo
+your document:
+It was the best of times, it was the worst of times,
+
+ &gt; redo
+your document:
+It was the best of times, it was the worst of times,
+it was the age of wisdom, it was the age of typos,
+
+ &gt; undo
+your document:
+It was the best of times, it was the worst of times,
+
+ &gt; add it was the age of wisdom, it was the age of foolishness,
+your document:
+It was the best of times, it was the worst of times,
+it was the age of wisdom, it was the age of foolishness,
+
+ &gt; redo
+nothing to redo
+your document:
+It was the best of times, it was the worst of times,
+it was the age of wisdom, it was the age of foolishness,
+
+ &gt; undo
+your document:
+It was the best of times, it was the worst of times,
+
+ &gt; undo
+your document:
+
+ &gt; undo
+nothing to undo
+your document:
+</code></pre>
+
+<p>A few things to help out:</p>
+
+<ul>
+<li>Push to the history stack before changing the document.</li>
+<li>Push to the future stack before popping from the history stack when undoing.</li>
+<li>Don&#39;t forget to save <code>doc</code> to history before redoing</li>
+<li>You&#39;ll also need to delete anything from the future stack when new changes are added, or else redo will overwrite those changes.</li>
+</ul>
+
+<p>You shouldn&#39;t need to write much code to get this to work! Likely less than 20 new lines will be enough.</p>
+
+                    
+                        <hr />
+                        <p>Eloquently is a recruiting firm. We also host workshops that teach web development and career skills. If you are looking for a job or are interested in joining our web development workshops, please <a href="/index#contact">contact us</a>!</p>
+
+<p>We put together some <a href="/guides/index">guides</a> for participants in our workshops. Feel free to use them. If you see any errors, please submit an issue on our <a href="https://github.com/eloquently/eloquently.github.io">github repository</a>.</p>
+
+<p>These guides are a work in progress. If you see any errors or have a suggestion for a better way to do something, please <a href="/index#contact">let us know</a>.</p>
+
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="push"></div>
+    </div>
+
+    <section id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                &copy; 2016 Eloquently LLC
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- jQuery -->
+<script src="/js/jquery.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Plugin JavaScript -->
+<script src="/js/jquery.easing.min.js"></script>
+<script src="/js/jquery.fittext.js"></script>
+<script src="/js/wow.min.js"></script>
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73351128-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+</body>
+
+</html>
