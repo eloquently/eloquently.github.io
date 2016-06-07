@@ -2,6 +2,7 @@
 layout: post
 title: JavaScript Quiz 01
 permalink: guides/js-quiz-01
+date: 2016-06-07
 ---
 
 ## {{ page.title }}
@@ -264,7 +265,7 @@ f) nothing
 
 e) error
 
-**`console.log(c instanceof animal);`**
+**`c = new Cow(); console.log(c instanceof animal);`**
 
 a) `true`
 
@@ -274,7 +275,7 @@ c) `undefined`
 
 d) error
 
-**`console.log(c instanceof Cow());`**
+**`c = new Cow(); console.log(c instanceof Cow());`**
 
 a) `true`
 
@@ -284,7 +285,7 @@ c) `undefined`
 
 d) error
 
-**`console.log(c instanceof Cow);`**
+**`c = new Cow(); console.log(c instanceof Cow);`**
 
 a) `true`
 
@@ -294,7 +295,7 @@ c) `undefined`
 
 d) error
 
-**`console.log(confused instanceof Cow);`**
+**`confused = new Cow(); confused.sound = 'neigh'; console.log(confused instanceof Cow);`**
 
 a) `true`
 
@@ -304,7 +305,7 @@ c) `undefined`
 
 d) error
 
-**`for(var prop in c) { console.log(prop); }`**
+**`c = new Cow(); for(var prop in c) { console.log(prop); }`**
 
 a) `speak`
 
@@ -318,7 +319,7 @@ e) `undefined`
 
 f) error
 
-**`console.log(typeof c);`**
+**`c = new Cow(); console.log(typeof c);`**
 
 a) `number`
 
