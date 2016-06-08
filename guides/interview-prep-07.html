@@ -86,44 +86,100 @@
                     </div>
                 </div>-->
                 <div class="post-content">
-                    <p>Eloquently is a recruiting firm. We also host workshops that teach web development and career skills. If you are looking for a job or are interested in joining our web development workshops, please <a href="/index#contact">contact us</a>!</p>
+                    <h2>Interview Prep 07 - Queues</h2>
+
+<p><hr class="left" /></p>
+
+<p>A queue is a data structure similar to a stack. The only difference is that the first item into a queue is the first item out (as you would expect in a real-world line or queue at the grocery store). We call this type of data structure FIFO (first in first out).</p>
+
+<p>Let&#39;s implement a queue. Like we did for stacks, we will create a <code>Queue</code> class with an instance variable array, <code>arr</code>. Like we did with stacks, you should not directly access <code>arr</code> in your solutions to the exercise -- only use the instance methods we will write for the <code>Queue</code> class.</p>
+
+<h3><code>Queue</code> Class</h3>
+
+<p>Create a file <code>src/queue.js</code> to store our queue class and other functions.</p>
+
+<h4><code>constructor()</code></h4>
+
+<p>Write a constructor for the <code>Queue</code> class. It needs to initialize an empty array in <code>this.arr</code>.</p>
+
+<h4><code>push()</code></h4>
+
+<p>To add something to the end of a <code>Queue</code>, we will perform an push operation operation, which will look exactly the same as <code>push()</code> for stacks.</p>
+
+<p>Write an instance method, <code>push()</code> that takes one parameter, <code>newValue</code> and adds it to the end of <code>this.arr</code> using the built in <code>push()</code> function.</p>
+
+<h4><code>shift()</code></h4>
+
+<p>Write a <code>shift()</code> function that will remove the first item from the queue. You can use the built in array method, <code>shift()</code>. <code>shift()</code> does not take any parameters, but it does return the item from the array.</p>
+
+<p>We call this function <code>shift()</code> because it removes the first item, then shifts the second item to the first item spot, the third item to the second item spot, etc.</p>
+
+<h4><code>peek()</code></h4>
+
+<p>Write a <code>peek()</code> function that will return the first item from the queue without removing it from the queue.</p>
+
+<h3>Queue Problems</h3>
+
+<h4><code>levelOrder()</code></h4>
+
+<p>Write an function <code>levelOrder()</code> that will perform a level-order traversal on a binary tree. (See the test code for the <code>TreeNode</code> specification). <code>levelOrder()</code> will take one parameter, <code>root</code> which is the root node of the tree it is to traverse. <code>levelOrder()</code> will print each node of the tree from top-to-bottom and left-to-right on each level of the tree. For example, if the trees look like this:</p>
+
+<pre data-line="" class=""><code class="language-text">tree 1:
+
+    1
+   / \
+  6   3
+ / \   \
+2   4   9
+   /     \
+  5       0
+
+tree 2:
+
+  9
+   \
+    10
+     \
+      18
+     /  \
+    11   28
+     \
+     13
+</code></pre>
+
+<p>The level-order traversal of tree 1 is: <code>1 6 3 2 4 9 5 0</code>, and the level-order traversal of tree 2 is: <code>9 10 18 11 28 13</code>.</p>
+
+<p>It is natural to use a queue to perform breadth-first operations. One way to do a level-order traversal of a tree is like this:</p>
+
+<ul>
+<li>Add the root node to a queue</li>
+<li>While the queue is not empty:
+
+<ul>
+<li>Remove the first node from the queue, call it <code>node</code></li>
+<li>Visit <code>node</code> (in this case, print out it&#39;s data)</li>
+<li>Add <code>node.left</code> to the queue if <code>node.left</code> exists</li>
+<li>Add <code>node.right</code> to the queue if <code>node.left</code> exists</li>
+</ul></li>
+</ul>
+
+<p>Try working through tree 1 above manually using this algorithm to convince yourself that it works.</p>
+
+<h4><code>breadthFirstSearch()</code></h4>
+
+<p>Write a function, <code>breadthFirstSearch()</code> that will use a queue to do a breadth-first search (BFS) of a tree. This function will take two parameters: the root node of the tree and <code>needle</code>, the element we are searching for.</p>
+
+<p>The function should return the node that it has data equal to <code>needle</code>.</p>
+
+<p>You can assume that the <code>needle</code> will always be in the tree.</p>
+
+                    
+                        <hr />
+                        <p>Eloquently is a recruiting firm. We also host workshops that teach web development and career skills. If you are looking for a job or are interested in joining our web development workshops, please <a href="/index#contact">contact us</a>!</p>
 
 <p>We put together some <a href="/guides/index">guides</a> for participants in our workshops. Feel free to use them. If you see any errors, please submit an issue on our <a href="https://github.com/eloquently/eloquently.github.io">github repository</a>.</p>
 
 <p>These guides are a work in progress. If you see any errors or have a suggestion for a better way to do something, please <a href="/index#contact">let us know</a>.</p>
-
-<p>Participants in our workshops typically use Cloud9&#39;s IDE, so many of the setup guides here are written mainly for Cloud9. We try to mention what you need to do to get something set up on a non-Cloud9 environment when possible, but these sections could likely use some work.</p>
-
-<p>Here is a list of guides we&#39;ve put together so far:</p>
-
-<ul>
-<li><p><a href="/guides/index">Guide to Guides</a></p></li>
-<li><p><a href="/guides/bootstrap_rails">Bootstrap and Rails</a></p></li>
-<li><p><a href="/guides/livereload">Guard, LiveReload, and Cloud9</a></p></li>
-<li><p><a href="/guides/es6-tdd-warmup">ES6 TDD Warm-up</a></p></li>
-<li><p><a href="/guides/es6-classes-strings-state">Classes, Strings, and Mutable State with ES6</a></p></li>
-<li><p><a href="/guides/reduce-size-node-modules">Reduce Size of node_modules</a></p></li>
-<li><p><a href="/guides/es6-react-redux">ES6, React, and Redux - To Do List</a></p></li>
-<li><p><a href="/guides/react-blackjack-part-1">React Blackjack Part 1</a></p></li>
-<li><p><a href="/guides/react-blackjack-part-2">React Blackjack Part 2</a></p></li>
-<li><p><a href="/guides/react-blackjack-part-3">React Blackjack Part 3</a></p></li>
-<li><p><a href="/guides/react-shopping-list">React Mini-Project 1 - Shopping List</a></p></li>
-<li><p><a href="/guides/react-list-of-shopping-lists">React Mini-Project 2 - List of Shopping Lists</a></p></li>
-<li><p><a href="/guides/react-tic-tac-toe">React Mini-Project 3 - Tic Tac Toe</a></p></li>
-<li><p><a href="/guides/react-minesweeper">React Mini-Project 4 - Minesweeper</a></p></li>
-<li><p><a href="/guides/html-css-project-1">HTML/CSS Mini Project 1 - 404Market</a></p></li>
-<li><p><a href="/guides/react-blackjack-part-4">React Blackjack Part 4</a></p></li>
-<li><p><a href="/guides/interview-prep-01">Interview Prep 01 - Counting and Primes</a></p></li>
-<li><p><a href="/guides/interview-prep-02">Interview Prep 02 - Computational Complexity</a></p></li>
-<li><p><a href="/guides/interview-prep-03">Interview Prep 03 - Linked Lists</a></p></li>
-<li><p><a href="/guides/interview-prep-04">Interview Prep 04 - Sorting</a></p></li>
-<li><p><a href="/guides/interview-prep-05">Interview Prep 05 - Trees</a></p></li>
-<li><p><a href="/guides/react-blackjack-part-5">React Blackjack Part 5</a></p></li>
-<li><p><a href="/guides/interview-prep-06">Interview Prep 06 - Stacks</a></p></li>
-<li><p><a href="/guides/js-quiz-01">JavaScript Quiz 01</a></p></li>
-<li><p><a href="/guides/interview-prep-07">Interview Prep 07 - Queues</a></p></li>
-<li><p><a href="/guides/js-quiz-02">JavaScript Quiz 02</a></p></li>
-</ul>
 
                     
                 </div>
