@@ -24,7 +24,7 @@ Write a constructor for the `Queue` class. It needs to initialize an empty array
 
 #### `push()`
 
-To add something to the end of a `Queue`, we will perform an push operation operation, which will look exactly the same as `push()` for stacks.
+To add something to the end of a `Queue`, we will perform an push operation, which will look exactly the same as `push()` for stacks.
 
 Write an instance method, `push()` that takes one parameter, `newValue` and adds it to the end of `this.arr` using the built in `push()` function.
 
