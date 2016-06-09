@@ -79,11 +79,11 @@ console.log(b);
 What happens when we reach the end of a generator? Run each of the following lines one at a time to make sure you understand what is being printed.
 
 ```js
-b = conter2.next();
+b = counter2.next();
 console.log(b);
-b = conter2.next();
+b = counter2.next();
 console.log(b);
-b = conter2.next();
+b = counter2.next();
 console.log(b);
 ```
 
@@ -92,7 +92,7 @@ The fourth time we iterate (call `next()` on) `counter2`, we reach the end of th
 What happens if you keep iterating a generator that's already done?
 
 ```js
-b = conter2.next();
+b = counter2.next();
 console.log(b);
 ```
 
