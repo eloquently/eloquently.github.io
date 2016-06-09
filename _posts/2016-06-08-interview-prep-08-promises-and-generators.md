@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Interview Prep 08 - Promises and Generators
+title: Interview Prep 08 - Generators
 permalink: guides/interview-prep-08
 date: 2016-06-08
 ---
