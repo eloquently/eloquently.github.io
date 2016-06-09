@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Eloquently - Learning and Recruiting</title>
+
+    <!-- Custom Fonts -->
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css" type="text/css">
+
+    <!-- Plugin CSS -->
+    <link rel="stylesheet" href="/css/animate.min.css" type="text/css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css" type="text/css">
+    <link rel="stylesheet" href="/css/prism.css" type="text/css">
+
+    <script src="/js/prism.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+
+</head>
+
+
+<body>
+    <div class="wrapper">
+        <!-- Navigation -->
+        <nav id="mainNav" class="nav navbar navbar-default full-color">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand page-scroll" href="/index">ELOQUENTLY</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a class="page-scroll" href="/index">Home</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="/workshops">Workshops</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="/schedule">Schedule</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="/guides/index">Guides</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+
+        <div class="container post">
+            <div class="row">
+                <!--<div class="post-options pull-right">
+                    <div class="show">
+                        <a href="#postOptions" data-toggle="collapse" class="pull-right btn btn-default btn-sm">Display Options</a>
+                    </div>
+                    <div class="options collapse" id="postOptions">
+                        <input type="checkbox" checked data-toggle="toggle" data-on="Annotations On" data-off="Annotations Off" data-onstyle="primary-light" data-width="175">
+                        <br />
+                        <input type="checkbox" checked data-toggle="toggle" data-on="Line Numbers On" data-off="Line Numbers Off" data-onstyle="primary-light" data-width="175">
+                    </div>
+                </div>-->
+                <div class="post-content">
+                    <h2>Interview Prep 08 - Promises and Generators</h2>
+
+<p><hr class="left" /></p>
+
+<p>This guide will talk about two relatively new JavaScript patterns called generators and promises. Some libraries (such as Redux Saga) use both of them together, but they are very different tools and completely independent of each other.</p>
+
+<p>These are relatively new features in JavaScript, and you can probably get away without knowing them (for both interviews and most projects). However, if something goes wrong in a package you are using, debugging can be much easier if you understand these new language features. It will also impress someone interviewing you if you do know what they are!</p>
+
+<h3>Generators</h3>
+
+<p>Generators functions are functions that can pause in the middle of their execution. This can be useful in many cases. Let&#39;s start with a not-so-useful example of a generator:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">function* count() {
+    console.log(&#39;before yielding 1&#39;);
+    yield 1;
+    console.log(&#39;before yielding 2&#39;);
+    yield 2;
+    console.log(&#39;before yielding 3&#39;);
+    yield 3;
+    console.log(&#39;before finishing&#39;);
+}
+</code></pre>
+
+<p>Let&#39;s say we run the following code:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">const counter = count();
+const counter2 = count();
+const counter3 = counter;
+</code></pre>
+
+<p>The generator function <code>count()</code> returns a reference to a generator object. In this case, <code>counter</code> and <code>counter2</code> will be referencing two completely independent generator objects, whereas <code>counter</code> and <code>counter3</code> will reference the same generator object.</p>
+
+<p>Generators have a method called <code>next()</code> that will run the function until it reaches a <code>yield</code>.</p>
+
+<p>Now if we run,</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">let a = counter.next();
+console.log(a);
+</code></pre>
+
+<p>We will see the following in the console:</p>
+
+<pre data-line="" class=""><code class="language-text">before yielding 1
+{ value: 1, done: false }
+</code></pre>
+
+<p>When we called <code>counter.next()</code> the <code>count</code> function started running. It executed it&#39;s first line (logging <code>before yielding 1</code> to the console) then it reached a <code>yield</code> line and stopped. When it stopped, it emitted an object with two keys. The object&#39;s <code>value</code> key has a value of <code>1</code> because that&#39;s what was yielded. It also has a <code>done</code> key with the value <code>false</code>. This indicates that the instance of the generator stored in <code>counter</code>  is still running. If we run count again:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">a = counter.next();
+console.log(a);
+</code></pre>
+
+<p>The <code>count</code> function will start running on the line: <code>console.log(&#39;before yielding 2&#39;);</code> and continue until it hits the next yield statement. Thus we get the following on the console:</p>
+
+<pre data-line="" class=""><code class="language-text">before yielding 2
+{ value: 2, done: false }
+</code></pre>
+
+<p>What will happen if we run this code? Try guessing what will happen, then run the code in a Chrome console (or using <code>npm run node file.js</code> if you put it in a file).</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">let b = counter2.next();
+console.log(b);
+</code></pre>
+
+<p>What happens when we reach the end of a generator? Run each of the following lines one at a time to make sure you understand what is being printed.</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">b = conter2.next();
+console.log(b);
+b = conter2.next();
+console.log(b);
+b = conter2.next();
+console.log(b);
+</code></pre>
+
+<p>The fourth time we iterate (call <code>next()</code> on) <code>counter2</code>, we reach the end of the program. After there are no more statements to yield, the iterator will return an object with an <code>undefined</code> <code>value</code> and <code>done</code> equal to true.</p>
+
+<p>What happens if you keep iterating a generator that&#39;s already done?</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">b = conter2.next();
+console.log(b);
+</code></pre>
+
+<h4><code>completeGenerator()</code></h4>
+
+<p>Create a file called <code>src/generators.js</code>. Write a function <code>completeGenerator()</code> that takes a single parameter: <code>generator</code>, a generator object (not the generator function), and runs the generator to completion.</p>
+
+<p>For example, someone might you use your function like this:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">counter = count();
+completeGenerator(counter);
+</code></pre>
+
+<p>In this case, your function should run all the way through the generator. It doesn&#39;t need to print or return anything -- just iterate until it&#39;s done.</p>
+
+<h4><code>seededRNG()</code></h4>
+
+<p>When would we use generators in practice? They can be useful when you have a stateful-service that you will want to access in many different places and at many different times in your application. Redux-Saga is one example of this. Another more simple example would be a random number generator (RNG) that has a fixed seed.</p>
+
+<p>We could build a seeded RNG inside a generator function and then pass around a reference to a single generator object (let&#39;s call it <code>rng</code>) created by the generator function. This would allow multiple parts of our code to use the same RNG without having to worry about managing the seed. Whenever you need a new random number, you can just iterate <code>rng</code> to get it.</p>
+
+<p>Write a generator function, <code>seededRNG()</code>, that takes one parameter: <code>seed</code>, a 4 digit number.</p>
+
+<p>We are going to use a very simple algorithm to generate random numbers. This algorithm was invented by John Von Neumann (the same guy that invented merge sort and made many other science, math, and computer science contributions). It&#39;s also a good way to practice numeric, string, and type operations in JavaScript.</p>
+
+<ul>
+<li>Square <code>seed</code> (4-digits)
+
+<ul>
+<li>If you get a number with less than 8 digits, add 0s to the start of <code>seed</code> until you get 8 digits (e.g. if you square seed and get 1234567, you need to change it to 01234567).</li>
+<li>Your random number is the middle four digits (01234567 -&gt; 2345). Remember to convert them back to an integer if they are a string!</li>
+</ul></li>
+</ul>
+
+<p>This isn&#39;t a great random number generator, but if it was good enough for John Von Neumann, it&#39;s good enough for us!</p>
+
+<p>Your generator object should be able to continue returning random numbers indefinitely. Each time it generates one, it should increment the seed, so that the next one will be different.</p>
+
+<p>Here&#39;s how someone should be able to use your <code>seededRNG</code> generator function:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">const rng = seededRNG(1111);
+const random1 = rng1.next().value;
+const random2 = rng1.next().value;
+</code></pre>
+
+<p>Each time <code>seededRNG()</code> is given the same seed value, it should produce the same output on its first iteration, second iteration, etc.</p>
+
+<h3>Asynchronicity and Concurrence with Generators</h3>
+
+<p>These exercises are intentionally brief so that you will have time to read another great guide on ES6 generators. The guide is written by Kyle Simpson, and the first part is <a href="https://davidwalsh.name/es6-generators">here</a>. It starts off with the basics in part 1 and 2, then goes over advanced usage of generators in parts 3 and 4. If you want to fully understand how Redux Saga uses generators, read part 3 of that guide! Part 4 is also very useful and the whole guide is very well written and easy to understand.</p>
+
+                    
+                        <hr />
+                        <p>Eloquently is a recruiting firm. We also host workshops that teach web development and career skills. If you are looking for a job or are interested in joining our web development workshops, please <a href="/index#contact">contact us</a>!</p>
+
+<p>We put together some <a href="/guides/index">guides</a> for participants in our workshops. Feel free to use them. If you see any errors, please submit an issue on our <a href="https://github.com/eloquently/eloquently.github.io">github repository</a>.</p>
+
+<p>These guides are a work in progress. If you see any errors or have a suggestion for a better way to do something, please <a href="/index#contact">let us know</a>.</p>
+
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="push"></div>
+    </div>
+
+    <section id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                &copy; 2016 Eloquently LLC
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- jQuery -->
+<script src="/js/jquery.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Plugin JavaScript -->
+<script src="/js/jquery.easing.min.js"></script>
+<script src="/js/jquery.fittext.js"></script>
+<script src="/js/wow.min.js"></script>
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73351128-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+</body>
+
+</html>
