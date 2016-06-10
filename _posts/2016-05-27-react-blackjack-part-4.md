@@ -1276,7 +1276,7 @@ There is a library called React-Router-Redux that makes React Router send its ev
 Let's install the package first:
 
 ```
-npm install --save react-router-redux@4.0.4
+npm install --save react-router@2.4.0 react-router-redux@4.0.4
 ```
 
 Next, we need to add the routing reducer to our combined reducer:
@@ -1297,7 +1297,7 @@ export default combineReducers({
 Then we'll need to import the router, connect the router history object with our application store, and wrap our components in router components. We'll do this all in `index.js`:
 
 <div class="fp">app/index.js</div>
-```jsx{2,3,9,15-18}
+```jsx{2,3,9,15-17}
 // ...
 import { Router, Route, hashHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
@@ -1361,7 +1361,7 @@ React Router gives us a `<Link>` component that will generate an `<a>` tag that 
 First `<App />`:
 
 <div class="fp">app/components/app.js</div>
-```jsx{2,14-16}
+```jsx{2,12-14}
 // ...
 import { Link } from 'react-router';
 
@@ -1389,7 +1389,7 @@ export class App extends React.Component {
 And then `<Settings />`:
 
 <div class="fp">app/components/settings.js</div>
-```jsx{2,9-11}
+```jsx{2,8-10}
 import React from 'react';
 import { Link } from 'react-router';
 
