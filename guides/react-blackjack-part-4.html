@@ -1349,7 +1349,7 @@ const store = createStore(reducer, <mark>initialState</mark>, compose(
 
 <p>Let&#39;s install the package first:</p>
 
-<pre data-line="" class=""><code class="language-text">npm install --save react-router-redux@4.0.4
+<pre data-line="" class=""><code class="language-text">npm install --save react-router@2.4.0 react-router-redux@4.0.4
 </code></pre>
 
 <p>Next, we need to add the routing reducer to our combined reducer:</p>
@@ -1371,7 +1371,7 @@ export default combineReducers({
 
 <div class="fp">app/index.js</div>
 
-<pre data-line="2,3,9,15-18" class="line-numbers"><code class="language-jsx">// ...
+<pre data-line="2,3,9,15-17" class="line-numbers"><code class="language-jsx">// ...
 import { Router, Route, hashHistory } from &#39;react-router&#39;;
 import { syncHistoryWithStore } from &#39;react-router-redux&#39;;
 
@@ -1435,7 +1435,7 @@ ReactDOM.render(
 
 <div class="fp">app/components/app.js</div>
 
-<pre data-line="2,14-16" class="line-numbers"><code class="language-jsx">// ...
+<pre data-line="2,12-14" class="line-numbers"><code class="language-jsx">// ...
 import { Link } from &#39;react-router&#39;;
 
 // ...
@@ -1463,7 +1463,7 @@ export class App extends React.Component {
 
 <div class="fp">app/components/settings.js</div>
 
-<pre data-line="2,9-11" class="line-numbers"><code class="language-jsx">import React from &#39;react&#39;;
+<pre data-line="2,8-10" class="line-numbers"><code class="language-jsx">import React from &#39;react&#39;;
 import { Link } from &#39;react-router&#39;;
 
 export class Settings extends React.Component {
