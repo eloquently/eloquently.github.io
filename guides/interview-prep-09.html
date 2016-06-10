@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Eloquently - Learning and Recruiting</title>
+
+    <!-- Custom Fonts -->
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css" type="text/css">
+
+    <!-- Plugin CSS -->
+    <link rel="stylesheet" href="/css/animate.min.css" type="text/css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css" type="text/css">
+    <link rel="stylesheet" href="/css/prism.css" type="text/css">
+
+    <script src="/js/prism.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+
+</head>
+
+
+<body>
+    <div class="wrapper">
+        <!-- Navigation -->
+        <nav id="mainNav" class="nav navbar navbar-default full-color">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand page-scroll" href="/index">ELOQUENTLY</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a class="page-scroll" href="/index">Home</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="/workshops">Workshops</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="/schedule">Schedule</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="/guides/index">Guides</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+
+        <div class="container post">
+            <div class="row">
+                <!--<div class="post-options pull-right">
+                    <div class="show">
+                        <a href="#postOptions" data-toggle="collapse" class="pull-right btn btn-default btn-sm">Display Options</a>
+                    </div>
+                    <div class="options collapse" id="postOptions">
+                        <input type="checkbox" checked data-toggle="toggle" data-on="Annotations On" data-off="Annotations Off" data-onstyle="primary-light" data-width="175">
+                        <br />
+                        <input type="checkbox" checked data-toggle="toggle" data-on="Line Numbers On" data-off="Line Numbers Off" data-onstyle="primary-light" data-width="175">
+                    </div>
+                </div>-->
+                <div class="post-content">
+                    <h2>Interview Prep 09 - Promises</h2>
+
+<p><hr class="left" /></p>
+
+<p>In this guide, we will look at another relatively new construct in JavaScript called a Promise.</p>
+
+<h3>Callbacks</h3>
+
+<p>A common pattern in JavasScript is the use of callback functions. Callback functions work like this:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">function fastFunction(cb) {
+    cb();
+}
+
+fastFunction(() =&gt; console.log(&quot;I&#39;m a hare&quot;));
+</code></pre>
+
+<p>We have a function, <code>fastFunction()</code>, that will immediately call the parameter that is passed to it. We pass a function that logs a message to the console, and that function is executed immediately. When we run the program, the fast function runs right away, and we see <code>I&#39;m a hare</code> logged to the console.</p>
+
+<p>Callbacks are commonly used to run things after a long running process (such as an AJAX call). Authors of functions such as jQuery&#39;s <code>$.ajax()</code> use callbacks to give the user of the function a lot of flexibility -- they can specify anything as the callback function and <code>$.ajax()</code> will run whatever they function they provide after the query is complete. <code>$.ajax()</code> takes multiple callbacks that can be invoked in different cases. One might run when the request gets a success response, and another might run when the request gets an error response.</p>
+
+<h3>Promises</h3>
+
+<p>JavaScript code can often get very messy if callbacks have callbacks that have callbacks which in turn have callbacks. One attempt to clean up this madness is with Promises.</p>
+
+<p>Instead of invoking a callback, a function can return a Promise object. Promise objects have a method <code>then()</code>, which takes a function as a parameter. After the promise is resolved, the function attached to the promise by <code>then()</code> is executed. Here&#39;s what our <code>fastFunction</code> would look like using a promise instead of a callback:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">function fastFunction(cb) {
+    return new Promise((resolve, reject) =&gt; {
+        resolve();
+    })
+}
+
+const fastPromise = fastFunction();
+fastPromise.then(() =&gt; { console.log(&quot;I&#39;m a hare&quot;) });
+</code></pre>
+
+<p>Our promise immediately calls the <code>resolve</code> function, which then immediately triggers the callback function attached by <code>then</code>.</p>
+
+<p><code>then()</code> returns a promise, so multiple <code>then()</code>s can be chained together:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">fastFunction()
+    .then(() =&gt; { console.log(&quot;I&#39;m a hare&quot;) })
+    .then(() =&gt; { console.log(&quot;Not a hair&quot;));
+</code></pre>
+
+<p>The <code>reject</code> function can be called when there is an error. <code>then()</code> attaches a function that is run when the promise is <code>resolved()</code>. <code>catch()</code> attaches a function that is run when the promise is rejected. Also, <code>resolve()</code> and <code>reject()</code> can pass data to their callback functions. For example:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">function fastFunction(cb) {
+    return new Promise((resolve, reject) =&gt; {
+        const random = Math.random();
+        if(random &lt; 0.3) {
+            reject(random);
+        } else {
+            resolve(random);
+        }
+    });
+}
+
+fastFunction()
+    .then((num) =&gt; { console.log(`today&#39;s your lucky day ${num}`) })
+    .catch((num) =&gt; { console.log(`there was an error ${num}`)});
+</code></pre>
+
+<h3>Async Actions</h3>
+
+<p>Certain functions in JavaScript are asynchronous (async for short). This means that when you call them, they will work in the background, and allow the rest of your program to run. One of these functions is <code>setTimeout()</code>. <code>setTimeout</code> usually takes two parameters: a callback function and a number of milliseconds to wait before invoking the callback function.</p>
+
+<p>Here&#39;s how you might use <code>setTimeout()</code>:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">function slowFunction(cb) {
+    setTimeout(cb, 2000);
+}
+
+function fastFunction(cb) {
+    cb();
+}
+
+fastFunction(() =&gt; console.log(&quot;I&#39;m a hare&quot;));
+slowFunction(() =&gt; console.log(&quot;I&#39;m a tortoise&quot;));
+</code></pre>
+
+<p>If you want to run multiple lines of code after 2000 miliseconds, you would invoke <code>setTimeout()</code> like this:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">setTimeout(() =&gt; {
+    console.log(&#39;finished sleeping!&#39;);
+    console.log(&#39;where is everyone?&#39;);
+}, 2000);
+</code></pre>
+
+<p>When we run the <code>fastFunction()</code>/<code>slowFunction()</code> code block above, we see the <code>I&#39;m a hare</code> message, and then two seconds later, we see the <code>I&#39;m a tortoise</code> message.</p>
+
+<p>One feature of <code>setTimeout()</code> is that it is asynchronous. When <code>setTimeout(cb, 2000)</code> is invoked, the rest of your code will still run for two seconds before the tortoise prints his message. In this case, we would see the same thing if we swapped the order of <code>fastFunction()</code> and <code>slowFunction()</code>:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">slowFunction(() =&gt; console.log(&quot;I&#39;m a tortoise&quot;));
+fastFunction(() =&gt; console.log(&quot;I&#39;m a hare&quot;));
+</code></pre>
+
+<p>The hare will still finish before the tortoise even though the tortoise started first!</p>
+
+<p>Promises work nicely with async functions. For example:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">function slowFunction(cb) {
+    return new Promise((resolve, reject) =&gt; {
+        setTimeout(resolve, 2000);
+    });
+}
+
+function fastFunction(cb) {
+    cb();
+}
+
+slowFunction()
+    .then(() =&gt; console.log(&quot;I&#39;m a tortoise&quot;));
+fastFunction(() =&gt; console.log(&quot;I&#39;m a hare&quot;));
+</code></pre>
+
+<p>Let&#39;s say our hare is getting tired of always beating the tortoise. He has decided to give the tortoise a head start by sleeping for somewhere between 1000 ms and 3000 ms (his alarm clock is unreliable).</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">function slowFunction(cb) {
+    return new Promise((resolve, reject) =&gt; {
+        setTimeout(resolve, 2000);
+    });
+}
+
+function slowHare(cb) {
+    return new Promise((resolve, reject) =&gt; {
+        setTimeout(resolve, Math.random()*2000 + 1000);
+    });
+}
+
+console.log(&#39;start the race!&#39;);
+slowFunction()
+    .then(() =&gt; console.log(&quot;I&#39;m a tortoise&quot;));
+slowHare()
+    .then((num) =&gt; console.log(&quot;I&#39;m a hare&quot;));
+</code></pre>
+
+<p>Now the tortoise wins about half the time! If both functions are async, it doesn&#39;t matter if we call <code>slowFunction()</code> before or after <code>slowHare()</code>.</p>
+
+<p>Since we don&#39;t know who will finish first, we have what is called a &quot;race condition&quot;. If we wanted to do something with the result of <code>slowHare()</code> and the result of <code>slowFunction()</code>, we would have to wait for them to both finish before we continue with our program. It&#39;s easier to imagine such a scenario if the functions are retrieving something from a database rather than just waiting a few seconds and printing a message.</p>
+
+<p>Let&#39;s say both our tortoise and hare are bringing us a number, and we want to calculate the sum of their two numbers:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">function slowFunction(cb) {
+    return new Promise((resolve, reject) =&gt; {
+        setTimeout(
+            () =&gt; resolve(Math.floor(Math.random() * 10)),
+            2000
+        );
+    });
+}
+function slowHare(cb) {
+    return new Promise((resolve, reject) =&gt; {
+        setTimeout(
+            () =&gt; resolve(Math.floor(Math.random() * 10)),
+            Math.random()*2000 + 1000
+        );
+    });
+}
+
+console.log(&#39;start the race!&#39;);
+let tortoiseNum, hareNum, sum;
+slowFunction()
+    .then((num) =&gt; {
+        console.log(`I&#39;m a tortoise. My num is ${num}`);
+        tortoiseNum = num;
+    });
+slowHare()
+    .then((num) =&gt; {
+        console.log(`I&#39;m a hare. My num is ${num}`);
+        hareNum = num;
+        sum = hareNum + tortoiseNum;
+        console.log(sum);
+    });
+</code></pre>
+
+<p>This works when the hare loses the race, but will fail when the hare wins (because <code>tortoiseNum</code> is undefined until the tortoise finishes). These types of bugs can be very frustrating to hunt down because they can be hard to replicate if they only happen 5% of the time.</p>
+
+<p>To handle race conditions, ES6 provides a function called <code>Promise.all()</code>.  <code>Promise.all()</code> returns a new Promise that is resolved when all of its &quot;subpromises&quot; are resolved. Here&#39;s how we would use it:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">function slowFunction(cb) {
+    return new Promise((resolve, reject) =&gt; {
+        setTimeout(
+            () =&gt; resolve(Math.floor(Math.random() * 10)),
+            2000
+        );
+    });
+}
+function slowHare(cb) {
+    return new Promise((resolve, reject) =&gt; {
+        setTimeout(
+            () =&gt; resolve(Math.floor(Math.random() * 10)),
+            Math.random()*2000 + 1000
+        );
+    });
+}
+
+console.log(&#39;start the race!&#39;);
+let tortoiseNum, hareNum, sum;
+const tortoisePromise = slowFunction()
+    .then((num) =&gt; {
+        console.log(`I&#39;m a tortoise. My num is ${num}`);
+        tortoiseNum = num;
+    });
+const harePromise = slowHare()
+    .then((num) =&gt; {
+        console.log(`I&#39;m a hare. My num is ${num}`);
+        hareNum = num;
+    });
+
+Promise.all([tortoisePromise, harePromise]).then(() =&gt; {
+    sum = hareNum + tortoiseNum;
+    console.log(`Race over! Sum is ${sum}`);
+});
+</code></pre>
+
+<p>If you only cared about the winner of the race, you could use <code>Promise.race()</code>, which will resolve as soon as the first of its subpromises resolves.</p>
+
+                    
+                        <hr />
+                        <p>Eloquently is a recruiting firm. We also host workshops that teach web development and career skills. If you are looking for a job or are interested in joining our web development workshops, please <a href="/index#contact">contact us</a>!</p>
+
+<p>We put together some <a href="/guides/index">guides</a> for participants in our workshops. Feel free to use them. If you see any errors, please submit an issue on our <a href="https://github.com/eloquently/eloquently.github.io">github repository</a>.</p>
+
+<p>These guides are a work in progress. If you see any errors or have a suggestion for a better way to do something, please <a href="/index#contact">let us know</a>.</p>
+
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="push"></div>
+    </div>
+
+    <section id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                &copy; 2016 Eloquently LLC
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- jQuery -->
+<script src="/js/jquery.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Plugin JavaScript -->
+<script src="/js/jquery.easing.min.js"></script>
+<script src="/js/jquery.fittext.js"></script>
+<script src="/js/wow.min.js"></script>
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73351128-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+</body>
+
+</html>
