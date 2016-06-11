@@ -340,7 +340,7 @@ export function patchUser(token, body) {
         headers: {
             'Content-Type': 'application/json'
         },
-        body
+        body: JSON.stringify(body)
     }).then(response => response.json());
 }
 ```
