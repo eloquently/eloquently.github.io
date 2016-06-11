@@ -416,7 +416,7 @@ export function patchUser(token, body) {
         headers: {
             &#39;Content-Type&#39;: &#39;application/json&#39;
         },
-        body
+        body: JSON.stringify(body)
     }).then(response =&gt; response.json());
 }
 </code></pre>
