@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Eloquently - Learning and Recruiting</title>
+
+    <!-- Custom Fonts -->
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css" type="text/css">
+
+    <!-- Plugin CSS -->
+    <link rel="stylesheet" href="/css/animate.min.css" type="text/css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css" type="text/css">
+    <link rel="stylesheet" href="/css/prism.css" type="text/css">
+
+    <script src="/js/prism.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+
+</head>
+
+
+<body>
+    <div class="wrapper">
+        <!-- Navigation -->
+        <nav id="mainNav" class="nav navbar navbar-default full-color">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand page-scroll" href="/index">ELOQUENTLY</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a class="page-scroll" href="/index">Home</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="/workshops">Workshops</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="/schedule">Schedule</a>
+                        </li>
+                        <li>
+                            <a class="page-scroll" href="/guides/index">Guides</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+
+        <div class="container post">
+            <div class="row">
+                <!--<div class="post-options pull-right">
+                    <div class="show">
+                        <a href="#postOptions" data-toggle="collapse" class="pull-right btn btn-default btn-sm">Display Options</a>
+                    </div>
+                    <div class="options collapse" id="postOptions">
+                        <input type="checkbox" checked data-toggle="toggle" data-on="Annotations On" data-off="Annotations Off" data-onstyle="primary-light" data-width="175">
+                        <br />
+                        <input type="checkbox" checked data-toggle="toggle" data-on="Line Numbers On" data-off="Line Numbers Off" data-onstyle="primary-light" data-width="175">
+                    </div>
+                </div>-->
+                <div class="post-content">
+                    <h2>Interview Prep 10 - API Project</h2>
+
+<p><hr class="left" /></p>
+
+<p>This guide is different from the other interview prep exercises. While the previous guides were intended to prepare you for data structure/algorithm questions that come up during an interview, this guide will prepare you for a common type of &quot;homework&quot; problem companies like to give candidates during the interview process.</p>
+
+<p>Some companies will ask candidates to build a simple application before or after the first round if interviews. Typically, these projects are expected to take 4-6 hours, so while working on this guide, try not to spend too much more time than that.</p>
+
+<p>This interview tactic is somewhat controversial because it requires a significant amount of the candidate&#39;s time. However, companies like to see how much a candidate knows and how well she or he can code, and one of the best ways to do that is to ask all the candidates to spend a few hours actually building a small project.</p>
+
+<p>Here are some typical things that companies are looking for when they ask the candidate to do a homework assignment. These can vary widely in relative importance by company!</p>
+
+<ul>
+<li>Does the code submitted by the candidate actually run and meet the requirements?</li>
+<li>Was the candidate able to write the code in a reasonable time frame?</li>
+<li>How well organized is the code?</li>
+<li>Are there comments explaining how the code works?</li>
+<li>Are there any tests?</li>
+<li>Is the product well-designed? (Depending on the position/company, this can be very important or not important at all.)</li>
+<li>Are there any creative features in the finished product that add or improve functionality over the original specifications?</li>
+</ul>
+
+<p>This guide will help you prepare for this part of the interview process while also giving you more practice with React and APIs!</p>
+
+<h3>Requirements</h3>
+
+<p>For this project, you should build a simple front-end application that uses the OpenWeatherMap and Google Maps Places/Geocoding APIs to build an app that has the following workflow:</p>
+
+<ul>
+<li>Users enter a location e.g. 85282, 2121 S Mill Ave, Tempe, AZ</li>
+<li>After hitting submit, a list of the top 5 possible locations appears</li>
+<li>The user selects one of the locations and the following happen:
+
+<ul>
+<li>The item in the list is highlighted (color and/or background-color change)</li>
+<li>The current weather for the city where the place is located is displayed (from OpenWeatherMap)</li>
+<li>A Google Map for the location is displayed</li>
+</ul></li>
+</ul>
+
+<p>Your project will be evaluated on its functionality first and on its appearance second. It should look decent, but having a fully functional application with no bugs is more important.</p>
+
+<p>You should fetch data from the APIs directly my making http requests against the API endpoints. Don&#39;t use NPM packages that do all the work for you :)</p>
+
+<p>It should take you about 6-8 hours in total to finish this project. Do not spend more than 8 hours on this!</p>
+
+<p>If you want to try to solve this problem on your own as practice for the interview, feel free to! Use any language/framework/tools you want. If you want some guidance, feel free to follow the guide below. The steps below are at a very high-level and the solution they describe is certainly not the only way to make an application like this.</p>
+
+<h3>Getting Started With API Calls</h3>
+
+<p>One way to start these projects is to worry about setting up the API calls before even starting to think about the front-end.</p>
+
+<p>You are going to build this application in React and Redux, so a good place to start is to clone the <a href="https://github.com/eloquently/react-boilerplate">react boilerplate repo</a>.</p>
+
+<p>Since one of the goals of this project is to write well-organized code, you should start by creating a directory for the code making the API <code>api</code> calls. In this directory, make two files: one for the Google APIs (<code>google.js</code>?) and one for the OpenWeatherMap API.</p>
+
+<h4>First API Call</h4>
+
+<p>Your first goal is to make the first API call (find five possible matches given user&#39;s search). You should write a function, <code>listPlaces()</code> (?), that takes a string parameter (the user&#39;s search query) and will return an array with the names and necessary data for the top 5 matches.</p>
+
+<p>You can use the <code>isomorphic-fetch</code> library to actually make the API call inside this function (see <a href="guides/react-blackjack-part-5">react blackjack part 5</a> for an example).</p>
+
+<p>You will also need a Google API key and you&#39;ll need to enable the <a href="https://console.developers.google.com/apis/api/places_backend">places web service</a>. Since this is a purely front-end project, you will have to expose your API key to any</p>
+
+<p>For now, you can test your function by importing it and logging its results to the console inside <code>src/index.js</code> with some code like this:</p>
+
+<pre data-line="" class="line-numbers"><code class="language-js">import { listPlaces() } from &#39;./apis/google.js&#39;;
+
+console.log(listPlaces(&#39;Park&#39;));
+</code></pre>
+
+<p>Then if you run <code>webpack-dev-server</code> and open the page the browser, you should see the result of the API call on the page. If your code is working correctly, you should see data for 5 parks listed in an array.</p>
+
+<h4>Second API Call</h4>
+
+<p>Your next goal is to figure out how to make the second API call. This API call will be made after the user selects one of the five locations from the first API call. It needs to take some data from one of the elements in the array returned by <code>listPlaces()</code> as a parameter(s) and return the city and country that are needed to make the call to the OpenWeatherMap API. Check out the documentation of the OpenWeatherMap API to make sure that you return the string in the correct format.</p>
+
+<h4>Third API Call</h4>
+
+<p>Now you can write a function that takes the city and country output from the second API call and makes the call against the OpenWeatherMap API. You&#39;ll need an API key from OpenWeatherMap. Continue testing these functions in <code>index.js</code>.</p>
+
+<h4>Fourth API Call</h4>
+
+<p>Using the data from the first API call, we&#39;ll also need to get a Google Map to display on the page. There are a couple of ways to do this, but the easiest might be the <a href="https://developers.google.com/maps/documentation/static-maps/intro">Static Map API</a>. This doesn&#39;t even require you to make an API call -- you just for the URL and put it as the <code>src</code> attribute on an <code>&lt;img /&gt;</code> tag in your HTML. You can write a function that takes data from the one element of the result of the first API call and returns the <code>src</code> for an <code>&lt;img /&gt;</code> tag.</p>
+
+<h3>Designing the Components</h3>
+
+<p>Now that you have set up all the API calls and seen what they data they return looks like, you can start thinking about how to layout the application that will display the data.</p>
+
+<p>There are two things left to do. You need to code up the components for the application, and you need to connect them to the application state to make things happen when the user clicks on a component to make an API call.</p>
+
+<p>In this guide, we&#39;ll set up all the components first and then make the application actually do things when buttons are pressed. However, developing the components as you develop the functionality is a perfectly valid approach too!</p>
+
+<p>At this point, you should install Redux and set up the store in your <code>index.js</code> file. For now, you can set up the initial state to look like the user has already entered a query, hit submit, selected a location, and is now viewing the weather and the map for that location. Your state tree should look something like this:</p>
+
+<div class="fp">initial state</div>
+
+<pre data-line="" class="line-numbers"><code class="language-js">{
+    query: &#39;park&#39;,
+    places: [ ... ], // data from first API call
+    selectedPlace: 2, // the park the user has clicked on
+    weather: { ... }, // data from the third API call
+}
+</code></pre>
+
+<p>Create the store using Redux, and pass it to a <code>Provider</code> component wrapping your <code>App</code> component. See <a href="/guides/react-blackjack-part-2">react blackjack part 2</a> for more info.</p>
+
+<p>Now you&#39;re ready to design the components! Since you have a Redux store, you can already create the container components with <code>connect()</code> and <code>mapStateToProps()</code>.</p>
+
+<p>I&#39;m not going to give you much guidance here, so it is up to you to figure out what components you need and how they should look on the page. Remember, you&#39;re under a fairly strict time limit, so don&#39;t spend a ton of time on the design!</p>
+
+<p>You should be able to make a component that displays the Google map for the selected place if you are using the Static Map component with the data in your store. We&#39;ll look at how to make the other API calls in the next section.</p>
+
+<h3>Functionality</h3>
+
+<p>Now it&#39;s time to add functionality to the application. Again, this could be done in any order. This guide will implement everything in the same order that a user visiting the page would perform different actions.</p>
+
+<p>When writing reducer functions to handle these actions, make sure they are pure functions! That is, they should not mutate the state objects passed to them as parameters and they should always return the same result when given the same parameters.</p>
+
+<h4><code>NEW_QUERY</code> and <code>FETCHED_PLACES</code></h4>
+
+<p>The first action for you to implement, is when the user clicks the submit button. This should dispatch a <code>NEW_QUERY</code> action. Your reducer should change the query in the state tree to the value of the text field. For a good example of how to set this up, see <a href="https://egghead.io/lessons/javascript-redux-react-todo-list-example-adding-a-todo">Dan Abramov&#39;s video</a>. Watch the whole thing. The part where he gets the value from a text field into an action is a little bit past the 3 minute mark.</p>
+
+<p>You can use Redux Saga to watch for <code>NEW_QUERY</code> actions and make the first API call when it sees one. The saga should dispatch a <code>FETCHED_PLACES</code> action with the data once the API call is complete.</p>
+
+<h4><code>SELECT_PLACE</code> and <code>FETCHED_WEATHER</code></h4>
+
+<p>The next action for you to implement is <code>SELECT_PLACE</code>. This action will be dispatched when the user clicks on one of the places on the screen.</p>
+
+<p>You should have another saga watching for <code>SELECT_PLACE</code> actions. When one is observed, the saga should make the second and third API calls and dispatch a <code>FETCHED_WEATHER</code> action with the appropriate data when done.</p>
+
+<p>If you set up your components correctly, this should be all you need to do! Clear out the initial state, and fix any bugs that you might encounter.</p>
+
+<p>If you have time after finishing everything else, a great feature to add would be to indicate to the user that data is loading with some sort of graphic or text on the screen. We show how this is done in <a href="react-blackjack-part-5">react blackjack part 5</a>. It&#39;s not part of the original specification, but this is one of those extra features that shows some creativity and an understanding of important elements of front-end design.</p>
+
+                    
+                        <hr />
+                        <p>Eloquently is a recruiting firm. We also host workshops that teach web development and career skills. If you are looking for a job or are interested in joining our web development workshops, please <a href="/index#contact">contact us</a>!</p>
+
+<p>We put together some <a href="/guides/index">guides</a> for participants in our workshops. Feel free to use them. If you see any errors, please submit an issue on our <a href="https://github.com/eloquently/eloquently.github.io">github repository</a>.</p>
+
+<p>These guides are a work in progress. If you see any errors or have a suggestion for a better way to do something, please <a href="/index#contact">let us know</a>.</p>
+
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="push"></div>
+    </div>
+
+    <section id="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                &copy; 2016 Eloquently LLC
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- jQuery -->
+<script src="/js/jquery.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Plugin JavaScript -->
+<script src="/js/jquery.easing.min.js"></script>
+<script src="/js/jquery.fittext.js"></script>
+<script src="/js/wow.min.js"></script>
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-73351128-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+</body>
+
+</html>
