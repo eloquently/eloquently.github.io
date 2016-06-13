@@ -65,7 +65,7 @@ You will also need a Google API key and you'll need to enable the [places web se
 For now, you can test your function by importing it and logging its results to the console inside `src/index.js` with some code like this:
 
 ```js
-import { listPlaces() } from './apis/google.js';
+import { listPlaces } from './apis/google.js';
 
 console.log(listPlaces('Park'));
 ```
