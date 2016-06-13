@@ -169,7 +169,9 @@ console.log(listPlaces(&#39;Park&#39;));
 
 <h4>Fourth API Call</h4>
 
-<p>Using the data from the first API call, we&#39;ll also need to get a Google Map to display on the page. There are a couple of ways to do this, but the easiest might be the <a href="https://developers.google.com/maps/documentation/static-maps/intro">Static Map API</a>. This doesn&#39;t even require you to make an API call -- you just for the URL and put it as the <code>src</code> attribute on an <code>&lt;img /&gt;</code> tag in your HTML. You can write a function that takes data from the one element of the result of the first API call and returns the <code>src</code> for an <code>&lt;img /&gt;</code> tag.</p>
+<p>Using the data from the first API call, we&#39;ll also need to get a Google Map to display on the page. There are a couple of ways to do this, but the easiest might be the <a href="https://developers.google.com/maps/documentation/static-maps/intro">Static Map API</a>.</p>
+
+<p>If you use the Static Map API, you don&#39;t even need to make an API call -- you just form the URL with the parameters described in the documentation and use the URL as the <code>src</code> attribute on an <code>&lt;img /&gt;</code> tag in your HTML. For now, you can write a function that takes data from the one element of the result of the first API call and returns the <code>src</code> for an <code>&lt;img /&gt;</code> tag.</p>
 
 <h3>Designing the Components</h3>
 
