@@ -58,7 +58,7 @@ Since one of the goals of this project is to write well-organized code, you shou
 
 Your first goal is to make the first API call (find five possible matches given user's search). You should write a function, `listPlaces()` (?), that takes a string parameter (the user's search query) and will return an array with the names and necessary data for the top 5 matches.
 
-You can use the `isomorphic-fetch` library to actually make the API call inside this function (see [react blackjack part 5](guides/react-blackjack-part-5) for an example).
+You can use the `isomorphic-fetch` library to make the API call inside this function (see [react blackjack part 5](/guides/react-blackjack-part-5) for an example).
 
 You will also need a Google API key and you'll need to enable the [places web service](https://console.developers.google.com/apis/api/places_backend). Since this is a purely front-end project, you will have to expose your API key to the client by including it in your JavaScript. It is still a good idea to omit it from your Git repository by placing it in a secrets.json file that gets ignored by version control. You should be able to talk about possible things that can go wrong if your API key is shared with users and what you can do to limit the downsides.
 
@@ -132,4 +132,4 @@ You should have another saga watching for `SELECT_PLACE` actions. When one is ob
 
 If you set up your components correctly, this should be all you need to do! Clear out the initial state, and fix any bugs that you might encounter.
 
-If you have time after finishing everything else, a great feature to add would be to indicate to the user that data is loading with some sort of graphic or text on the screen. We show how this is done in [react blackjack part 5](react-blackjack-part-5). It's not part of the original specification, but this is one of those extra features that shows some creativity and an understanding of important elements of front-end design.
+If you have time after finishing everything else, a great feature to add would be to indicate to the user that data is loading with some sort of graphic or text on the screen. We show how this is done in [react blackjack part 5](/guides/react-blackjack-part-5). It's not part of the original specification, but this is one of those extra features that shows some creativity and an understanding of important elements of front-end design.
