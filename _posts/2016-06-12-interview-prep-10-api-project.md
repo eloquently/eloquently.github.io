@@ -2,7 +2,7 @@
 layout: post
 title: Interview Prep 10 - API Project
 date: 2016-06-12
-permalink: interview-prep-10
+permalink: guides/interview-prep-10
 ---
 
 ## {{ page.title }}
