@@ -60,7 +60,7 @@ Your first goal is to make the first API call (find five possible matches given 
 
 You can use the `isomorphic-fetch` library to actually make the API call inside this function (see [react blackjack part 5](guides/react-blackjack-part-5) for an example).
 
-You will also need a Google API key and you'll need to enable the [places web service](https://console.developers.google.com/apis/api/places_backend). Since this is a purely front-end project, you will have to expose your API key to any
+You will also need a Google API key and you'll need to enable the [places web service](https://console.developers.google.com/apis/api/places_backend). Since this is a purely front-end project, you will have to expose your API key to the client by including it in your JavaScript. It is still a good idea to omit it from your Git repository by placing it in a secrets.json file that gets ignored by version control. You should be able to talk about possible things that can go wrong if your API key is shared with users and what you can do to limit the downsides.
 
 For now, you can test your function by importing it and logging its results to the console inside `src/index.js` with some code like this:
 
