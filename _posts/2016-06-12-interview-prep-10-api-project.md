@@ -15,7 +15,7 @@ Some companies will ask candidates to build a simple application before or after
 
 This interview tactic is somewhat controversial because it requires a significant amount of the candidate's time. However, companies like to see how much a candidate knows and how well she or he can code, and one of the best ways to do that is to ask all the candidates to spend a few hours actually building a small project.
 
-Here are some typical things that companies are looking for when they ask the candidate to do a homework assignment. These can vary widely in relative importance by company!
+Here are some typical things that companies are looking for when they ask the candidate to do a homework assignment. These can vary widely in relative importance from company to company!
 
 - Does the code submitted by the candidate actually run and meet the requirements?
 - Was the candidate able to write the code in a reasonable time frame?
