@@ -29,10 +29,10 @@ This guide will help you prepare for this part of the interview process while al
 
 ### Requirements
 
-For this project, you should build a simple front-end application that uses the OpenWeatherMap and Google Maps Places/Geocoding APIs to build an app that has the following workflow:
+For this project, you should build a simple front-end application that uses the Foursquare API, the OpenWeatherMap API, and the Google Maps API to build an app that has the following workflow:
 
-- Users enter a location e.g. 85282, 2121 S Mill Ave, Tempe, AZ
-- After hitting submit, a list of the top 5 possible locations appears
+- Users have two text fields to enter data into. One field is for a search query ("restaurant", "park', "taco") and the other field is for a location (85282, "Tempe, AZ").
+- After hitting submit, a list of the top 5 possible locations will appear. The locations should be within 100,000km of the location they entered.
 - The user selects one of the locations and the following happen:
     - The item in the list is highlighted (color and/or background-color change)
     - The current weather for the city where the place is located is displayed (from OpenWeatherMap)
@@ -52,35 +52,35 @@ One way to start these projects is to worry about setting up the API calls befor
 
 You are going to build this application in React and Redux, so a good place to start is to clone the [react boilerplate repo](https://github.com/eloquently/react-boilerplate).
 
-Since one of the goals of this project is to write well-organized code, you should start by creating a directory for the code making the API `api` calls. In this directory, make two files: one for the Google APIs (`google.js`?) and one for the OpenWeatherMap API.
+Since one of the goals of this project is to write well-organized code, you should start by creating a `util` directory to store the code responsible for making the API calls. In this directory, you can make a single `api.js` file that has functions to make all the necessary API calls.
 
 #### First API Call
 
-Your first goal is to make the first API call (find five possible matches given user's search). You should write a function, `listPlaces()` (?), that takes a string parameter (the user's search query) and will return an array with the names and necessary data for the top 5 matches.
+Your first goal is to make the Foursquare API call (find five possible matches given user's search). You should write a function, `listPlaces()` (or something else if you want!), that takes two string parameters (the data the user entered into the location field and the search query field) and will return an array with the names and necessary data for the top 5 matches.
+
+You will need a Foursquare API key. Since this is a purely front-end project, you will have to expose your API keys to the client by including it in your JavaScript. It is still a good idea to omit it from your Git repository by placing it in a secrets.json file that gets ignored by version control. You should be able to talk about possible things that can go wrong if your API key is shared with users and what you can do to limit the downsides.
+
+Use the `venues/search` end point on the Foursquare API with the `near` and `radius` arguments.
 
 You can use the `isomorphic-fetch` library to make the API call inside this function (see [react blackjack part 5](/guides/react-blackjack-part-5) for an example).
-
-You will also need a Google API key and you'll need to enable the [places web service](https://console.developers.google.com/apis/api/places_backend). Since this is a purely front-end project, you will have to expose your API key to the client by including it in your JavaScript. It is still a good idea to omit it from your Git repository by placing it in a secrets.json file that gets ignored by version control. You should be able to talk about possible things that can go wrong if your API key is shared with users and what you can do to limit the downsides.
 
 For now, you can test your function by importing it and logging its results to the console inside `src/index.js` with some code like this:
 
 ```js
-import { listPlaces } from './apis/google.js';
+import { listPlaces } from './apis/foursquare.js';
 
-console.log(listPlaces('Park'));
+console.log(listPlaces('Park', 85282));
 ```
 
 Then if you run `webpack-dev-server` and open the page the browser, you should see the result of the API call on the page. If your code is working correctly, you should see data for 5 parks listed in an array.
 
 #### Second API Call
 
-Your next goal is to figure out how to make the second API call. This API call will be made after the user selects one of the five locations from the first API call. It needs to take some data from one of the elements in the array returned by `listPlaces()` as a parameter(s) and return the city and country that are needed to make the call to the OpenWeatherMap API. Check out the documentation of the OpenWeatherMap API to make sure that you return the string in the correct format.
+Now you can write a function that takes the city and country output from the first API call (or the latitude and longitude) and makes the call against the OpenWeatherMap API. You'll need an API key from OpenWeatherMap. Continue testing these functions in `index.js`.
+
+Note: OpenWeatherMap's API requires users to pay for https access. If you don't want to pay you can use the `http://...` address. Your browser will refuse to run the request if you visit your Cloud9 application using http, so make sure to change `https://___.c9users.io/` to `http://___.c9users.io/`.
 
 #### Third API Call
-
-Now you can write a function that takes the city and country output from the second API call and makes the call against the OpenWeatherMap API. You'll need an API key from OpenWeatherMap. Continue testing these functions in `index.js`.
-
-#### Fourth API Call
 
 Using the data from the first API call, we'll also need to get a Google Map to display on the page. There are a couple of ways to do this, but the easiest might be the [Static Map API](https://developers.google.com/maps/documentation/static-maps/intro).
 
@@ -130,8 +130,14 @@ You can use Redux Saga to watch for `NEW_QUERY` actions and make the first API c
 
 The next action for you to implement is `SELECT_PLACE`. This action will be dispatched when the user clicks on one of the places on the screen.
 
-You should have another saga watching for `SELECT_PLACE` actions. When one is observed, the saga should make the second and third API calls and dispatch a `FETCHED_WEATHER` action with the appropriate data when done.
+You should have another saga watching for `SELECT_PLACE` actions. When one is observed, the saga should make the second call and dispatch a `FETCHED_WEATHER` action with the appropriate data when done.
 
 If you set up your components correctly, this should be all you need to do! Clear out the initial state, and fix any bugs that you might encounter.
 
-If you have time after finishing everything else, a great feature to add would be to indicate to the user that data is loading with some sort of graphic or text on the screen. We show how this is done in [react blackjack part 5](/guides/react-blackjack-part-5). It's not part of the original specification, but this is one of those extra features that shows some creativity and an understanding of important elements of front-end design.
+### Additional Features
+
+If you still have time after your application is working, here are some additional ideas of features you can add:
+
+An indication to the user that data is loading with some sort of graphic or text on the screen. We show how this is done in [react blackjack part 5](/guides/react-blackjack-part-5). It's not part of the original specification, but this is one of those extra features that shows some creativity and an understanding of important elements of front-end design.
+
+Another feature would be input validation. If the user hits submit before typing anything into the input fields, it would be nice to show an error message rather than just running empty queries. You may wish to use redux-form for this functionality.
