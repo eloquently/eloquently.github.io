@@ -82,7 +82,9 @@ Now you can write a function that takes the city and country output from the sec
 
 #### Fourth API Call
 
-Using the data from the first API call, we'll also need to get a Google Map to display on the page. There are a couple of ways to do this, but the easiest might be the [Static Map API](https://developers.google.com/maps/documentation/static-maps/intro). This doesn't even require you to make an API call -- you just for the URL and put it as the `src` attribute on an `<img />` tag in your HTML. You can write a function that takes data from the one element of the result of the first API call and returns the `src` for an `<img />` tag.
+Using the data from the first API call, we'll also need to get a Google Map to display on the page. There are a couple of ways to do this, but the easiest might be the [Static Map API](https://developers.google.com/maps/documentation/static-maps/intro).
+
+If you use the Static Map API, you don't even need to make an API call -- you just form the URL with the parameters described in the documentation and use the URL as the `src` attribute on an `<img />` tag in your HTML. For now, you can write a function that takes data from the one element of the result of the first API call and returns the `src` for an `<img />` tag.
 
 ### Designing the Components
 
