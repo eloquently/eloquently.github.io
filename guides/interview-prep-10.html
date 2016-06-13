@@ -148,7 +148,7 @@
 
 <p>You can use the <code>isomorphic-fetch</code> library to actually make the API call inside this function (see <a href="guides/react-blackjack-part-5">react blackjack part 5</a> for an example).</p>
 
-<p>You will also need a Google API key and you&#39;ll need to enable the <a href="https://console.developers.google.com/apis/api/places_backend">places web service</a>. Since this is a purely front-end project, you will have to expose your API key to any</p>
+<p>You will also need a Google API key and you&#39;ll need to enable the <a href="https://console.developers.google.com/apis/api/places_backend">places web service</a>. Since this is a purely front-end project, you will have to expose your API key to the client by including it in your JavaScript. It is still a good idea to omit it from your Git repository by placing it in a secrets.json file that gets ignored by version control. You should be able to talk about possible things that can go wrong if your API key is shared with users and what you can do to limit the downsides.</p>
 
 <p>For now, you can test your function by importing it and logging its results to the console inside <code>src/index.js</code> with some code like this:</p>
 
