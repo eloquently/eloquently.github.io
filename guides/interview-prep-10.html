@@ -152,14 +152,14 @@
 
 <p>You can use the <code>isomorphic-fetch</code> library to make the API call inside this function (see <a href="/guides/react-blackjack-part-5">react blackjack part 5</a> for an example).</p>
 
-<p>For now, you can test your function by importing it and logging its results to the console inside <code>src/index.js</code> with some code like this:</p>
+<p>For now, you can just have your function log the result of the API call to the console (preferably after converting it into a JSON object) and you can test your function by importing it inside <code>src/index.js</code> with some code like this:</p>
 
-<pre data-line="" class="line-numbers"><code class="language-js">import { listPlaces } from &#39;./apis/foursquare.js&#39;;
+<pre data-line="" class="line-numbers"><code class="language-js">import { listPlaces } from &#39;./util/api.js&#39;;
 
-console.log(listPlaces(&#39;Park&#39;, 85282));
+listPlaces(&#39;Park&#39;, 85282);
 </code></pre>
 
-<p>Then if you run <code>webpack-dev-server</code> and open the page the browser, you should see the result of the API call on the page. If your code is working correctly, you should see data for 5 parks listed in an array.</p>
+<p>Then if you run <code>webpack-dev-server</code> and open the page the browser, you should see the result of the API call in the JavaScript console. If your code is working correctly, you should see data for 5 parks listed in an array.</p>
 
 <h4>Second API Call</h4>
 
