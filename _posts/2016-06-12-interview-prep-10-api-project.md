@@ -64,15 +64,15 @@ Use the `venues/search` end point on the Foursquare API with the `near` and `rad
 
 You can use the `isomorphic-fetch` library to make the API call inside this function (see [react blackjack part 5](/guides/react-blackjack-part-5) for an example).
 
-For now, you can test your function by importing it and logging its results to the console inside `src/index.js` with some code like this:
+For now, you can just have your function log the result of the API call to the console (preferably after converting it into a JSON object) and you can test your function by importing it inside `src/index.js` with some code like this:
 
 ```js
-import { listPlaces } from './apis/foursquare.js';
+import { listPlaces } from './util/api.js';
 
-console.log(listPlaces('Park', 85282));
+listPlaces('Park', 85282);
 ```
 
-Then if you run `webpack-dev-server` and open the page the browser, you should see the result of the API call on the page. If your code is working correctly, you should see data for 5 parks listed in an array.
+Then if you run `webpack-dev-server` and open the page the browser, you should see the result of the API call in the JavaScript console. If your code is working correctly, you should see data for 5 parks listed in an array.
 
 #### Second API Call
 
