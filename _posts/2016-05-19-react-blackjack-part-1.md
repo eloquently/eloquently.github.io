@@ -16,7 +16,7 @@ You may have to learn a new toolset or figure out how to add the tools you prefe
 
 It's also somewhat common to ask candidates what tools they use and to ask them to describe how various packages fit together to make sure the candidate really understands how a platform works.
 
-Here's a preview of what we'll be building:
+[Here is a working example](/rbj) of the finished product!
 
 <p style="text-align: center">
     <img src="/img/react_blackjack/start_screen.png" alt="Start Screen" title="Start Screen">
