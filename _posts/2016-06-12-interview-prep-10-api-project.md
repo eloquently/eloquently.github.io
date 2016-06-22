@@ -88,7 +88,7 @@ If you use the Static Map API, you don't even need to make an API call -- you ju
 
 ### Designing the Components
 
-Now that you have set up all the API calls and seen what they data they return looks like, you can start thinking about how to layout the application that will display the data.
+Now that you have set up all the API calls and seen what they return, you can start thinking about how to layout the application that will display the data.
 
 There are two things left to do. You need to code up the components for the application, and you need to connect them to the application state to make things happen when the user clicks on a component to make an API call.
 
