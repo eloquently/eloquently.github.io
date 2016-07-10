@@ -1503,7 +1503,7 @@ describe('<DealerSpeedForm />', () => {
 
 Now let's put the possible speeds and labels into an array and loop through it to create the `<label>`s and `<input>`s:
 
-<div class="fp">test/components/dealer_speed_form_spec.js</div>
+<div class="fp">app/components/dealer_speed_form.js</div>
 ```jsx
 // ...
 export class DealerSpeedForm extends React.Component {
