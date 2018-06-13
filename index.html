@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Eloquently - Learning and Recruiting</title>
+    <title>Eloquently</title>
 
     <!-- Custom Fonts -->
     <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
@@ -35,167 +35,93 @@
 </head>
 
 
-<body id="page-top">
+<body>
+    <div class="wrapper">
+        <!-- Navigation -->
+        <nav id="mainNav" class="nav navbar navbar-default full-color">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand page-scroll" href="/index">ELOQUENTLY</a>
+                </div>
 
-    <!-- Navigation -->
-<nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
-    <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand page-scroll" href="#page-top">ELOQUENTLY</a>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a class="page-scroll" href="/index">Home</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+
+        <div class="container post">
+            <div class="row">
+                <!--<div class="post-options pull-right">
+                    <div class="show">
+                        <a href="#postOptions" data-toggle="collapse" class="pull-right btn btn-default btn-sm">Display Options</a>
+                    </div>
+                    <div class="options collapse" id="postOptions">
+                        <input type="checkbox" checked data-toggle="toggle" data-on="Annotations On" data-off="Annotations Off" data-onstyle="primary-light" data-width="175">
+                        <br />
+                        <input type="checkbox" checked data-toggle="toggle" data-on="Line Numbers On" data-off="Line Numbers Off" data-onstyle="primary-light" data-width="175">
+                    </div>
+                </div>-->
+                <div class="post-content">
+                    <p>We put together some guides for participants in our workshops. Feel free to use them. If you see any errors, please submit an issue on our <a href="https://github.com/eloquently/eloquently.github.io">github repository</a>.</p>
+
+<p>Participants in our workshops typically use Cloud9&#39;s IDE, so many of the setup guides here are written mainly for Cloud9. We try to mention what you need to do to get something set up on a non-Cloud9 environment when possible, but these sections could likely use some work.</p>
+
+<p>Here is a list of guides we&#39;ve put together so far:</p>
+
+<ul>
+<li><p><a href="/index">Guide to Guides</a></p></li>
+<li><p><a href="/guides/bootstrap_rails">Bootstrap and Rails</a></p></li>
+<li><p><a href="/guides/livereload">Guard, LiveReload, and Cloud9</a></p></li>
+<li><p><a href="/guides/es6-tdd-warmup">ES6 TDD Warm-up</a></p></li>
+<li><p><a href="/guides/es6-classes-strings-state">Classes, Strings, and Mutable State with ES6</a></p></li>
+<li><p><a href="/guides/reduce-size-node-modules">Reduce Size of node_modules</a></p></li>
+<li><p><a href="/guides/es6-react-redux">ES6, React, and Redux - To Do List</a></p></li>
+<li><p><a href="/guides/react-blackjack-part-1">React Blackjack Part 1</a></p></li>
+<li><p><a href="/guides/react-blackjack-part-2">React Blackjack Part 2</a></p></li>
+<li><p><a href="/guides/react-blackjack-part-3">React Blackjack Part 3</a></p></li>
+<li><p><a href="/guides/react-shopping-list">React Mini-Project 1 - Shopping List</a></p></li>
+<li><p><a href="/guides/react-list-of-shopping-lists">React Mini-Project 2 - List of Shopping Lists</a></p></li>
+<li><p><a href="/guides/react-tic-tac-toe">React Mini-Project 3 - Tic Tac Toe</a></p></li>
+<li><p><a href="/guides/react-minesweeper">React Mini-Project 4 - Minesweeper</a></p></li>
+<li><p><a href="/guides/html-css-project-1">HTML/CSS Mini Project 1 - 404Market</a></p></li>
+<li><p><a href="/guides/react-blackjack-part-4">React Blackjack Part 4</a></p></li>
+<li><p><a href="/guides/interview-prep-01">Interview Prep 01 - Counting and Primes</a></p></li>
+<li><p><a href="/guides/interview-prep-02">Interview Prep 02 - Computational Complexity</a></p></li>
+<li><p><a href="/guides/interview-prep-03">Interview Prep 03 - Linked Lists</a></p></li>
+<li><p><a href="/guides/interview-prep-04">Interview Prep 04 - Sorting</a></p></li>
+<li><p><a href="/guides/interview-prep-05">Interview Prep 05 - Trees</a></p></li>
+<li><p><a href="/guides/react-blackjack-part-5">React Blackjack Part 5</a></p></li>
+<li><p><a href="/guides/interview-prep-06">Interview Prep 06 - Stacks</a></p></li>
+<li><p><a href="/guides/js-quiz-01">JavaScript Quiz 01</a></p></li>
+<li><p><a href="/guides/interview-prep-07">Interview Prep 07 - Queues</a></p></li>
+<li><p><a href="/guides/js-quiz-02">JavaScript Quiz 02</a></p></li>
+<li><p><a href="/guides/interview-prep-08">Interview Prep 08 - Generators</a></p></li>
+<li><p><a href="/guides/interview-prep-09">Interview Prep 09 - Promises</a></p></li>
+<li><p><a href="/guides/interview-prep-10">Interview Prep 10 - API Project</a></p></li>
+</ul>
+
+                    
+                </div>
+            </div>
         </div>
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a class="page-scroll" href="#about">About</a>
-                </li>
-                <li>
-                    <a class="page-scroll" href="/workshops">Workshops</a>
-                </li>
-                <li>
-                    <a class="page-scroll" href="/schedule">Schedule</a>
-                </li>
-                <li>
-                    <a class="page-scroll" href="/guides/index">Guides</a>
-                </li>
-                <li>
-                    <a class="page-scroll" href="#contact">Contact</a>
-                </li>
-            </ul>
-        </div>
-        <!-- /.navbar-collapse -->
+        <div class="push"></div>
     </div>
-    <!-- /.container-fluid -->
-</nav>
-
-<section class="bg-primary" id="about">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 text-center">
-                <h2 class="section-heading">Need help finding your next developer?</h2>
-                <hr class="light">
-                <p class="text-faded">
-                    We help companies find talented developers and developers
-                    find exciting companies.
-                    If you are interested in hiring a new web developer
-                    please reach out! If you are looking to get hired as a
-                    web developer, please contact us too!
-                </p>
-                <a href="#contact" class="btn btn-round btn-default btn-xl page-scroll">Contact Us</a>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section id="workshops">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <h2 class="section-heading">Workshops</h2>
-                <hr class="primary">
-                <p class="text-muted">Want to learn web development?</p>
-            </div>
-        </div>
-    </div>
-    <div class="container">
-        <div class="row" style="margin-bottom:48px;">
-            <div class="col-md-6 text-center">
-                <div class="service-box">
-                    <i class="fa fa-4x fa-calendar wow bounceIn text-primary"></i>
-                    <h3>12 Weeks</h3>
-                    <p class="text-muted">
-                        We host a twelve week cycle of workshops, giving you
-                        time to learn everything you need to know to start
-                        building web applications.
-                    </p>
-                </div>
-            </div>
-            <div class="col-md-6 text-center">
-                <div class="service-box">
-                    <i class="fa fa-4x fa-flask wow bounceIn text-primary" data-wow-delay=".1s"></i>
-                    <h3>Modern Technology</h3>
-                    <p class="text-muted">
-                        We teach Ruby on Rails and React.js with Redux.
-                        We also cover version control, TDD, agile,
-                        and other tools and methods.
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6 text-center">
-                <div class="service-box">
-                    <i class="fa fa-4x fa-dollar wow bounceIn text-primary" data-wow-delay=".2s"></i>
-                    <h3>Completely Free</h3>
-                    <p class="text-muted">
-                        Participants in our program never pay us anything.
-                        We make money by referring quality developers to
-                        companies.
-                    </p>
-                </div>
-            </div>
-            <div class="col-md-6 text-center">
-                <div class="service-box">
-                    <i class="fa fa-4x fa-briefcase wow bounceIn text-primary" data-wow-delay=".3s"></i>
-                    <h3>Ready to Work</h3>
-                    <p class="text-muted">
-                        We prepare workshop participants to start adding
-                        value their first day on the job as web developers.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<aside class="bg-dark">
-    <div class="container text-center">
-        <div class="call-to-action">
-            <h2>Interested in joining the next cycle?</h2>
-            <a href="workshops" class="btn btn-round btn-default btn-xl">Learn more!</a>
-        </div>
-    </div>
-</aside>
-
-<section id="contact">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 text-center">
-                <div class="service-box">
-                    <i class="fa fa-4x fa-phone wow bounceIn text-primary"></i>
-                    <h3>Call</h3>
-                    <p class="text-muted">480 248 4144</p>
-                </div>
-            </div>
-            <div class="col-md-4 text-center">
-                <div class="service-box">
-                    <i class="fa fa-4x fa-map-marker wow bounceIn text-primary" data-wow-delay=".1s"></i>
-                    <h3>Visit</h3>
-                    <p class="text-muted">
-                        2121 S Mill Ave. #105 <br />
-                        Tempe, AZ 85282
-                    </p>
-                </div>
-            </div>
-            <div class="col-md-4 text-center">
-                <div class="service-box">
-                    <i class="fa fa-4x fa-envelope-o wow bounceIn text-primary" data-wow-delay=".2s"></i>
-                    <h3>Email</h3>
-                    <p class="text-muted"><a href="mailto:hello@eloquent.ly">hello@eloquent.ly</a></p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
 
     <section id="footer">
     <div class="container">
@@ -221,10 +147,6 @@
 
 
 
-<script src="/js/creative.js"></script>
-
-
-
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -236,7 +158,7 @@
 
 </script>
 
-
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 </body>
 
 </html>
